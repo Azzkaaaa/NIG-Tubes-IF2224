@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/Azzkaaaa/NIG-Tubes-IF2224/src/dfa"
@@ -11,9 +12,11 @@ import (
 )
 
 func main() {
-	rules := flag.String("rules", "src/rules/tokenizer.json", "path to DFA json")
-	in := flag.String("input", "", "path to source code")
+	rules := flag.String("rules", "src/rules/tokenizer.json", "path ke DFA JSON")
+	in := flag.String("input", "", "path file sumber")
+	out := flag.String("out", "", "opsional: file output token")
 	flag.Parse()
+
 	if *in == "" {
 		fmt.Fprintln(os.Stderr, "missing --input <file>")
 		os.Exit(2)
@@ -21,19 +24,25 @@ func main() {
 
 	d, err := dfa.LoadJSON(*rules)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	rr, err := iox.NewRuneReaderFromFile(*in)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
-	lx := lexer.New(d, rr)
-	tokens, errs := lx.ScanAll()
+	tokens, errs := lexer.New(d, rr).ScanAll()
 
 	iox.PrintTokens(tokens)
+
 	for _, e := range errs {
 		fmt.Fprintln(os.Stderr, e)
+	}
+
+	if *out != "" {
+		if err := iox.WriteTokensToFile(*out, tokens); err != nil {
+			log.Fatal(err)
+		}
 	}
 }
