@@ -10,7 +10,7 @@ import (
 
 func PrintTokens(tokens []datatype.Token) {
 	for _, t := range tokens {
-		fmt.Printf("%s(%s) @ %d:%d\n", t.Type.String(), t.Lexeme, t.Line, t.Col)
+		fmt.Printf("%s(%s)\n", t.Type.String(), t.Lexeme)
 	}
 }
 
@@ -29,7 +29,7 @@ func WriteTokensToFile(path string, tokens []datatype.Token) error {
 
 	w := bufio.NewWriter(f)
 	for _, t := range tokens {
-		if _, err := fmt.Fprintf(w, "%s(%s) @ %d:%d\n", t.Type.String(), t.Lexeme, t.Line, t.Col); err != nil {
+		if _, err := fmt.Fprintf(w, "%s(%s)\n", t.Type.String(), t.Lexeme); err != nil {
 			return err
 		}
 	}
