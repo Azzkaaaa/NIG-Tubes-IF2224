@@ -11,10 +11,17 @@ type rawTransition struct {
 	Input string `json:"input"`
 	To    int    `json:"to"`
 }
+
+type rawFinal struct {
+	State  int    `json:"state"`
+	Output string `json:"output"`
+}
+
 type rawSpec struct {
+	States      int             `json:"states"`
 	Start       int             `json:"start"`
-	Finals      map[int]string  `json:"finals"`      // state → label
-	Transitions []rawTransition `json:"transitions"` // list
+	FinalArray  []rawFinal      `json:"final"`
+	Transitions []rawTransition `json:"transitions"`
 }
 
 func LoadJSON(path string) (*DFA, error) {
@@ -33,9 +40,11 @@ func LoadJSON(path string) (*DFA, error) {
 		Finals: make(map[State]string),
 		Trans:  make(map[State]map[rune]State),
 	}
-	for s, lab := range spec.Finals {
-		d.Finals[State(s)] = lab
+
+	for _, f := range spec.FinalArray {
+		d.Finals[State(f.State)] = f.Output
 	}
+
 	for _, t := range spec.Transitions {
 		runes := []rune(t.Input)
 		if len(runes) != 1 {
@@ -46,6 +55,7 @@ func LoadJSON(path string) (*DFA, error) {
 		}
 		d.Trans[State(t.From)][runes[0]] = State(t.To)
 	}
+
 	d.Reset()
 	return d, nil
 }
