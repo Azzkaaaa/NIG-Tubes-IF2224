@@ -1,5 +1,5 @@
 {
-    "states": 135,
+    "states": 140,
     "start": 0,
     "final": [
         {
@@ -423,59 +423,67 @@
             "output": "STRING_LITERAL"
         },
         {
-            "state": 112,
-            "output": "ARITHMETIC_OPERATOR"
-        },
-        {
-            "state": 113,
-            "output": "ARITHMETIC_OPERATOR"
-        },
-        {
-            "state": 114,
-            "output": "ARITHMETIC_OPERATOR"
-        },
-        {
             "state": 115,
-            "output": "ARITHMETIC_OPERATOR"
-        },
-        {
-            "state": 116,
-            "output": "RELATIONAL_OPERATOR"
-        },
-        {
-            "state": 118,
-            "output": "RELATIONAL_OPERATOR"
-        },
-        {
-            "state": 117,
-            "output": "RELATIONAL_OPERATOR"
-        },
-        {
-            "state": 119,
-            "output": "RELATIONAL_OPERATOR"
-        },
-        {
-            "state": 120,
-            "output": "RELATIONAL_OPERATOR"
+            "output": "COMMENT"
         },
         {
             "state": 121,
-            "output": "RELATIONAL_OPERATOR"
-        },
-        {
-            "state": 123,
-            "output": "ASSIGN_OPERATOR"
-        },
-        {
-            "state": 124,
-            "output": "SEMICOLON"
-        },
-        {
-            "state": 125,
-            "output": "COMMA"
+            "output": "COMMENT"
         },
         {
             "state": 122,
+            "output": "ARITHMETIC_OPERATOR"
+        },
+        {
+            "state": 123,
+            "output": "ARITHMETIC_OPERATOR"
+        },
+        {
+            "state": 124,
+            "output": "ARITHMETIC_OPERATOR"
+        },
+        {
+            "state": 125,
+            "output": "ARITHMETIC_OPERATOR"
+        },
+        {
+            "state": 126,
+            "output": "RELATIONAL_OPERATOR"
+        },
+        {
+            "state": 128,
+            "output": "RELATIONAL_OPERATOR"
+        },
+        {
+            "state": 127,
+            "output": "RELATIONAL_OPERATOR"
+        },
+        {
+            "state": 129,
+            "output": "RELATIONAL_OPERATOR"
+        },
+        {
+            "state": 130,
+            "output": "RELATIONAL_OPERATOR"
+        },
+        {
+            "state": 131,
+            "output": "RELATIONAL_OPERATOR"
+        },
+        {
+            "state": 133,
+            "output": "ASSIGN_OPERATOR"
+        },
+        {
+            "state": 134,
+            "output": "SEMICOLON"
+        },
+        {
+            "state": 135,
+            "output": "COMMA"
+        },
+        {
+            "state": 132,
             "output": "COLON"
         },
         {
@@ -483,40 +491,24 @@
             "output": "DOT"
         },
         {
-            "state": 126,
+            "state": 116,
             "output": "LPARENTHESIS"
         },
         {
-            "state": 127,
+            "state": 136,
             "output": "RPARENTHESIS"
         },
         {
-            "state": 128,
+            "state": 137,
             "output": "LBRACKET"
         },
         {
-            "state": 129,
+            "state": 138,
             "output": "RBRACKET"
         },
         {
-            "state": 130,
+            "state": 139,
             "output": "RANGE_OPERATOR"
-        },
-        {
-            "state": 131,
-            "output": "COMMENT_START"
-        },
-        {
-            "state": 132,
-            "output": "COMMENT_START"
-        },
-        {
-            "state": 133,
-            "output": "COMMENT_END"
-        },
-        {
-            "state": 134,
-            "output": "COMMENT_END"
         }
     ],
     "transitions": [
@@ -34071,6 +34063,11 @@
             "to": 107
         },
         {
+            "from": 105,
+            "input": "'",
+            "to": 107
+        },
+        {
             "from": 106,
             "input": "\u0000",
             "to": 108
@@ -39197,33 +39194,2893 @@
         },
         {
             "from": 0,
-            "input": "+",
+            "input": "{",
             "to": 112
         },
         {
-            "from": 0,
+            "from": 112,
+            "input": "\u0000",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0001",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0002",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0003",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0004",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0005",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0006",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0007",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\b",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\t",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\n",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u000b",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\f",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\r",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u000e",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u000f",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0010",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0011",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0012",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0013",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0014",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0015",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0016",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0017",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0018",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0019",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u001a",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u001b",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u001c",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u001d",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u001e",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u001f",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": " ",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "!",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\"",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "#",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "$",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "%",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "&",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "'",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "(",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": ")",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "*",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "+",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": ",",
+            "to": 113
+        },
+        {
+            "from": 112,
             "input": "-",
             "to": 113
         },
         {
-            "from": 0,
-            "input": "*",
+            "from": 112,
+            "input": ".",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "/",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "0",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "1",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "2",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "3",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "4",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "5",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "6",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "7",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "8",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "9",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": ":",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": ";",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "<",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "=",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": ">",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "?",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "@",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "A",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "B",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "C",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "D",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "E",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "F",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "G",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "H",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "I",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "J",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "K",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "L",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "M",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "N",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "O",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "P",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "Q",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "R",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "S",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "T",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "U",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "V",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "W",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "X",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "Y",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "Z",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "[",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "]",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "^",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "_",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "`",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "a",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "b",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "c",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "d",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "e",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "f",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "g",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "h",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "i",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "j",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "k",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "l",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "m",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "n",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "o",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "p",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "q",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "r",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "s",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "t",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "u",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "v",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "w",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "x",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "y",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "z",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "{",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "|",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "~",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u007f",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0080",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0081",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0082",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0083",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0084",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0085",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0086",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0087",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0088",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0089",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u008a",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u008b",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u008c",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u008d",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u008e",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u008f",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0090",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0091",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0092",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0093",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0094",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0095",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0096",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0097",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0098",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u0099",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u009a",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u009b",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u009c",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u009d",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u009e",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u009f",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00a0",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00a1",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00a2",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00a3",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00a4",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00a5",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00a6",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00a7",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00a8",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00a9",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00aa",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00ab",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00ac",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00ad",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00ae",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00af",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00b0",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00b1",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00b2",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00b3",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00b4",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00b5",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00b6",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00b7",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00b8",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00b9",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00ba",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00bb",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00bc",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00bd",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00be",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00bf",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00c0",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00c1",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00c2",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00c3",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00c4",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00c5",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00c6",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00c7",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00c8",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00c9",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00ca",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00cb",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00cc",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00cd",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00ce",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00cf",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00d0",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00d1",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00d2",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00d3",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00d4",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00d5",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00d6",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00d7",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00d8",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00d9",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00da",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00db",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00dc",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00dd",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00de",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00df",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00e0",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00e1",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00e2",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00e3",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00e4",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00e5",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00e6",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00e7",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00e8",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00e9",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00ea",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00eb",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00ec",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00ed",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00ee",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00ef",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00f0",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00f1",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00f2",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00f3",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00f4",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00f5",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00f6",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00f7",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00f8",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00f9",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00fa",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00fb",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00fc",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00fd",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00fe",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\u00ff",
+            "to": 113
+        },
+        {
+            "from": 112,
+            "input": "\\",
             "to": 114
         },
         {
-            "from": 0,
+            "from": 113,
+            "input": "\\",
+            "to": 114
+        },
+        {
+            "from": 114,
+            "input": "\u0000",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0001",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0002",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0003",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0004",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0005",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0006",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0007",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\b",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\t",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\n",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u000b",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\f",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\r",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u000e",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u000f",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0010",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0011",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0012",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0013",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0014",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0015",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0016",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0017",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0018",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0019",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u001a",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u001b",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u001c",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u001d",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u001e",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u001f",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": " ",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "!",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\"",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "#",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "$",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "%",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "&",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "'",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "(",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": ")",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "*",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "+",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": ",",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "-",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": ".",
+            "to": 113
+        },
+        {
+            "from": 114,
             "input": "/",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "0",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "1",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "2",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "3",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "4",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "5",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "6",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "7",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "8",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "9",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": ":",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": ";",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "<",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "=",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": ">",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "?",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "@",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "A",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "B",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "C",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "D",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "E",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "F",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "G",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "H",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "I",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "J",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "K",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "L",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "M",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "N",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "O",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "P",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "Q",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "R",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "S",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "T",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "U",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "V",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "W",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "X",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "Y",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "Z",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "[",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\\",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "]",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "^",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "_",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "`",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "a",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "b",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "c",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "d",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "e",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "f",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "g",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "h",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "i",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "j",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "k",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "l",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "m",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "n",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "o",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "p",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "q",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "r",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "s",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "t",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "u",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "v",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "w",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "x",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "y",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "z",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "{",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "|",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "}",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "~",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u007f",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0080",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0081",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0082",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0083",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0084",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0085",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0086",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0087",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0088",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0089",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u008a",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u008b",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u008c",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u008d",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u008e",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u008f",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0090",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0091",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0092",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0093",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0094",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0095",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0096",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0097",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0098",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u0099",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u009a",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u009b",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u009c",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u009d",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u009e",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u009f",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00a0",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00a1",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00a2",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00a3",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00a4",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00a5",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00a6",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00a7",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00a8",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00a9",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00aa",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00ab",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00ac",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00ad",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00ae",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00af",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00b0",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00b1",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00b2",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00b3",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00b4",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00b5",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00b6",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00b7",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00b8",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00b9",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00ba",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00bb",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00bc",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00bd",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00be",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00bf",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00c0",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00c1",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00c2",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00c3",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00c4",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00c5",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00c6",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00c7",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00c8",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00c9",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00ca",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00cb",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00cc",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00cd",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00ce",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00cf",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00d0",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00d1",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00d2",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00d3",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00d4",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00d5",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00d6",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00d7",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00d8",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00d9",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00da",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00db",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00dc",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00dd",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00de",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00df",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00e0",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00e1",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00e2",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00e3",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00e4",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00e5",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00e6",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00e7",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00e8",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00e9",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00ea",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00eb",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00ec",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00ed",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00ee",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00ef",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00f0",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00f1",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00f2",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00f3",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00f4",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00f5",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00f6",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00f7",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00f8",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00f9",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00fa",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00fb",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00fc",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00fd",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00fe",
+            "to": 113
+        },
+        {
+            "from": 114,
+            "input": "\u00ff",
+            "to": 113
+        },
+        {
+            "from": 113,
+            "input": "}",
+            "to": 115
+        },
+        {
+            "from": 112,
+            "input": "}",
             "to": 115
         },
         {
             "from": 0,
-            "input": "=",
+            "input": "(",
             "to": 116
         },
         {
-            "from": 0,
-            "input": "<",
+            "from": 116,
+            "input": "*",
             "to": 117
+        },
+        {
+            "from": 117,
+            "input": "\u0000",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0001",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0002",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0003",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0004",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0005",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0006",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0007",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\b",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\t",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\n",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u000b",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\f",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\r",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u000e",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u000f",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0010",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0011",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0012",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0013",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0014",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0015",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0016",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0017",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0018",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0019",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u001a",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u001b",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u001c",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u001d",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u001e",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u001f",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": " ",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "!",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\"",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "#",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "$",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "%",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "&",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "'",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "(",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": ")",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "+",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": ",",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "-",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": ".",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "/",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "0",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "1",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "2",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "3",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "4",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "5",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "6",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "7",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "8",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "9",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": ":",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": ";",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "<",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "=",
+            "to": 118
         },
         {
             "from": 117,
@@ -39232,83 +42089,2358 @@
         },
         {
             "from": 117,
-            "input": "=",
+            "input": "?",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "@",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "A",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "B",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "C",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "D",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "E",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "F",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "G",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "H",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "I",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "J",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "K",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "L",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "M",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "N",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "O",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "P",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "Q",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "R",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "S",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "T",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "U",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "V",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "W",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "X",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "Y",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "Z",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "[",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "]",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "^",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "_",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "`",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "a",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "b",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "c",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "d",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "e",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "f",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "g",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "h",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "i",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "j",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "k",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "l",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "m",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "n",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "o",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "p",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "q",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "r",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "s",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "t",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "u",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "v",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "w",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "x",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "y",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "z",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "{",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "|",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "}",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "~",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u007f",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0080",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0081",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0082",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0083",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0084",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0085",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0086",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0087",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0088",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0089",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u008a",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u008b",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u008c",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u008d",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u008e",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u008f",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0090",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0091",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0092",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0093",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0094",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0095",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0096",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0097",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0098",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u0099",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u009a",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u009b",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u009c",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u009d",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u009e",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u009f",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00a0",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00a1",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00a2",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00a3",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00a4",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00a5",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00a6",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00a7",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00a8",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00a9",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00aa",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00ab",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00ac",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00ad",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00ae",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00af",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00b0",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00b1",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00b2",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00b3",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00b4",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00b5",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00b6",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00b7",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00b8",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00b9",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00ba",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00bb",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00bc",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00bd",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00be",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00bf",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00c0",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00c1",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00c2",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00c3",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00c4",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00c5",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00c6",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00c7",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00c8",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00c9",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00ca",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00cb",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00cc",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00cd",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00ce",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00cf",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00d0",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00d1",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00d2",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00d3",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00d4",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00d5",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00d6",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00d7",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00d8",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00d9",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00da",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00db",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00dc",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00dd",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00de",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00df",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00e0",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00e1",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00e2",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00e3",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00e4",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00e5",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00e6",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00e7",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00e8",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00e9",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00ea",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00eb",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00ec",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00ed",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00ee",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00ef",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00f0",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00f1",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00f2",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00f3",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00f4",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00f5",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00f6",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00f7",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00f8",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00f9",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00fa",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00fb",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00fc",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00fd",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00fe",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\u00ff",
+            "to": 118
+        },
+        {
+            "from": 117,
+            "input": "\\",
             "to": 119
         },
         {
-            "from": 0,
+            "from": 118,
+            "input": "\\",
+            "to": 119
+        },
+        {
+            "from": 119,
+            "input": "\u0000",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0001",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0002",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0003",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0004",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0005",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0006",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0007",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\b",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\t",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\n",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u000b",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\f",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\r",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u000e",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u000f",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0010",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0011",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0012",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0013",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0014",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0015",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0016",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0017",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0018",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0019",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u001a",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u001b",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u001c",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u001d",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u001e",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u001f",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": " ",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "!",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\"",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "#",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "$",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "%",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "&",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "'",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "(",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": ")",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "*",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "+",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": ",",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "-",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": ".",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "/",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "0",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "1",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "2",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "3",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "4",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "5",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "6",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "7",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "8",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "9",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": ":",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": ";",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "<",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "=",
+            "to": 118
+        },
+        {
+            "from": 119,
             "input": ">",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "?",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "@",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "A",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "B",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "C",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "D",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "E",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "F",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "G",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "H",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "I",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "J",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "K",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "L",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "M",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "N",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "O",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "P",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "Q",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "R",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "S",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "T",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "U",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "V",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "W",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "X",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "Y",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "Z",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "[",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\\",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "]",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "^",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "_",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "`",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "a",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "b",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "c",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "d",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "e",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "f",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "g",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "h",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "i",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "j",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "k",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "l",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "m",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "n",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "o",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "p",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "q",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "r",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "s",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "t",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "u",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "v",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "w",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "x",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "y",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "z",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "{",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "|",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "}",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "~",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u007f",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0080",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0081",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0082",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0083",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0084",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0085",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0086",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0087",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0088",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0089",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u008a",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u008b",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u008c",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u008d",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u008e",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u008f",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0090",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0091",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0092",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0093",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0094",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0095",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0096",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0097",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0098",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u0099",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u009a",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u009b",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u009c",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u009d",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u009e",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u009f",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00a0",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00a1",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00a2",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00a3",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00a4",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00a5",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00a6",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00a7",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00a8",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00a9",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00aa",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00ab",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00ac",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00ad",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00ae",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00af",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00b0",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00b1",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00b2",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00b3",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00b4",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00b5",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00b6",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00b7",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00b8",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00b9",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00ba",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00bb",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00bc",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00bd",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00be",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00bf",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00c0",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00c1",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00c2",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00c3",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00c4",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00c5",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00c6",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00c7",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00c8",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00c9",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00ca",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00cb",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00cc",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00cd",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00ce",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00cf",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00d0",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00d1",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00d2",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00d3",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00d4",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00d5",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00d6",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00d7",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00d8",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00d9",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00da",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00db",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00dc",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00dd",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00de",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00df",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00e0",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00e1",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00e2",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00e3",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00e4",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00e5",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00e6",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00e7",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00e8",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00e9",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00ea",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00eb",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00ec",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00ed",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00ee",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00ef",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00f0",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00f1",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00f2",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00f3",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00f4",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00f5",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00f6",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00f7",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00f8",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00f9",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00fa",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00fb",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00fc",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00fd",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00fe",
+            "to": 118
+        },
+        {
+            "from": 119,
+            "input": "\u00ff",
+            "to": 118
+        },
+        {
+            "from": 118,
+            "input": "*",
+            "to": 120
+        },
+        {
+            "from": 117,
+            "input": "*",
             "to": 120
         },
         {
             "from": 120,
-            "input": "=",
+            "input": ")",
             "to": 121
         },
         {
             "from": 0,
-            "input": ":",
+            "input": "+",
             "to": 122
         },
         {
-            "from": 122,
-            "input": "=",
+            "from": 0,
+            "input": "-",
             "to": 123
         },
         {
             "from": 0,
-            "input": ";",
+            "input": "*",
             "to": 124
         },
         {
             "from": 0,
-            "input": ",",
+            "input": "/",
             "to": 125
         },
         {
             "from": 0,
-            "input": "(",
+            "input": "=",
             "to": 126
         },
         {
             "from": 0,
-            "input": ")",
+            "input": "<",
             "to": 127
+        },
+        {
+            "from": 127,
+            "input": ">",
+            "to": 128
+        },
+        {
+            "from": 127,
+            "input": "=",
+            "to": 129
+        },
+        {
+            "from": 0,
+            "input": ">",
+            "to": 130
+        },
+        {
+            "from": 130,
+            "input": "=",
+            "to": 131
+        },
+        {
+            "from": 0,
+            "input": ":",
+            "to": 132
+        },
+        {
+            "from": 132,
+            "input": "=",
+            "to": 133
+        },
+        {
+            "from": 0,
+            "input": ";",
+            "to": 134
+        },
+        {
+            "from": 0,
+            "input": ",",
+            "to": 135
+        },
+        {
+            "from": 0,
+            "input": ")",
+            "to": 136
         },
         {
             "from": 0,
             "input": "[",
-            "to": 128
+            "to": 137
         },
         {
             "from": 0,
             "input": "]",
-            "to": 129
+            "to": 138
         },
         {
             "from": 103,
             "input": ".",
-            "to": 130
-        },
-        {
-            "from": 0,
-            "input": "{",
-            "to": 131
-        },
-        {
-            "from": 126,
-            "input": "*",
-            "to": 132
-        },
-        {
-            "from": 0,
-            "input": "}",
-            "to": 133
-        },
-        {
-            "from": 114,
-            "input": ")",
-            "to": 134
+            "to": 139
         }
     ]
 }
