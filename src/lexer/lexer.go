@@ -19,26 +19,14 @@ func New(d *dfa.DFA, r *iox.RuneReader) *Lexer {
 }
 
 func isWS(r rune) bool {
-	return r == ' ' || r == '\t' || r == '\n' || r == '\r' || r == '\f'
+	return r == ' ' || r == '\t' || r == '\n' || r == '\r' || r == '\f' || r == 0
 }
 
 func (lx *Lexer) ScanAll() ([]datatype.Token, []error) {
 	var toks []datatype.Token
 	var errs []error
 
-	for {
-		for !lx.r.EOF() {
-			ch := lx.r.Peek()
-			if isWS(ch) {
-				lx.r.Read()
-				continue
-			}
-			break
-		}
-		if lx.r.EOF() {
-			break
-		}
-
+	for !lx.r.EOF() {
 		startOff := lx.r.Offset()
 		startLine, startCol := lx.r.Pos()
 		startSnap := lx.r.Snapshot()
@@ -80,12 +68,14 @@ func (lx *Lexer) ScanAll() ([]datatype.Token, []error) {
 				lex = strings.Trim(lex, " \t\r\n\f")
 			}
 
-			toks = append(toks, datatype.Token{
-				Type:   tt,
-				Lexeme: lex,
-				Line:   startLine,
-				Col:    startCol,
-			})
+			if lex != "" || tt == datatype.STRING_LITERAL || tt == datatype.CHAR_LITERAL || tt == datatype.COMMENT {
+				toks = append(toks, datatype.Token{
+					Type:   tt,
+					Lexeme: lex,
+					Line:   startLine,
+					Col:    startCol,
+				})
+			}
 			continue
 		}
 
@@ -93,8 +83,6 @@ func (lx *Lexer) ScanAll() ([]datatype.Token, []error) {
 			if !isWS(ch) {
 				errs = append(errs, fmt.Errorf("unrecognized %q at %d:%d", ch, startLine, startCol))
 			}
-		} else {
-			break
 		}
 	}
 
