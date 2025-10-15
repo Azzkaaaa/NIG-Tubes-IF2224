@@ -18,11 +18,27 @@ func New(d *dfa.DFA, r *iox.RuneReader) *Lexer {
 	return &Lexer{d: d, r: r}
 }
 
+func isWS(r rune) bool {
+	return r == ' ' || r == '\t' || r == '\n' || r == '\r' || r == '\f'
+}
+
 func (lx *Lexer) ScanAll() ([]datatype.Token, []error) {
 	var toks []datatype.Token
 	var errs []error
 
-	for !lx.r.EOF() {
+	for {
+		for !lx.r.EOF() {
+			ch := lx.r.Peek()
+			if isWS(ch) {
+				lx.r.Read()
+				continue
+			}
+			break
+		}
+		if lx.r.EOF() {
+			break
+		}
+
 		startOff := lx.r.Offset()
 		startLine, startCol := lx.r.Pos()
 		startSnap := lx.r.Snapshot()
@@ -52,12 +68,16 @@ func (lx *Lexer) ScanAll() ([]datatype.Token, []error) {
 			lex := lx.r.Slice(startOff, lastOkOff)
 
 			tt := mapLabel(lastOkLabel)
-
 			if tt == datatype.IDENTIFIER {
 				if _, ok := datatype.Keywords[strings.ToLower(lex)]; ok {
 					tt = datatype.KEYWORD
 				}
+			}
 
+			switch tt {
+			case datatype.STRING_LITERAL, datatype.CHAR_LITERAL, datatype.COMMENT:
+			default:
+				lex = strings.Trim(lex, " \t\r\n\f")
 			}
 
 			toks = append(toks, datatype.Token{
@@ -66,13 +86,15 @@ func (lx *Lexer) ScanAll() ([]datatype.Token, []error) {
 				Line:   startLine,
 				Col:    startCol,
 			})
-
 			continue
 		}
 
-		lx.r.Restore(startSnap)
 		if ch, ok := lx.r.Read(); ok {
-			errs = append(errs, fmt.Errorf("unrecognized %q at %d:%d", ch, startLine, startCol))
+			if !isWS(ch) {
+				errs = append(errs, fmt.Errorf("unrecognized %q at %d:%d", ch, startLine, startCol))
+			}
+		} else {
+			break
 		}
 	}
 
