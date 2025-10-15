@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"os"
 
-	"tubes/src/dfa"
-	iox "tubes/src/io"
-	"tubes/src/lexer"
+	"github.com/Azzkaaaa/NIG-Tubes-IF2224/src/dfa"
+	iox "github.com/Azzkaaaa/NIG-Tubes-IF2224/src/io"
+	"github.com/Azzkaaaa/NIG-Tubes-IF2224/src/lexer"
 )
 
 func main() {
