@@ -24,6 +24,13 @@ const (
 	COMMENT
 )
 
+type Token struct {
+	Type   TokenType
+	Lexeme string // substring aslinya
+	Line   int    // posisi awal token (untuk error/report)
+	Col    int
+}
+
 func (t TokenType) String() string {
 	names := [...]string{
 		"KEYWORD", "IDENTIFIER", "ARITHMETIC_OPERATOR", "RELATIONAL_OPERATOR", "LOGICAL_OPERATOR",
