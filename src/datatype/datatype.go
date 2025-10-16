@@ -44,9 +44,9 @@ func (t TokenType) String() string {
 	return names[t]
 }
 
-var Keywords = map[string]struct{}{
-	"program": {}, "var": {}, "begin": {}, "end": {}, "if": {}, "then": {}, "else": {},
-	"while": {}, "do": {}, "for": {}, "to": {}, "downto": {},
-	"integer": {}, "real": {}, "boolean": {}, "char": {},
-	"array": {}, "of": {}, "procedure": {}, "function": {}, "const": {}, "type": {},
-}
+// var Keywords = map[string]struct{}{
+// 	"program": {}, "var": {}, "begin": {}, "end": {}, "if": {}, "then": {}, "else": {},
+// 	"while": {}, "do": {}, "for": {}, "to": {}, "downto": {},
+// 	"integer": {}, "real": {}, "boolean": {}, "char": {},
+// 	"array": {}, "of": {}, "procedure": {}, "function": {}, "const": {}, "type": {},
+// }

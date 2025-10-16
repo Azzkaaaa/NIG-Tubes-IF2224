@@ -56,11 +56,11 @@ func (lx *Lexer) ScanAll() ([]datatype.Token, []error) {
 			lex := lx.r.Slice(startOff, lastOkOff)
 
 			tt := mapLabel(lastOkLabel)
-			if tt == datatype.IDENTIFIER {
-				if _, ok := datatype.Keywords[strings.ToLower(lex)]; ok {
-					tt = datatype.KEYWORD
-				}
-			}
+			// if tt == datatype.IDENTIFIER {
+			// 	if _, ok := datatype.Keywords[strings.ToLower(lex)]; ok {
+			// 		tt = datatype.KEYWORD
+			// 	}
+			// }
 
 			switch tt {
 			case datatype.STRING_LITERAL, datatype.CHAR_LITERAL, datatype.COMMENT:
