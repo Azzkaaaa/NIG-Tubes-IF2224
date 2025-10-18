@@ -62,10 +62,12 @@ func (lx *Lexer) ScanAll() ([]datatype.Token, []error) {
 			// 	}
 			// }
 
+			lex = strings.Trim(lex, " \t\r\n\f")
+
 			switch tt {
 			case datatype.STRING_LITERAL, datatype.CHAR_LITERAL, datatype.COMMENT:
 			default:
-				lex = strings.Trim(lex, " \t\r\n\f")
+				lex = strings.ToLower(lex)
 			}
 
 			if lex != "" || tt == datatype.STRING_LITERAL || tt == datatype.CHAR_LITERAL || tt == datatype.COMMENT {
