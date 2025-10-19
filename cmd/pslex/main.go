@@ -41,7 +41,7 @@ func main() {
 	}
 
 	if *out != "" {
-		if err := iox.WriteTokensToFile(*out, tokens); err != nil {
+		if err := iox.WriteTokensAndErrorsToFile(*out, tokens, errs); err != nil {
 			log.Fatal(err)
 		}
 	}

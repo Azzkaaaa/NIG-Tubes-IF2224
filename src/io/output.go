@@ -20,7 +20,7 @@ func PrintErrors(errs []error) {
 	}
 }
 
-func WriteTokensToFile(path string, tokens []datatype.Token) error {
+func WriteTokensAndErrorsToFile(path string, tokens []datatype.Token, errs []error) error {
 	f, err := os.Create(path)
 	if err != nil {
 		return err
@@ -30,6 +30,11 @@ func WriteTokensToFile(path string, tokens []datatype.Token) error {
 	w := bufio.NewWriter(f)
 	for _, t := range tokens {
 		if _, err := fmt.Fprintf(w, "%s(%s)\n", t.Type.String(), t.Lexeme); err != nil {
+			return err
+		}
+	}
+	for _, e := range errs {
+		if _, err := fmt.Fprintln(w, e); err != nil {
 			return err
 		}
 	}
