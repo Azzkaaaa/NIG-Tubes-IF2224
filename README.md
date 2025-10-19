@@ -109,7 +109,7 @@ contoh:
             <sub><b>Rhio Bimo Prakoso S</b></sub>
         </a>
         </td>
-        <td align="center">Fotografer, Konsumsi, Femboy Generator, dan Laporan</td>
+        <td align="center">Fotografer, Konsumsi, Femboy Generator, Testing, dan Laporan</td>
     </tr>
     <tr>
         <td align="center">
@@ -118,7 +118,7 @@ contoh:
             <sub><b>M Aulia Azka</b></sub>
         </a>
         </td>
-        <td align="center">Lexer (Code) dan Testing</td>
+        <td align="center">Engine dan Testing</td>
     </tr>
     <tr>
         <td align="center">
@@ -136,7 +136,7 @@ contoh:
             <sub><b>Fahcriza Ahmad Setiyono</b></sub>
         </a>
         </td>
-        <td align="center">Lexer (Code)</td>
+        <td align="center">Engine dan Testing</td>
     </tr>
         <tr>
         <td align="center">
