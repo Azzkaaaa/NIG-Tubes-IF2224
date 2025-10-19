@@ -7,19 +7,19 @@ var
   c: letter;
   r: real;
 
-procedure ShowChar(ch: char);
+procedure ShowChar(ch: char); (* Tampilin karakter*)
 begin
   write('Character: ', ch);
 end;
 
-function Area(radius: real): real;
+function Area(radius: real): real; {* Hitung luas lingkaran *}
 begin
   Area := PI * radius * radius;
 end;
 
 begin
   c := 'A';
-  r := 2.5;
+  r := 25e1;
   ShowChar(c);
   write('Area = ', Area(r));
 end.
