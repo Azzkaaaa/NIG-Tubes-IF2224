@@ -4,17 +4,16 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Azzkaaaa/NIG-Tubes-IF2224/src/datatype"
-	"github.com/Azzkaaaa/NIG-Tubes-IF2224/src/dfa"
-	iox "github.com/Azzkaaaa/NIG-Tubes-IF2224/src/io"
+	iox "github.com/Azzkaaaa/NIG-Tubes-IF2224/common"
+	"github.com/Azzkaaaa/NIG-Tubes-IF2224/datatype"
 )
 
 type Lexer struct {
-	d *dfa.DFA
+	d *DFA
 	r *iox.RuneReader
 }
 
-func New(d *dfa.DFA, r *iox.RuneReader) *Lexer {
+func New(d *DFA, r *iox.RuneReader) *Lexer {
 	return &Lexer{d: d, r: r}
 }
 
