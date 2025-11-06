@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	iox "github.com/Azzkaaaa/NIG-Tubes-IF2224/common"
-	"github.com/Azzkaaaa/NIG-Tubes-IF2224/datatype"
+	iox "github.com/Azzkaaaa/NIG-Tubes-IF2224/psc/common"
+	"github.com/Azzkaaaa/NIG-Tubes-IF2224/psc/datatype"
 )
 
 type Lexer struct {

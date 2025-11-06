@@ -7,9 +7,9 @@ import (
 	"log"
 	"os"
 
-	iox "github.com/Azzkaaaa/NIG-Tubes-IF2224/common"
-	dt "github.com/Azzkaaaa/NIG-Tubes-IF2224/datatype"
-	"github.com/Azzkaaaa/NIG-Tubes-IF2224/lexer"
+	iox "github.com/Azzkaaaa/NIG-Tubes-IF2224/psc/common"
+	dt "github.com/Azzkaaaa/NIG-Tubes-IF2224/psc/datatype"
+	"github.com/Azzkaaaa/NIG-Tubes-IF2224/psc/lexer"
 )
 
 func main() {
