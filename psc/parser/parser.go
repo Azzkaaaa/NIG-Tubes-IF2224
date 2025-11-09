@@ -25,6 +25,7 @@ func reconstruct_source(tokens []dt.Token, line int) string {
 	var sb strings.Builder
 	currentLine := max(1, line-1)
 	currenCol := 1
+	foundLine := false
 	for _, t := range tokens {
 		if t.Line < max(1, line-1) {
 			continue
@@ -32,8 +33,11 @@ func reconstruct_source(tokens []dt.Token, line int) string {
 		if t.Line > line {
 			break
 		}
-		if t.Line > currentLine {
-			sb.WriteString("\n")
+		if !foundLine && t.Line == currentLine {
+			sb.WriteString(fmt.Sprintf("\n%d: ", t.Line))
+			foundLine = true
+		} else if t.Line > currentLine {
+			sb.WriteString(fmt.Sprintf("\n%d: ", t.Line))
 			currenCol = 1
 			currentLine = t.Line
 		}
@@ -65,7 +69,7 @@ Line %d, Col %d
 SyntaxError: Unexpected token '%s' %s
 %s
 `,
-			e.Line, e.Col, reconstruct_source(e.buffer, e.Line), strings.Repeat(" ", e.Col-1)+"^", e.Got.Lexeme, expected, e.Tips)
+			e.Line, e.Col, reconstruct_source(e.buffer, e.Line), strings.Repeat(" ", e.Col-1+3)+"^", e.Got.Lexeme, expected, e.Tips)
 	} else {
 		return fmt.Sprintf(`
 Line %d, Col %d
@@ -73,7 +77,7 @@ Line %d, Col %d
 %s
 SyntaxError: Unexpected token '%s' %s
 `,
-			e.Line, e.Col, reconstruct_source(e.buffer, e.Line), strings.Repeat(" ", e.Col-1)+"^", e.Got.Lexeme, expected)
+			e.Line, e.Col, reconstruct_source(e.buffer, e.Line), strings.Repeat(" ", e.Col-1+3)+"^", e.Got.Lexeme, expected)
 	}
 }
 
@@ -100,23 +104,23 @@ func (p *Parser) peek() *dt.Token {
 	return &p.buffer[p.pos]
 }
 
-func (p *Parser) consume(expectedType dt.TokenType) bool {
+func (p *Parser) consume(expectedType dt.TokenType) *dt.Token {
 	curr := p.peek()
 	if curr.Type == expectedType {
 		p.pos++
-		return true
+		return curr
 	}
-	return false
+	return nil
 }
 
-func (p *Parser) consumeExact(expectedType dt.TokenType, expectedLexeme string) bool {
+func (p *Parser) consumeExact(expectedType dt.TokenType, expectedLexeme string) *dt.Token {
 	curr := p.peek()
 	if curr.Type == expectedType && curr.Lexeme == expectedLexeme {
 		p.pos++
-		return true
+		return curr
 	}
 
-	return false
+	return nil
 }
 
 func (p *Parser) match(expectedType dt.TokenType) bool {
@@ -204,15 +208,15 @@ func (p *Parser) parseProgramHeader() (*dt.ParseTree, error) {
 	// 	return nil, nil, errors.New("not enough tokens to form program header")
 	// }
 
-	if !p.consumeExact(dt.KEYWORD, "program") {
+	if p.consumeExact(dt.KEYWORD, "program") == nil {
 		return nil, p.createParseError(dt.KEYWORD, "all programs must start with program keyword")
 	}
 
-	if !p.consume(dt.IDENTIFIER) {
+	if p.consume(dt.IDENTIFIER) == nil {
 		return nil, p.createParseError(dt.IDENTIFIER, "program name must only use alphanumerical characters and underscores")
 	}
 
-	if !p.consume(dt.SEMICOLON) {
+	if p.consume(dt.SEMICOLON) == nil {
 		return nil, p.createParseError(dt.SEMICOLON, "program name must be a single word and strictly end with ;")
 	}
 
@@ -264,13 +268,16 @@ func (p *Parser) parseDeclarationPart() (*dt.ParseTree, error) {
 	// 	}
 	// }
 
-	// for err == nil {
-	// 	varDeclaration, newErr := p.parseVarDeclaration()
-	// 	err = newErr
-	// 	if err == nil {
-	// 		declarationTree.Children = append(declarationTree.Children, *varDeclaration)
-	// 	}
-	// }
+	for err == nil {
+		varDeclaration, newErr := p.parseVarDeclaration()
+		if varDeclaration == nil && newErr == nil {
+			break
+		}
+		err = newErr
+		if err == nil {
+			declarationTree.Children = append(declarationTree.Children, *varDeclaration)
+		}
+	}
 
 	// for err == nil {
 	// 	subprogramDeclaration, newRemainder, newErr := parseSubprogramDeclaration(remainder)
@@ -293,94 +300,139 @@ func (p *Parser) parseTypeDeclaration() (*dt.ParseTree, error) {
 }
 
 func (p *Parser) parseVarDeclaration() (*dt.ParseTree, error) {
-	return &dt.ParseTree{}, nil
+	if p.consumeExact(dt.KEYWORD, "var") == nil {
+		return nil, nil
+	}
+
+	identifier, err := p.parseIdentifierList()
+
+	if err != nil {
+		return nil, err
+	}
+
+	expectedColon := p.consume(dt.COLON)
+	if expectedColon == nil {
+		return nil, p.createParseError(dt.COLON, "")
+	}
+
+	parsedType, err := p.parseType()
+
+	if err != nil {
+		return nil, err
+	}
+
+	expectedSemicolon := p.consume(dt.SEMICOLON)
+	if expectedSemicolon == nil {
+		return nil, p.createParseError(dt.SEMICOLON, "variable declaration must end with semicolon")
+	}
+
+	varDeclaration := dt.ParseTree{
+		RootType:   dt.VAR_DECLARATION_NODE,
+		TokenValue: nil,
+		Children: []dt.ParseTree{
+			*identifier,
+			{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: expectedColon,
+				Children:   nil,
+			},
+			*parsedType,
+			{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: expectedSemicolon,
+				Children:   nil,
+			},
+		},
+	}
+	return &varDeclaration, nil
 }
 
-// func (p *Parser) parseIdentifierList() (*dt.ParseTree, error) {
-// 	// if len(tokens) < 1 {
-// 	// 	return nil, errors.New("did not find identifier")
-// 	// }
-// 	var err error
-// 	err = p.consume(dt.IDENTIFIER, "")
-// 	if err != nil {
-// 		return nil, err
-// 	}
+func (p *Parser) parseIdentifierList() (*dt.ParseTree, error) {
+	// if len(tokens) < 1 {
+	// 	return nil, errors.New("did not find identifier")
+	// }
 
-// 	identifierListTree := dt.ParseTree{
-// 		RootType:   dt.IDENTIFIER_LIST_NODE,
-// 		TokenValue: nil,
-// 		Children: []dt.ParseTree{{
-// 			RootType:   dt.TOKEN_NODE,
-// 			TokenValue: p.peek(),
-// 			Children:   make([]dt.ParseTree, 0),
-// 		}},
-// 	}
+	expectedIdentifier := p.consume(dt.IDENTIFIER)
+	if expectedIdentifier == nil {
+		return nil, p.createParseError(dt.IDENTIFIER, "")
+	}
 
-// 	for err1, err2 := p.consume(dt.COMMA, ""), p.consume(dt.IDENTIFIER, ""); err1 != nil && err2 != nil; err1, err2 = p.consume(dt.COMMA, ""), p.consume(dt.IDENTIFIER, "") {
-// 		identifierListTree.Children = append(identifierListTree.Children,
-// 			dt.ParseTree{
-// 				RootType:   dt.TOKEN_NODE,
-// 				TokenValue: p.peek(),
-// 				Children:   make([]dt.ParseTree, 0),
-// 			},
-// 			dt.ParseTree{
-// 				RootType:   dt.TOKEN_NODE,
-// 				TokenValue: p.peek(),
-// 				Children:   make([]dt.ParseTree, 0),
-// 			},
-// 		)
+	identifierListTree := dt.ParseTree{
+		RootType:   dt.IDENTIFIER_LIST_NODE,
+		TokenValue: nil,
+		Children: []dt.ParseTree{{
+			RootType:   dt.TOKEN_NODE,
+			TokenValue: expectedIdentifier,
+			Children:   make([]dt.ParseTree, 0),
+		}},
+	}
 
-// 	}
+	for {
+		expectedComma := p.consume(dt.COMMA)
+		if expectedComma == nil {
+			break
+		}
+		expectedIdentifier := p.consume(dt.IDENTIFIER)
+		if expectedIdentifier == nil {
+			return nil, p.createParseError(dt.IDENTIFIER, "expected identifier after comma")
+		}
+		identifierListTree.Children = append(identifierListTree.Children,
+			dt.ParseTree{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: expectedComma,
+				Children:   make([]dt.ParseTree, 0),
+			},
+			dt.ParseTree{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: expectedIdentifier,
+				Children:   make([]dt.ParseTree, 0),
+			},
+		)
+	}
 
-// 	return &identifierListTree, nil
-// }
+	return &identifierListTree, nil
+}
 
-// func (p *Parser) parseType() (*dt.ParseTree, error) {
-// 	// if len(tokens) < 1 {
-// 	// 	return nil, errors.New("type keyword not found")
-// 	// }
-// 	var err error
-// 	err = p.consume(dt.KEYWORD, "keyword not found")
+func (p *Parser) parseType() (*dt.ParseTree, error) {
+	// if len(tokens) < 1 {
+	// 	return nil, errors.New("type keyword not found")
+	// }
 
-// 	if err != nil {
-// 		return nil, err
-// 	}
+	if !p.match(dt.KEYWORD) {
+		return nil, p.createParseError(dt.KEYWORD, "keyword not found")
+	}
 
-// 	typeTree := dt.ParseTree{
-// 		RootType:   dt.TYPE_NODE,
-// 		TokenValue: nil,
-// 		Children:   make([]dt.ParseTree, 1),
-// 	}
+	typeTree := dt.ParseTree{
+		RootType:   dt.TYPE_NODE,
+		TokenValue: nil,
+		Children:   make([]dt.ParseTree, 1),
+	}
 
-// 	var remainder []dt.Token
+	switch p.peek().Lexeme {
+	case "integer":
+		fallthrough
+	case "real":
+		fallthrough
+	case "boolean":
+		fallthrough
+	case "char":
+		typeTree.Children[0] = dt.ParseTree{
+			RootType:   dt.TOKEN_NODE,
+			TokenValue: p.consume(dt.KEYWORD),
+			Children:   make([]dt.ParseTree, 0),
+		}
+	default:
+		// arrayTypeTree, err := p.parseArrayType()
 
-// 	switch tokens[0].Lexeme {
-// 	case "integer":
-// 		fallthrough
-// 	case "real":
-// 		fallthrough
-// 	case "boolean":
-// 		fallthrough
-// 	case "char":
-// 		remainder = tokens[1:]
-// 		typeTree.Children[0] = dt.ParseTree{
-// 			RootType:   dt.TOKEN_NODE,
-// 			TokenValue: &tokens[0],
-// 			Children:   make([]dt.ParseTree, 0),
-// 		}
-// 	default:
-// 		arrayTypeTree, newRemainder, err := parseArrayType(tokens)
+		// if err != nil {
+		// 	return nil, err
+		// }
 
-// 		if err != nil {
-// 			return nil, err
-// 		}
+		// typeTree.Children[0] = *arrayTypeTree
+	}
 
-// 		typeTree.Children[0] = *arrayTypeTree
-// 		remainder = newRemainder
-// 	}
-
-// 	return &typeTree, nil
-// }
+	return &typeTree, nil
+}
 
 // func (p *Parser) parseArrayType() (*dt.ParseTree, error) {
 // 	if len(tokens) < 6 {
