@@ -1,5 +1,10 @@
 package datatype
 
+import (
+	"fmt"
+	"strings"
+)
+
 type NodeType int
 
 const (
@@ -79,4 +84,29 @@ func (t NodeType) String() string {
 	}
 
 	return names[t]
+}
+
+func (t ParseTree) String() string {
+	var sb strings.Builder
+	t.writeString(&sb, 0)
+	return sb.String()
+}
+
+func (t ParseTree) writeString(sb *strings.Builder, indent int) {
+	prefix := strings.Repeat("  ", indent)
+	sb.WriteString(prefix)
+	if t.RootType != TOKEN_NODE {
+		sb.WriteString(t.RootType.String())
+	}
+
+	if t.TokenValue != nil {
+		sb.WriteString(t.TokenValue.Type.String())
+		sb.WriteString(fmt.Sprintf(" (%s)", t.TokenValue.Lexeme))
+	}
+
+	sb.WriteString("\n")
+
+	for _, child := range t.Children {
+		child.writeString(sb, indent+1)
+	}
 }
