@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 
@@ -78,6 +77,18 @@ SyntaxError: Unexpected token '%s' %s
 	}
 }
 
+func (p *Parser) createParseError(expectedType dt.TokenType, tips string) error {
+	curr := p.buffer[p.pos]
+	return &ParseError{
+		buffer:   p.buffer,
+		Line:     curr.Line,
+		Col:      curr.Col,
+		Tips:     tips,
+		Expected: []dt.TokenType{expectedType},
+		Got:      &curr,
+	}
+}
+
 func New(tokens []dt.Token) *Parser {
 	return &Parser{
 		buffer: tokens,
@@ -85,36 +96,40 @@ func New(tokens []dt.Token) *Parser {
 	}
 }
 
-func (p *Parser) Consume(expectedType dt.TokenType, tips string) error {
+func (p *Parser) consume(expectedType dt.TokenType) bool {
 	curr := p.buffer[p.pos]
 	if curr.Type == expectedType {
 		p.pos++
-		return nil
+		return true
 	}
-	return &ParseError{
-		buffer:   p.buffer,
-		Line:     curr.Line,
-		Col:      curr.Col,
-		Tips:     tips,
-		Expected: []dt.TokenType{expectedType},
-		Got:      &curr,
-	}
+	return false
 }
 
-func (p *Parser) ConsumeExact(expectedType dt.TokenType, expectedLexeme string, tips string) error {
+func (p *Parser) consumeExact(expectedType dt.TokenType, expectedLexeme string) bool {
 	curr := p.buffer[p.pos]
 	if curr.Type == expectedType && curr.Lexeme == expectedLexeme {
 		p.pos++
-		return nil
+		return true
 	}
-	return &ParseError{
-		buffer:   p.buffer,
-		Line:     curr.Line,
-		Col:      curr.Col,
-		Tips:     tips,
-		Expected: []dt.TokenType{expectedType},
-		Got:      &curr,
+
+	return false
+}
+
+func (p *Parser) match(expectedType dt.TokenType) bool {
+	curr := p.buffer[p.pos]
+	if curr.Type == expectedType {
+		return true
 	}
+	return false
+}
+
+func (p *Parser) matchExact(expectedType dt.TokenType, expectedLexeme string) bool {
+	curr := p.buffer[p.pos]
+	if curr.Type == expectedType && curr.Lexeme == expectedLexeme {
+		return true
+	}
+
+	return false
 }
 
 func (p *Parser) Parse() (*dt.ParseTree, error) {
@@ -129,16 +144,17 @@ func (p *Parser) parseProgram() (*dt.ParseTree, error) {
 		return nil, err
 	}
 
-	// declarationTree, remainder, err := parseDeclarationPart(remainder)
+	declarationTree, err := p.parseDeclarationPart()
 
-	// if err != nil {
-	// 	return nil, nil, err
-	// }
+	if err != nil {
+		return nil, err
+	}
 	programTree := dt.ParseTree{
 		RootType:   dt.PROGRAM_NODE,
 		TokenValue: nil,
 		Children: []dt.ParseTree{
 			*headerTree,
+			*declarationTree,
 			{
 				RootType:   dt.TOKEN_NODE,
 				TokenValue: &p.buffer[p.pos],
@@ -190,32 +206,17 @@ func (p *Parser) parseProgramHeader() (*dt.ParseTree, error) {
 	// 	return nil, nil, errors.New("not enough tokens to form program header")
 	// }
 
-	err := p.ConsumeExact(dt.KEYWORD, "program", "all programs must start with program keyword")
-	if err != nil {
-		return nil, err
+	if !p.consumeExact(dt.KEYWORD, "program") {
+		return nil, p.createParseError(dt.KEYWORD, "all programs must start with program keyword")
 	}
 
-	err = p.Consume(dt.IDENTIFIER, "program name must only use alphanumerical characters and underscores")
-	if err != nil {
-		return nil, err
+	if !p.consume(dt.IDENTIFIER) {
+		return nil, p.createParseError(dt.IDENTIFIER, "program name must only use alphanumerical characters and underscores")
 	}
 
-	err = p.Consume(dt.SEMICOLON, "")
-	if err != nil {
-		return nil, err
+	if !p.consume(dt.SEMICOLON) {
+		return nil, p.createParseError(dt.SEMICOLON, "program name must be a single word and strictly end with ;")
 	}
-
-	// if tokens[0].Type != dt.KEYWORD || tokens[0].Lexeme != "program" {
-	// 	return nil, nil, errors.New("all programs must start with program keyword")
-	// }
-
-	// if tokens[1].Type != dt.IDENTIFIER {
-	// 	return nil, nil, errors.New("program name must only use alphanumerical characters and underscores")
-	// }
-
-	// if tokens[2].Type != dt.SEMICOLON {
-	// 	return nil, nil, errors.New("program name must be a single word and strictly end with ;")
-	// }
 
 	headerTree := dt.ParseTree{
 		RootType:   dt.PROGRAM_HEADER_NODE,
@@ -238,8 +239,7 @@ func (p *Parser) parseProgramHeader() (*dt.ParseTree, error) {
 	return &headerTree, nil
 }
 
-func parseDeclarationPart(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	remainder := tokens
+func (p *Parser) parseDeclarationPart() (*dt.ParseTree, error) {
 	var err error
 
 	declarationTree := dt.ParseTree{
@@ -266,16 +266,14 @@ func parseDeclarationPart(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) 
 	// 	}
 	// }
 
-	for err == nil {
-		varDeclaration, newRemainder, newErr := parseVarDeclaration(remainder)
-		err = newErr
-		if err == nil {
-			remainder = newRemainder
-			declarationTree.Children = append(declarationTree.Children, *varDeclaration)
-		}
-	}
+	// for err == nil {
+	// 	varDeclaration, newErr := p.parseVarDeclaration()
+	// 	err = newErr
+	// 	if err == nil {
+	// 		declarationTree.Children = append(declarationTree.Children, *varDeclaration)
+	// 	}
+	// }
 
-	// fmt.Println("4")
 	// for err == nil {
 	// 	subprogramDeclaration, newRemainder, newErr := parseSubprogramDeclaration(remainder)
 	// 	err = newErr
@@ -285,242 +283,242 @@ func parseDeclarationPart(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) 
 	// 	}
 	// }
 
-	return &declarationTree, nil, nil
+	return &declarationTree, err
 }
 
-func parseConstDeclaration(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	return &dt.ParseTree{}, nil, nil
+func (p *Parser) parseConstDeclaration() (*dt.ParseTree, error) {
+	return &dt.ParseTree{}, nil
 }
 
-func parseTypeDeclaration(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	return &dt.ParseTree{}, nil, nil
+func (p *Parser) parseTypeDeclaration() (*dt.ParseTree, error) {
+	return &dt.ParseTree{}, nil
 }
 
-func parseVarDeclaration(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	return &dt.ParseTree{}, nil, nil
+func (p *Parser) parseVarDeclaration() (*dt.ParseTree, error) {
+	return &dt.ParseTree{}, nil
 }
 
-func parseIdentifierList(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	if len(tokens) < 1 {
-		return nil, nil, errors.New("did not find identifier")
-	}
+// func (p *Parser) parseIdentifierList() (*dt.ParseTree, error) {
+// 	// if len(tokens) < 1 {
+// 	// 	return nil, errors.New("did not find identifier")
+// 	// }
+// 	var err error
+// 	err = p.consume(dt.IDENTIFIER, "")
+// 	if err != nil {
+// 		return nil, err
+// 	}
 
-	if tokens[0].Type != dt.IDENTIFIER {
-		return nil, nil, errors.New("expected identifier")
-	}
+// 	identifierListTree := dt.ParseTree{
+// 		RootType:   dt.IDENTIFIER_LIST_NODE,
+// 		TokenValue: nil,
+// 		Children: []dt.ParseTree{{
+// 			RootType:   dt.TOKEN_NODE,
+// 			TokenValue: &p.buffer[p.pos],
+// 			Children:   make([]dt.ParseTree, 0),
+// 		}},
+// 	}
 
-	identifierListTree := dt.ParseTree{
-		RootType:   dt.IDENTIFIER_LIST_NODE,
-		TokenValue: nil,
-		Children: []dt.ParseTree{{
-			RootType:   dt.TOKEN_NODE,
-			TokenValue: &tokens[0],
-			Children:   make([]dt.ParseTree, 0),
-		}},
-	}
+// 	for err1, err2 := p.consume(dt.COMMA, ""), p.consume(dt.IDENTIFIER, ""); err1 != nil && err2 != nil; err1, err2 = p.consume(dt.COMMA, ""), p.consume(dt.IDENTIFIER, "") {
+// 		identifierListTree.Children = append(identifierListTree.Children,
+// 			dt.ParseTree{
+// 				RootType:   dt.TOKEN_NODE,
+// 				TokenValue: &p.buffer[p.pos-1],
+// 				Children:   make([]dt.ParseTree, 0),
+// 			},
+// 			dt.ParseTree{
+// 				RootType:   dt.TOKEN_NODE,
+// 				TokenValue: &p.buffer[p.pos],
+// 				Children:   make([]dt.ParseTree, 0),
+// 			},
+// 		)
 
-	remainder := tokens[1:]
+// 	}
 
-	for len(remainder) > 1 && remainder[0].Type == dt.COMMA && remainder[1].Type == dt.IDENTIFIER {
-		identifierListTree.Children = append(identifierListTree.Children,
-			dt.ParseTree{
-				RootType:   dt.TOKEN_NODE,
-				TokenValue: &remainder[0],
-				Children:   make([]dt.ParseTree, 0),
-			},
-			dt.ParseTree{
-				RootType:   dt.TOKEN_NODE,
-				TokenValue: &remainder[1],
-				Children:   make([]dt.ParseTree, 0),
-			},
-		)
+// 	return &identifierListTree, nil
+// }
 
-		remainder = remainder[2:]
-	}
+// func (p *Parser) parseType() (*dt.ParseTree, error) {
+// 	// if len(tokens) < 1 {
+// 	// 	return nil, errors.New("type keyword not found")
+// 	// }
+// 	var err error
+// 	err = p.consume(dt.KEYWORD, "keyword not found")
 
-	return &identifierListTree, remainder, nil
+// 	if err != nil {
+// 		return nil, err
+// 	}
+
+// 	typeTree := dt.ParseTree{
+// 		RootType:   dt.TYPE_NODE,
+// 		TokenValue: nil,
+// 		Children:   make([]dt.ParseTree, 1),
+// 	}
+
+// 	var remainder []dt.Token
+
+// 	switch tokens[0].Lexeme {
+// 	case "integer":
+// 		fallthrough
+// 	case "real":
+// 		fallthrough
+// 	case "boolean":
+// 		fallthrough
+// 	case "char":
+// 		remainder = tokens[1:]
+// 		typeTree.Children[0] = dt.ParseTree{
+// 			RootType:   dt.TOKEN_NODE,
+// 			TokenValue: &tokens[0],
+// 			Children:   make([]dt.ParseTree, 0),
+// 		}
+// 	default:
+// 		arrayTypeTree, newRemainder, err := parseArrayType(tokens)
+
+// 		if err != nil {
+// 			return nil, err
+// 		}
+
+// 		typeTree.Children[0] = *arrayTypeTree
+// 		remainder = newRemainder
+// 	}
+
+// 	return &typeTree, nil
+// }
+
+// func (p *Parser) parseArrayType() (*dt.ParseTree, error) {
+// 	if len(tokens) < 6 {
+// 		return nil, errors.New("insufficient tokens to construct array type")
+// 	}
+
+// 	if tokens[0].Type != dt.KEYWORD || tokens[0].Lexeme != "larik" {
+// 		return nil, errors.New("expected keyword larik")
+// 	}
+
+// 	if tokens[1].Type != dt.LBRACKET {
+// 		return nil, errors.New("expected '['")
+// 	}
+
+// 	rangeTree, rangeRemainder, err := parseRange(tokens[2:])
+
+// 	if err != nil {
+// 		return nil, err
+// 	}
+
+// 	if rangeRemainder[0].Type != dt.RBRACKET {
+// 		return nil, errors.New("expected ']'")
+// 	}
+
+// 	if rangeRemainder[1].Type != dt.KEYWORD || rangeRemainder[1].Lexeme != "dari" {
+// 		return nil, errors.New("expected 'dari'")
+// 	}
+
+// 	typeTree, remainder, err := parseType(rangeRemainder[2:])
+
+// 	if err != nil {
+// 		return nil, err
+// 	}
+
+// 	arrayTypeTree := dt.ParseTree{
+// 		RootType:   dt.ARRAY_TYPE_NODE,
+// 		TokenValue: nil,
+// 		Children: []dt.ParseTree{{
+// 			RootType:   dt.TOKEN_NODE,
+// 			TokenValue: &tokens[0],
+// 			Children:   make([]dt.ParseTree, 0),
+// 		}, {
+// 			RootType:   dt.TOKEN_NODE,
+// 			TokenValue: &tokens[1],
+// 			Children:   make([]dt.ParseTree, 0),
+// 		}, *rangeTree, {
+// 			RootType:   dt.TOKEN_NODE,
+// 			TokenValue: &rangeRemainder[0],
+// 			Children:   make([]dt.ParseTree, 0),
+// 		}, {
+// 			RootType:   dt.TOKEN_NODE,
+// 			TokenValue: &rangeRemainder[1],
+// 			Children:   make([]dt.ParseTree, 0),
+// 		}, *typeTree,
+// 		},
+// 	}
+
+// 	return &arrayTypeTree, nil
+// }
+
+func (p *Parser) parseRange() (*dt.ParseTree, error) {
+	return &dt.ParseTree{}, nil
 }
 
-func parseType(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	if len(tokens) < 1 {
-		return nil, nil, errors.New("type keyword not found")
-	}
-
-	if tokens[0].Type != dt.KEYWORD {
-		return nil, nil, errors.New("keyword not found")
-	}
-
-	typeTree := dt.ParseTree{
-		RootType:   dt.TYPE_NODE,
-		TokenValue: nil,
-		Children:   make([]dt.ParseTree, 1),
-	}
-
-	var remainder []dt.Token
-
-	switch tokens[0].Lexeme {
-	case "integer":
-		fallthrough
-	case "real":
-		fallthrough
-	case "boolean":
-		fallthrough
-	case "char":
-		remainder = tokens[1:]
-		typeTree.Children[0] = dt.ParseTree{
-			RootType:   dt.TOKEN_NODE,
-			TokenValue: &tokens[0],
-			Children:   make([]dt.ParseTree, 0),
-		}
-	default:
-		arrayTypeTree, newRemainder, err := parseArrayType(tokens)
-
-		if err != nil {
-			return nil, nil, err
-		}
-
-		typeTree.Children[0] = *arrayTypeTree
-		remainder = newRemainder
-	}
-
-	return &typeTree, remainder, nil
+func (p *Parser) parseSubprogramDeclaration() (*dt.ParseTree, error) {
+	return &dt.ParseTree{}, nil
 }
 
-func parseArrayType(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	if len(tokens) < 6 {
-		return nil, nil, errors.New("insufficient tokens to construct array type")
-	}
-
-	if tokens[0].Type != dt.KEYWORD || tokens[0].Lexeme != "larik" {
-		return nil, nil, errors.New("expected keyword larik")
-	}
-
-	if tokens[1].Type != dt.LBRACKET {
-		return nil, nil, errors.New("expected '['")
-	}
-
-	rangeTree, rangeRemainder, err := parseRange(tokens[2:])
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	if rangeRemainder[0].Type != dt.RBRACKET {
-		return nil, nil, errors.New("expected ']'")
-	}
-
-	if rangeRemainder[1].Type != dt.KEYWORD || rangeRemainder[1].Lexeme != "dari" {
-		return nil, nil, errors.New("expected 'dari'")
-	}
-
-	typeTree, remainder, err := parseType(rangeRemainder[2:])
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	arrayTypeTree := dt.ParseTree{
-		RootType:   dt.ARRAY_TYPE_NODE,
-		TokenValue: nil,
-		Children: []dt.ParseTree{{
-			RootType:   dt.TOKEN_NODE,
-			TokenValue: &tokens[0],
-			Children:   make([]dt.ParseTree, 0),
-		}, {
-			RootType:   dt.TOKEN_NODE,
-			TokenValue: &tokens[1],
-			Children:   make([]dt.ParseTree, 0),
-		}, *rangeTree, {
-			RootType:   dt.TOKEN_NODE,
-			TokenValue: &rangeRemainder[0],
-			Children:   make([]dt.ParseTree, 0),
-		}, {
-			RootType:   dt.TOKEN_NODE,
-			TokenValue: &rangeRemainder[1],
-			Children:   make([]dt.ParseTree, 0),
-		}, *typeTree,
-		},
-	}
-
-	return &arrayTypeTree, remainder, nil
+func (p *Parser) parseProcedureDeclaration() (*dt.ParseTree, error) {
+	return &dt.ParseTree{}, nil
 }
 
-func parseRange(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	return &dt.ParseTree{}, nil, nil
+func (p *Parser) parseFunctionDeclaration() (*dt.ParseTree, error) {
+	return &dt.ParseTree{}, nil
 }
 
-func parseSubprogramDeclaration(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	return &dt.ParseTree{}, nil, nil
+func (p *Parser) parseFormalParameterList() (*dt.ParseTree, error) {
+	return &dt.ParseTree{}, nil
 }
 
-func parseProcedureDeclaration(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	return &dt.ParseTree{}, nil, nil
+func (p *Parser) parseCompoundStatement() (*dt.ParseTree, error) {
+	return &dt.ParseTree{}, nil
 }
 
-func parseFunctionDeclaration(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	return &dt.ParseTree{}, nil, nil
+func (p *Parser) parseStatementList() (*dt.ParseTree, error) {
+	return &dt.ParseTree{}, nil
 }
 
-func parseFormalParameterList(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	return &dt.ParseTree{}, nil, nil
+func (p *Parser) parseAssignmentStatement() (*dt.ParseTree, error) {
+	return &dt.ParseTree{}, nil
 }
 
-func parseCompoundStatement(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	return &dt.ParseTree{}, nil, nil
+func (p *Parser) parseIfStatement() (*dt.ParseTree, error) {
+	return &dt.ParseTree{}, nil
 }
 
-func parseStatementList(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	return &dt.ParseTree{}, nil, nil
+func (p *Parser) parseWhileStatement() (*dt.ParseTree, error) {
+	return &dt.ParseTree{}, nil
 }
 
-func parseAssignmentStatement(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	return &dt.ParseTree{}, nil, nil
+func (p *Parser) parseForStatement() (*dt.ParseTree, error) {
+	return &dt.ParseTree{}, nil
 }
 
-func parseIfStatement(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	return &dt.ParseTree{}, nil, nil
+func (p *Parser) parseSubprogramCall() (*dt.ParseTree, error) {
+	return &dt.ParseTree{}, nil
 }
 
-func parseWhileStatement(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	return &dt.ParseTree{}, nil, nil
+func (p *Parser) parseParameterList() (*dt.ParseTree, error) {
+	return &dt.ParseTree{}, nil
 }
 
-func parseForStatement(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	return &dt.ParseTree{}, nil, nil
+func (p *Parser) parseExpression() (*dt.ParseTree, error) {
+	return &dt.ParseTree{}, nil
 }
 
-func parseSubprogramCall(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	return &dt.ParseTree{}, nil, nil
+func (p *Parser) parseSimpleExpression() (*dt.ParseTree, error) {
+	return &dt.ParseTree{}, nil
 }
 
-func parseParameterList(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	return &dt.ParseTree{}, nil, nil
+func (p *Parser) parseTerm() (*dt.ParseTree, error) {
+	return &dt.ParseTree{}, nil
 }
 
-func parseExpression(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	return &dt.ParseTree{}, nil, nil
+func (p *Parser) parseFactor() (*dt.ParseTree, error) {
+	return &dt.ParseTree{}, nil
 }
 
-func parseSimpleExpression(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	return &dt.ParseTree{}, nil, nil
+func (p *Parser) parseRelationalOperator() (*dt.ParseTree, error) {
+	return &dt.ParseTree{}, nil
 }
 
-func parseTerm(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	return &dt.ParseTree{}, nil, nil
+func (p *Parser) parseAdditiveOperator() (*dt.ParseTree, error) {
+	return &dt.ParseTree{}, nil
 }
 
-func parseFactor(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	return &dt.ParseTree{}, nil, nil
-}
-
-func parseRelationalOperator(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	return &dt.ParseTree{}, nil, nil
-}
-
-func parseAdditiveOperator(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	return &dt.ParseTree{}, nil, nil
-}
-
-func parseMultiplicativeOperator(tokens []dt.Token) (*dt.ParseTree, []dt.Token, error) {
-	return &dt.ParseTree{}, nil, nil
+func (p *Parser) parseMultiplicativeOperator() (*dt.ParseTree, error) {
+	return &dt.ParseTree{}, nil
 }

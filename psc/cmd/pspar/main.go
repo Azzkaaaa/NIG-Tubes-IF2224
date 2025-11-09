@@ -51,7 +51,7 @@ func main() {
 	parseTree, err := parser.New(tokens).Parse()
 
 	if err != nil {
-		fmt.Printf("Error: %v\n", err)
+		fmt.Printf("%v", err)
 	}
 
 	if parseTree != nil {
