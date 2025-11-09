@@ -96,8 +96,12 @@ func New(tokens []dt.Token) *Parser {
 	}
 }
 
+func (p *Parser) peek() *dt.Token {
+	return &p.buffer[p.pos]
+}
+
 func (p *Parser) consume(expectedType dt.TokenType) bool {
-	curr := p.buffer[p.pos]
+	curr := p.peek()
 	if curr.Type == expectedType {
 		p.pos++
 		return true
@@ -106,7 +110,7 @@ func (p *Parser) consume(expectedType dt.TokenType) bool {
 }
 
 func (p *Parser) consumeExact(expectedType dt.TokenType, expectedLexeme string) bool {
-	curr := p.buffer[p.pos]
+	curr := p.peek()
 	if curr.Type == expectedType && curr.Lexeme == expectedLexeme {
 		p.pos++
 		return true
@@ -116,20 +120,13 @@ func (p *Parser) consumeExact(expectedType dt.TokenType, expectedLexeme string) 
 }
 
 func (p *Parser) match(expectedType dt.TokenType) bool {
-	curr := p.buffer[p.pos]
-	if curr.Type == expectedType {
-		return true
-	}
-	return false
+	curr := p.peek()
+	return curr.Type == expectedType
 }
 
 func (p *Parser) matchExact(expectedType dt.TokenType, expectedLexeme string) bool {
-	curr := p.buffer[p.pos]
-	if curr.Type == expectedType && curr.Lexeme == expectedLexeme {
-		return true
-	}
-
-	return false
+	curr := p.peek()
+	return curr.Type == expectedType && curr.Lexeme == expectedLexeme
 }
 
 func (p *Parser) Parse() (*dt.ParseTree, error) {
@@ -149,6 +146,7 @@ func (p *Parser) parseProgram() (*dt.ParseTree, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	programTree := dt.ParseTree{
 		RootType:   dt.PROGRAM_NODE,
 		TokenValue: nil,
@@ -157,7 +155,7 @@ func (p *Parser) parseProgram() (*dt.ParseTree, error) {
 			*declarationTree,
 			{
 				RootType:   dt.TOKEN_NODE,
-				TokenValue: &p.buffer[p.pos],
+				TokenValue: p.peek(),
 				Children:   make([]dt.ParseTree, 0),
 			},
 		},
@@ -313,7 +311,7 @@ func (p *Parser) parseVarDeclaration() (*dt.ParseTree, error) {
 // 		TokenValue: nil,
 // 		Children: []dt.ParseTree{{
 // 			RootType:   dt.TOKEN_NODE,
-// 			TokenValue: &p.buffer[p.pos],
+// 			TokenValue: p.peek(),
 // 			Children:   make([]dt.ParseTree, 0),
 // 		}},
 // 	}
@@ -322,12 +320,12 @@ func (p *Parser) parseVarDeclaration() (*dt.ParseTree, error) {
 // 		identifierListTree.Children = append(identifierListTree.Children,
 // 			dt.ParseTree{
 // 				RootType:   dt.TOKEN_NODE,
-// 				TokenValue: &p.buffer[p.pos-1],
+// 				TokenValue: p.peek(),
 // 				Children:   make([]dt.ParseTree, 0),
 // 			},
 // 			dt.ParseTree{
 // 				RootType:   dt.TOKEN_NODE,
-// 				TokenValue: &p.buffer[p.pos],
+// 				TokenValue: p.peek(),
 // 				Children:   make([]dt.ParseTree, 0),
 // 			},
 // 		)
