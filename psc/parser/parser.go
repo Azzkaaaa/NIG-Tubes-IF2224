@@ -3,6 +3,7 @@ package parser
 import (
 	"errors"
 	"fmt"
+	"strings"
 
 	dt "github.com/Azzkaaaa/NIG-Tubes-IF2224/psc/datatype"
 )
@@ -12,6 +13,71 @@ type Parser struct {
 	pos    int
 }
 
+type ParseError struct {
+	buffer   []dt.Token
+	Line     int
+	Col      int
+	Tips     string
+	Got      *dt.Token
+	Expected []dt.TokenType
+}
+
+func reconstruct_source(tokens []dt.Token, line int) string {
+	var sb strings.Builder
+	currentLine := max(1, line-1)
+	currenCol := 1
+	for _, t := range tokens {
+		if t.Line < max(1, line-1) {
+			continue
+		}
+		if t.Line > line {
+			break
+		}
+		if t.Line > currentLine {
+			sb.WriteString("\n")
+			currenCol = 1
+			currentLine = t.Line
+		}
+		sb.WriteString(strings.Repeat(" ", max(t.Col-currenCol, 0)))
+		sb.WriteString(t.Lexeme)
+		currenCol += max(t.Col-currenCol, 0) + len(t.Lexeme)
+
+	}
+	return sb.String()
+}
+
+func (e *ParseError) Error() string {
+	expected := ""
+	if len(e.Expected) > 0 {
+		for i, t := range e.Expected {
+			if i > 0 {
+				expected += ", "
+			}
+			expected += t.String()
+		}
+		expected = fmt.Sprintf("(expected: %s)", expected)
+	}
+
+	if e.Tips != "" {
+		return fmt.Sprintf(`
+Line %d, Col %d
+%s
+%s
+SyntaxError: Unexpected token '%s' %s
+%s
+`,
+			e.Line, e.Col, reconstruct_source(e.buffer, e.Line), strings.Repeat(" ", e.Col-1)+"^", e.Got.Lexeme, expected, e.Tips)
+	} else {
+		return fmt.Sprintf(`
+Line %d, Col %d
+%s
+%s
+SyntaxError: Unexpected token '%s' %s
+`,
+			e.Line, e.Col, reconstruct_source(e.buffer, e.Line), strings.Repeat(" ", e.Col-1)+"^", e.Got.Lexeme, expected)
+	}
+}
+
 func New(tokens []dt.Token) *Parser {
 	return &Parser{
 		buffer: tokens,
@@ -19,22 +85,36 @@ func New(tokens []dt.Token) *Parser {
 	}
 }
 
-func (p *Parser) Consume(expectedType dt.TokenType) error {
+func (p *Parser) Consume(expectedType dt.TokenType, tips string) error {
 	curr := p.buffer[p.pos]
 	if curr.Type == expectedType {
 		p.pos++
 		return nil
 	}
-	return fmt.Errorf("Line %d, Col %d: Unexpected token %s (expected: %s)\n", curr.Line, curr.Col, curr.Lexeme, expectedType)
+	return &ParseError{
+		buffer:   p.buffer,
+		Line:     curr.Line,
+		Col:      curr.Col,
+		Tips:     tips,
+		Expected: []dt.TokenType{expectedType},
+		Got:      &curr,
+	}
 }
 
-func (p *Parser) ConsumeExact(expectedType dt.TokenType, expectedLexeme string) error {
+func (p *Parser) ConsumeExact(expectedType dt.TokenType, expectedLexeme string, tips string) error {
 	curr := p.buffer[p.pos]
 	if curr.Type == expectedType && curr.Lexeme == expectedLexeme {
 		p.pos++
 		return nil
 	}
-	return fmt.Errorf("Line %d, Col %d: Unexpected token %s (expected: %s)\n", curr.Line, curr.Col, curr.Lexeme, expectedLexeme)
+	return &ParseError{
+		buffer:   p.buffer,
+		Line:     curr.Line,
+		Col:      curr.Col,
+		Tips:     tips,
+		Expected: []dt.TokenType{expectedType},
+		Got:      &curr,
+	}
 }
 
 func (p *Parser) Parse() (*dt.ParseTree, error) {
@@ -110,17 +190,17 @@ func (p *Parser) parseProgramHeader() (*dt.ParseTree, error) {
 	// 	return nil, nil, errors.New("not enough tokens to form program header")
 	// }
 
-	err := p.ConsumeExact(dt.KEYWORD, "program")
+	err := p.ConsumeExact(dt.KEYWORD, "program", "all programs must start with program keyword")
 	if err != nil {
 		return nil, err
 	}
 
-	err = p.Consume(dt.IDENTIFIER)
+	err = p.Consume(dt.IDENTIFIER, "program name must only use alphanumerical characters and underscores")
 	if err != nil {
 		return nil, err
 	}
 
-	err = p.Consume(dt.SEMICOLON)
+	err = p.Consume(dt.SEMICOLON, "")
 	if err != nil {
 		return nil, err
 	}
