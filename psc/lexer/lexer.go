@@ -26,6 +26,13 @@ func (lx *Lexer) ScanAll() ([]datatype.Token, []error) {
 	var errs []error
 
 	for !lx.r.EOF() {
+		for {
+			ch := lx.r.Peek()
+			if lx.r.EOF() || !isWS(ch) {
+				break
+			}
+			lx.r.Read()
+		}
 		startOff := lx.r.Offset()
 		startLine, startCol := lx.r.Pos()
 		startSnap := lx.r.Snapshot()
