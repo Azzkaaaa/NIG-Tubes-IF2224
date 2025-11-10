@@ -188,8 +188,6 @@ func (p *Parser) parseProgram() (*dt.ParseTree, error) {
 		},
 	}
 
-	return &programTree, nil
-
 	// statementTree, remainder, err := parseCompoundStatement(remainder)
 
 	// if err != nil {
@@ -223,13 +221,10 @@ func (p *Parser) parseProgram() (*dt.ParseTree, error) {
 	// 	},
 	// }
 
-	// return &programTree, make([]dt.Token, 0), nil
+	return &programTree, nil
 }
 
 func (p *Parser) parseProgramHeader() (*dt.ParseTree, error) {
-	// if len(tokens) < 3 {
-	// 	return nil, nil, errors.New("not enough tokens to form program header")
-	// }
 
 	if p.consumeExact(dt.KEYWORD, "program") == nil {
 		return nil, p.createParseError(dt.KEYWORD, "all programs must start with program keyword")
@@ -575,9 +570,6 @@ func (p *Parser) parseVarDeclaration() (*dt.ParseTree, error) {
 }
 
 func (p *Parser) parseIdentifierList() (*dt.ParseTree, error) {
-	// if len(tokens) < 1 {
-	// 	return nil, errors.New("did not find identifier")
-	// }
 
 	expectedIdentifier := p.consume(dt.IDENTIFIER)
 	if expectedIdentifier == nil {
@@ -621,9 +613,6 @@ func (p *Parser) parseIdentifierList() (*dt.ParseTree, error) {
 }
 
 func (p *Parser) parseType() (*dt.ParseTree, error) {
-	// if len(tokens) < 1 {
-	// 	return nil, errors.New("type keyword not found")
-	// }
 
 	if !p.match(dt.KEYWORD) {
 		return nil, p.createParseError(dt.KEYWORD, "keyword not found")
@@ -664,9 +653,6 @@ func (p *Parser) parseType() (*dt.ParseTree, error) {
 }
 
 func (p *Parser) parseArrayType() (*dt.ParseTree, error) {
-	// if len(tokens) < 6 {
-	// 	return nil, errors.New("insufficient tokens to construct array type")
-	// }
 
 	expectedLarik := p.consumeExact(dt.KEYWORD, "larik")
 	if expectedLarik == nil {
@@ -730,7 +716,36 @@ func (p *Parser) parseArrayType() (*dt.ParseTree, error) {
 }
 
 func (p *Parser) parseRange() (*dt.ParseTree, error) {
-	return &dt.ParseTree{}, nil
+	expression1, err := p.parseExpression()
+	if err != nil {
+		return nil, err
+	}
+
+	rangeOperator := p.consume(dt.RANGE_OPERATOR)
+	if rangeOperator == nil {
+		return nil, p.createParseError(dt.RANGE_OPERATOR, "expected '..' for range")
+	}
+
+	expression2, err := p.parseExpression()
+	if err != nil {
+		return nil, err
+	}
+
+	rangeTree := dt.ParseTree{
+		RootType:   dt.RANGE_NODE,
+		TokenValue: nil,
+		Children: []dt.ParseTree{
+			*expression1,
+			{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: rangeOperator,
+				Children:   make([]dt.ParseTree, 0),
+			},
+			*expression2,
+		},
+	}
+
+	return &rangeTree, nil
 }
 
 func (p *Parser) parseSubprogramDeclaration() (*dt.ParseTree, error) {
@@ -782,29 +797,266 @@ func (p *Parser) parseParameterList() (*dt.ParseTree, error) {
 }
 
 func (p *Parser) parseExpression() (*dt.ParseTree, error) {
-	return &dt.ParseTree{}, nil
+	simpleExpression, err := p.parseSimpleExpression()
+
+	if err != nil {
+		return nil, err
+	}
+
+	expressionTree := dt.ParseTree{
+		RootType:   dt.EXPRESSION_NODE,
+		TokenValue: nil,
+		Children: []dt.ParseTree{
+			*simpleExpression,
+		},
+	}
+
+	if p.match(dt.RELATIONAL_OPERATOR) {
+		relationalOperator, err := p.parseRelationalOperator()
+
+		if err != nil {
+			return nil, p.createParseError(dt.RELATIONAL_OPERATOR, "expected relational opeartor after simple expression")
+		}
+
+		simpleExpression2, err := p.parseSimpleExpression()
+
+		if err != nil {
+			return nil, err
+		}
+
+		expressionTree.Children = append(expressionTree.Children,
+			*relationalOperator,
+			*simpleExpression2,
+		)
+	}
+
+	return &expressionTree, nil
 }
 
 func (p *Parser) parseSimpleExpression() (*dt.ParseTree, error) {
-	return &dt.ParseTree{}, nil
+	var expectedArithmeticOperator *dt.Token
+	if p.matchExact(dt.ARITHMETIC_OPERATOR, "+") {
+		expectedArithmeticOperator = p.consumeExact(dt.ARITHMETIC_OPERATOR, "+")
+	} else if p.matchExact(dt.ARITHMETIC_OPERATOR, "-") {
+		expectedArithmeticOperator = p.consumeExact(dt.ARITHMETIC_OPERATOR, "-")
+	} else if p.match(dt.ARITHMETIC_OPERATOR) { // arithmetic operator selain +,-
+		return nil, p.createParseError(dt.ARITHMETIC_OPERATOR, "only + and - operator are allowed before term")
+	}
+	simpleExpressionTree := dt.ParseTree{
+		RootType:   dt.SIMPLE_EXPRESSION_NODE,
+		TokenValue: nil,
+		Children:   make([]dt.ParseTree, 0),
+	}
+	if expectedArithmeticOperator != nil {
+		simpleExpressionTree.Children = append(simpleExpressionTree.Children,
+			dt.ParseTree{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: expectedArithmeticOperator,
+				Children:   make([]dt.ParseTree, 0),
+			},
+		)
+	}
+
+	term, err := p.parseTerm()
+	if err != nil {
+		return nil, err
+	}
+	simpleExpressionTree.Children = append(simpleExpressionTree.Children,
+		*term,
+	)
+	for {
+		additiveOperator, err := p.parseAdditiveOperator()
+		if err != nil {
+			break
+		}
+
+		nextTerm, err := p.parseTerm()
+		if err != nil {
+			return nil, err
+		}
+		simpleExpressionTree.Children = append(simpleExpressionTree.Children,
+			*additiveOperator,
+			*nextTerm,
+		)
+	}
+	return &simpleExpressionTree, nil
 }
 
 func (p *Parser) parseTerm() (*dt.ParseTree, error) {
-	return &dt.ParseTree{}, nil
+	factor, err := p.parseFactor()
+	if err != nil {
+		return nil, err
+	}
+	termTree := dt.ParseTree{
+		RootType:   dt.TERM_NODE,
+		TokenValue: nil,
+		Children: []dt.ParseTree{
+			*factor,
+		},
+	}
+	for {
+		multiplicativeOperator, err := p.parseMultiplicativeOperator()
+		if err != nil {
+			break
+		}
+
+		nextFactor, err := p.parseFactor()
+		if err != nil {
+			return nil, err
+		}
+		termTree.Children = append(termTree.Children,
+			*multiplicativeOperator,
+			*nextFactor,
+		)
+	}
+	return &termTree, nil
 }
 
 func (p *Parser) parseFactor() (*dt.ParseTree, error) {
-	return &dt.ParseTree{}, nil
+	factorTree := dt.ParseTree{
+		RootType:   dt.FACTOR_NODE,
+		TokenValue: nil,
+		Children:   make([]dt.ParseTree, 0),
+	}
+	if p.match(dt.IDENTIFIER) {
+		factor := p.consume(dt.IDENTIFIER)
+		factorTree.Children = append(factorTree.Children,
+			dt.ParseTree{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: factor,
+				Children:   nil,
+			},
+		)
+	} else if p.match(dt.NUMBER) {
+		factor := p.consume(dt.NUMBER)
+		factorTree.Children = append(factorTree.Children,
+			dt.ParseTree{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: factor,
+				Children:   nil,
+			},
+		)
+	} else if p.match(dt.CHAR_LITERAL) {
+		factor := p.consume(dt.CHAR_LITERAL)
+		factorTree.Children = append(factorTree.Children,
+			dt.ParseTree{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: factor,
+				Children:   nil,
+			},
+		)
+	} else if p.match(dt.STRING_LITERAL) {
+		factor := p.consume(dt.STRING_LITERAL)
+		factorTree.Children = append(factorTree.Children,
+			dt.ParseTree{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: factor,
+				Children:   nil,
+			},
+		)
+	} else if p.match(dt.LPARENTHESIS) {
+		lp := p.consume(dt.LPARENTHESIS)
+		expr, err := p.parseExpression()
+		if err != nil {
+			return nil, err
+		}
+		rp := p.consume(dt.RPARENTHESIS)
+		if rp == nil {
+			return nil, p.createParseError(dt.RPARENTHESIS, "closing ) not found after expression")
+		}
+		factorTree.Children = append(factorTree.Children,
+			dt.ParseTree{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: lp,
+				Children:   nil,
+			},
+			*expr,
+			dt.ParseTree{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: rp,
+				Children:   nil,
+			},
+		)
+	} else if p.matchExact(dt.LOGICAL_OPERATOR, "tidak") {
+		factor := p.consumeExact(dt.LOGICAL_OPERATOR, "tidak")
+		factorTree.Children = append(factorTree.Children,
+			dt.ParseTree{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: factor,
+				Children:   nil,
+			},
+		)
+	} else {
+		factor, err := p.parseSubprogramCall()
+		if err != nil {
+			return nil, err
+		}
+		factorTree.Children = append(factorTree.Children,
+			*factor,
+		)
+	}
+
+	return &factorTree, nil
 }
 
 func (p *Parser) parseRelationalOperator() (*dt.ParseTree, error) {
-	return &dt.ParseTree{}, nil
+	expectedRelationalOperator := p.consume(dt.RELATIONAL_OPERATOR)
+
+	if expectedRelationalOperator == nil {
+		return nil, p.createParseError(dt.RELATIONAL_OPERATOR, "")
+	}
+
+	relationalOperator := dt.ParseTree{
+		RootType:   dt.RELATIONAL_OPERATOR_NODE,
+		TokenValue: expectedRelationalOperator,
+		Children:   make([]dt.ParseTree, 0),
+	}
+
+	return &relationalOperator, nil
 }
 
 func (p *Parser) parseAdditiveOperator() (*dt.ParseTree, error) {
-	return &dt.ParseTree{}, nil
+	var expectedAdditionOperator *dt.Token
+	if p.matchExact(dt.ARITHMETIC_OPERATOR, "+") {
+		expectedAdditionOperator = p.consumeExact(dt.ARITHMETIC_OPERATOR, "+")
+	} else if p.matchExact(dt.ARITHMETIC_OPERATOR, "-") {
+		expectedAdditionOperator = p.consumeExact(dt.ARITHMETIC_OPERATOR, "-")
+	} else if p.matchExact(dt.LOGICAL_OPERATOR, "atau") {
+		expectedAdditionOperator = p.consumeExact(dt.LOGICAL_OPERATOR, "atau")
+	} else {
+		return nil, p.createParseErrorMany([]dt.TokenType{dt.ARITHMETIC_OPERATOR, dt.LOGICAL_OPERATOR}, "additive operator not found")
+	}
+
+	additiveOperator := dt.ParseTree{
+		RootType:   dt.ADDITIVE_OPERATOR_NODE,
+		TokenValue: expectedAdditionOperator,
+		Children:   make([]dt.ParseTree, 0),
+	}
+
+	return &additiveOperator, nil
 }
 
 func (p *Parser) parseMultiplicativeOperator() (*dt.ParseTree, error) {
-	return &dt.ParseTree{}, nil
+	var expectedMultiplicativeOperator *dt.Token
+	if p.matchExact(dt.ARITHMETIC_OPERATOR, "*") {
+		expectedMultiplicativeOperator = p.consumeExact(dt.ARITHMETIC_OPERATOR, "*")
+	} else if p.matchExact(dt.ARITHMETIC_OPERATOR, "/") {
+		expectedMultiplicativeOperator = p.consumeExact(dt.ARITHMETIC_OPERATOR, "/")
+	} else if p.matchExact(dt.ARITHMETIC_OPERATOR, "bagi") {
+		expectedMultiplicativeOperator = p.consumeExact(dt.ARITHMETIC_OPERATOR, "bagi")
+	} else if p.matchExact(dt.ARITHMETIC_OPERATOR, "mod") {
+		expectedMultiplicativeOperator = p.consumeExact(dt.ARITHMETIC_OPERATOR, "mod")
+	} else if p.matchExact(dt.LOGICAL_OPERATOR, "dan") {
+		expectedMultiplicativeOperator = p.consumeExact(dt.LOGICAL_OPERATOR, "dan")
+	} else {
+		return nil, p.createParseErrorMany([]dt.TokenType{dt.ARITHMETIC_OPERATOR, dt.LOGICAL_OPERATOR}, "multiplicative operator not found")
+	}
+
+	multiplicativeOperator := dt.ParseTree{
+		RootType:   dt.MULTIPLICATIVE_OPERATOR_NODE,
+		TokenValue: expectedMultiplicativeOperator,
+		Children:   make([]dt.ParseTree, 0),
+	}
+
+	return &multiplicativeOperator, nil
 }
