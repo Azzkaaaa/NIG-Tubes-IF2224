@@ -11,8 +11,11 @@ const (
 	PROGRAM_NODE NodeType = iota
 	PROGRAM_HEADER_NODE
 	DECLARATION_PART_NODE
+	CONST_DECLARATION_PART_NODE
 	CONST_DECLARATION_NODE
+	TYPE_DECLARATION_PART_NODE
 	TYPE_DECLARATION_NODE
+	VAR_DECLARATION_PART_NODE
 	VAR_DECLARATION_NODE
 	IDENTIFIER_LIST_NODE
 	TYPE_NODE
@@ -51,8 +54,11 @@ func (t NodeType) String() string {
 		"<program>",
 		"<program-header>",
 		"<declaration-part>",
+		"<const-declaration-part>",
 		"<const-declaration>",
+		"<type-declaration-part>",
 		"<type-declaration>",
+		"<var-declaration-part>",
 		"<var-declaration>",
 		"<identifier-list>",
 		"<type>",

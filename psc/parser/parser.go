@@ -93,6 +93,18 @@ func (p *Parser) createParseError(expectedType dt.TokenType, tips string) error 
 	}
 }
 
+func (p *Parser) createParseErrorMany(expectedType []dt.TokenType, tips string) error {
+	curr := p.buffer[p.pos]
+	return &ParseError{
+		buffer:   p.buffer,
+		Line:     curr.Line,
+		Col:      curr.Col,
+		Tips:     tips,
+		Expected: expectedType,
+		Got:      &curr,
+	}
+}
+
 func New(tokens []dt.Token) *Parser {
 	return &Parser{
 		buffer: tokens,
@@ -109,6 +121,17 @@ func (p *Parser) consume(expectedType dt.TokenType) *dt.Token {
 	if curr.Type == expectedType {
 		p.pos++
 		return curr
+	}
+	return nil
+}
+
+func (p *Parser) consumeMany(expectedType []dt.TokenType) *dt.Token {
+	curr := p.peek()
+	for _, tokenType := range expectedType {
+		if curr.Type == tokenType {
+			p.pos++
+			return curr
+		}
 	}
 	return nil
 }
@@ -250,26 +273,30 @@ func (p *Parser) parseDeclarationPart() (*dt.ParseTree, error) {
 		Children:   make([]dt.ParseTree, 0),
 	}
 
-	// for err == nil {
-	// 	constDeclaration, newRemainder, newErr := parseConstDeclaration(remainder)
-	// 	err = newErr
-	// 	if err == nil {
-	// 		remainder = newRemainder
-	// 		declarationTree.Children = append(declarationTree.Children, *constDeclaration)
-	// 	}
-	// }
-
-	// for err == nil {
-	// 	typeDeclaration, newRemainder, newErr := parseTypeDeclaration(remainder)
-	// 	err = newErr
-	// 	if err == nil {
-	// 		remainder = newRemainder
-	// 		declarationTree.Children = append(declarationTree.Children, *typeDeclaration)
-	// 	}
-	// }
+	for err == nil {
+		constDeclaration, newErr := p.parseConstDeclarationPart()
+		if constDeclaration == nil && newErr == nil {
+			break
+		}
+		err = newErr
+		if err == nil {
+			declarationTree.Children = append(declarationTree.Children, *constDeclaration)
+		}
+	}
 
 	for err == nil {
-		varDeclaration, newErr := p.parseVarDeclaration()
+		typeDeclaration, newErr := p.parseTypeDeclarationPart()
+		if typeDeclaration == nil && newErr == nil {
+			break
+		}
+		err = newErr
+		if err == nil {
+			declarationTree.Children = append(declarationTree.Children, *typeDeclaration)
+		}
+	}
+
+	for err == nil {
+		varDeclaration, newErr := p.parseVarDeclarationPart()
 		if varDeclaration == nil && newErr == nil {
 			break
 		}
@@ -291,18 +318,217 @@ func (p *Parser) parseDeclarationPart() (*dt.ParseTree, error) {
 	return &declarationTree, err
 }
 
+func (p *Parser) parseConstDeclarationPart() (*dt.ParseTree, error) {
+	expectedConst := p.consumeExact(dt.KEYWORD, "konstanta")
+	if expectedConst == nil {
+		return nil, nil
+	}
+
+	constDeclaration := dt.ParseTree{
+		RootType:   dt.CONST_DECLARATION_PART_NODE,
+		TokenValue: nil,
+		Children: []dt.ParseTree{
+			{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: expectedConst,
+				Children:   nil,
+			},
+		},
+	}
+
+	if !p.match(dt.IDENTIFIER) {
+		return nil, p.createParseError(dt.IDENTIFIER, "expected at least one const definition")
+	}
+
+	for p.match(dt.IDENTIFIER) {
+		constDefintion, err := p.parseConstDeclaration()
+
+		if err != nil {
+			return nil, err
+		}
+
+		constDeclaration.Children = append(constDeclaration.Children,
+			*constDefintion,
+		)
+	}
+	return &constDeclaration, nil
+}
+
 func (p *Parser) parseConstDeclaration() (*dt.ParseTree, error) {
-	return &dt.ParseTree{}, nil
+
+	identifier := p.consume(dt.IDENTIFIER)
+
+	if identifier == nil {
+		return nil, p.createParseError(dt.IDENTIFIER, "expected identifier on const definition")
+	}
+
+	expectedEqual := p.consumeExact(dt.RELATIONAL_OPERATOR, "=")
+	if expectedEqual == nil {
+		return nil, p.createParseError(dt.RELATIONAL_OPERATOR, "expected = after const identifier")
+	}
+
+	value := p.consumeMany([]dt.TokenType{dt.CHAR_LITERAL, dt.STRING_LITERAL, dt.NUMBER})
+	if value == nil {
+		return nil, p.createParseErrorMany([]dt.TokenType{dt.CHAR_LITERAL, dt.STRING_LITERAL, dt.NUMBER}, "expected literal value for const definition")
+	}
+
+	expectedSemicolon := p.consume(dt.SEMICOLON)
+	if expectedSemicolon == nil {
+		return nil, p.createParseError(dt.SEMICOLON, "const definition must end with semicolon")
+	}
+
+	constDefintion := dt.ParseTree{
+		RootType:   dt.CONST_DECLARATION_NODE,
+		TokenValue: nil,
+		Children: []dt.ParseTree{
+			{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: identifier,
+				Children:   nil,
+			},
+			{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: expectedEqual,
+				Children:   nil,
+			},
+			{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: value,
+				Children:   nil,
+			},
+			{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: expectedSemicolon,
+				Children:   nil,
+			},
+		},
+	}
+
+	return &constDefintion, nil
+}
+
+func (p *Parser) parseTypeDeclarationPart() (*dt.ParseTree, error) {
+	expectedType := p.consumeExact(dt.KEYWORD, "tipe")
+	if expectedType == nil {
+		return nil, nil
+	}
+
+	typeDeclarationPart := dt.ParseTree{
+		RootType:   dt.TYPE_DECLARATION_PART_NODE,
+		TokenValue: nil,
+		Children: []dt.ParseTree{
+			{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: expectedType,
+				Children:   nil,
+			},
+		},
+	}
+
+	if !p.match(dt.IDENTIFIER) {
+		return nil, p.createParseError(dt.IDENTIFIER, "expected at least one type declaration")
+	}
+
+	for p.match(dt.IDENTIFIER) {
+		typeDeclaration, err := p.parseTypeDeclaration()
+
+		if err != nil {
+			return nil, err
+		}
+
+		typeDeclarationPart.Children = append(typeDeclarationPart.Children,
+			*typeDeclaration,
+		)
+	}
+	return &typeDeclarationPart, nil
 }
 
 func (p *Parser) parseTypeDeclaration() (*dt.ParseTree, error) {
-	return &dt.ParseTree{}, nil
+
+	identifier := p.consume(dt.IDENTIFIER)
+
+	if identifier == nil {
+		return nil, p.createParseError(dt.IDENTIFIER, "expected identifier on type declaration")
+	}
+
+	expectedEqual := p.consumeExact(dt.RELATIONAL_OPERATOR, "=")
+	if expectedEqual == nil {
+		return nil, p.createParseError(dt.RELATIONAL_OPERATOR, "expected = after type identifier")
+	}
+
+	parsedType, err := p.parseType()
+	if err != nil {
+		return nil, err
+	}
+
+	expectedSemicolon := p.consume(dt.SEMICOLON)
+	if expectedSemicolon == nil {
+		return nil, p.createParseError(dt.SEMICOLON, "type declaration must end with semicolon")
+	}
+
+	typeDeclaration := dt.ParseTree{
+		RootType:   dt.TYPE_DECLARATION_NODE,
+		TokenValue: nil,
+		Children: []dt.ParseTree{
+			{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: identifier,
+				Children:   nil,
+			},
+			{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: expectedEqual,
+				Children:   nil,
+			},
+			*parsedType,
+			{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: expectedSemicolon,
+				Children:   nil,
+			},
+		},
+	}
+
+	return &typeDeclaration, nil
+}
+
+func (p *Parser) parseVarDeclarationPart() (*dt.ParseTree, error) {
+	expectedVar := p.consumeExact(dt.KEYWORD, "variabel")
+	if expectedVar == nil {
+		return nil, nil
+	}
+
+	varDeclaration := dt.ParseTree{
+		RootType:   dt.VAR_DECLARATION_PART_NODE,
+		TokenValue: nil,
+		Children: []dt.ParseTree{
+			{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: expectedVar,
+				Children:   nil,
+			},
+		},
+	}
+
+	if !p.match(dt.IDENTIFIER) {
+		return nil, p.createParseError(dt.IDENTIFIER, "expected at least one variable declaration")
+	}
+
+	for p.match(dt.IDENTIFIER) {
+		variableDeclaration, err := p.parseVarDeclaration()
+
+		if err != nil {
+			return nil, err
+		}
+
+		varDeclaration.Children = append(varDeclaration.Children,
+			*variableDeclaration,
+		)
+	}
+	return &varDeclaration, nil
 }
 
 func (p *Parser) parseVarDeclaration() (*dt.ParseTree, error) {
-	if p.consumeExact(dt.KEYWORD, "var") == nil {
-		return nil, nil
-	}
 
 	identifier, err := p.parseIdentifierList()
 
@@ -326,7 +552,7 @@ func (p *Parser) parseVarDeclaration() (*dt.ParseTree, error) {
 		return nil, p.createParseError(dt.SEMICOLON, "variable declaration must end with semicolon")
 	}
 
-	varDeclaration := dt.ParseTree{
+	variableDeclaration := dt.ParseTree{
 		RootType:   dt.VAR_DECLARATION_NODE,
 		TokenValue: nil,
 		Children: []dt.ParseTree{
@@ -344,7 +570,8 @@ func (p *Parser) parseVarDeclaration() (*dt.ParseTree, error) {
 			},
 		},
 	}
-	return &varDeclaration, nil
+
+	return &variableDeclaration, nil
 }
 
 func (p *Parser) parseIdentifierList() (*dt.ParseTree, error) {
@@ -421,77 +648,86 @@ func (p *Parser) parseType() (*dt.ParseTree, error) {
 			TokenValue: p.consume(dt.KEYWORD),
 			Children:   make([]dt.ParseTree, 0),
 		}
-	default:
-		// arrayTypeTree, err := p.parseArrayType()
+	case "larik":
+		fallthrough
+	case "array":
+		arrayTypeTree, err := p.parseArrayType()
 
-		// if err != nil {
-		// 	return nil, err
-		// }
+		if err != nil {
+			return nil, err
+		}
 
-		// typeTree.Children[0] = *arrayTypeTree
+		typeTree.Children[0] = *arrayTypeTree
 	}
 
 	return &typeTree, nil
 }
 
-// func (p *Parser) parseArrayType() (*dt.ParseTree, error) {
-// 	if len(tokens) < 6 {
-// 		return nil, errors.New("insufficient tokens to construct array type")
-// 	}
+func (p *Parser) parseArrayType() (*dt.ParseTree, error) {
+	// if len(tokens) < 6 {
+	// 	return nil, errors.New("insufficient tokens to construct array type")
+	// }
 
-// 	if tokens[0].Type != dt.KEYWORD || tokens[0].Lexeme != "larik" {
-// 		return nil, errors.New("expected keyword larik")
-// 	}
+	expectedLarik := p.consumeExact(dt.KEYWORD, "larik")
+	if expectedLarik == nil {
+		return nil, p.createParseError(dt.KEYWORD, "expected larik keyword")
+	}
 
-// 	if tokens[1].Type != dt.LBRACKET {
-// 		return nil, errors.New("expected '['")
-// 	}
+	expectedLB := p.consume(dt.LBRACKET)
+	if expectedLB == nil {
+		return nil, p.createParseError(dt.LBRACKET, "expected [ after larik")
+	}
 
-// 	rangeTree, rangeRemainder, err := parseRange(tokens[2:])
+	rangeTree, err := p.parseRange()
 
-// 	if err != nil {
-// 		return nil, err
-// 	}
+	if err != nil {
+		return nil, err
+	}
 
-// 	if rangeRemainder[0].Type != dt.RBRACKET {
-// 		return nil, errors.New("expected ']'")
-// 	}
+	expectedRB := p.consume(dt.RBRACKET)
+	if expectedRB == nil {
+		return nil, p.createParseError(dt.RBRACKET, "expected ] after larik range")
+	}
 
-// 	if rangeRemainder[1].Type != dt.KEYWORD || rangeRemainder[1].Lexeme != "dari" {
-// 		return nil, errors.New("expected 'dari'")
-// 	}
+	expectedDari := p.consumeExact(dt.KEYWORD, "dari")
+	if expectedDari == nil {
+		return nil, p.createParseError(dt.KEYWORD, "expected 'dari' after ]")
+	}
 
-// 	typeTree, remainder, err := parseType(rangeRemainder[2:])
+	typeTree, err := p.parseType()
 
-// 	if err != nil {
-// 		return nil, err
-// 	}
+	if err != nil {
+		return nil, err
+	}
 
-// 	arrayTypeTree := dt.ParseTree{
-// 		RootType:   dt.ARRAY_TYPE_NODE,
-// 		TokenValue: nil,
-// 		Children: []dt.ParseTree{{
-// 			RootType:   dt.TOKEN_NODE,
-// 			TokenValue: &tokens[0],
-// 			Children:   make([]dt.ParseTree, 0),
-// 		}, {
-// 			RootType:   dt.TOKEN_NODE,
-// 			TokenValue: &tokens[1],
-// 			Children:   make([]dt.ParseTree, 0),
-// 		}, *rangeTree, {
-// 			RootType:   dt.TOKEN_NODE,
-// 			TokenValue: &rangeRemainder[0],
-// 			Children:   make([]dt.ParseTree, 0),
-// 		}, {
-// 			RootType:   dt.TOKEN_NODE,
-// 			TokenValue: &rangeRemainder[1],
-// 			Children:   make([]dt.ParseTree, 0),
-// 		}, *typeTree,
-// 		},
-// 	}
+	arrayTypeTree := dt.ParseTree{
+		RootType:   dt.ARRAY_TYPE_NODE,
+		TokenValue: nil,
+		Children: []dt.ParseTree{{
+			RootType:   dt.TOKEN_NODE,
+			TokenValue: expectedLarik,
+			Children:   make([]dt.ParseTree, 0),
+		}, {
+			RootType:   dt.TOKEN_NODE,
+			TokenValue: expectedLB,
+			Children:   make([]dt.ParseTree, 0),
+		},
+			*rangeTree,
+			{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: expectedRB,
+				Children:   make([]dt.ParseTree, 0),
+			}, {
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: expectedDari,
+				Children:   make([]dt.ParseTree, 0),
+			},
+			*typeTree,
+		},
+	}
 
-// 	return &arrayTypeTree, nil
-// }
+	return &arrayTypeTree, nil
+}
 
 func (p *Parser) parseRange() (*dt.ParseTree, error) {
 	return &dt.ParseTree{}, nil
