@@ -789,11 +789,87 @@ func (p *Parser) parseForStatement() (*dt.ParseTree, error) {
 }
 
 func (p *Parser) parseSubprogramCall() (*dt.ParseTree, error) {
-	return &dt.ParseTree{}, nil
+	identifier := p.consume(dt.IDENTIFIER)
+	if identifier == nil {
+		return nil, p.createParseError(dt.RANGE_OPERATOR, "expected function/procedure identifier")
+	}
+
+	subprogramCall := dt.ParseTree{
+		RootType:   dt.SUBPROGRAM_CALL_NODE,
+		TokenValue: nil,
+		Children: []dt.ParseTree{
+			{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: identifier,
+				Children:   make([]dt.ParseTree, 0),
+			},
+		},
+	}
+
+	if p.match(dt.LPARENTHESIS) {
+		lp := p.consume(dt.LPARENTHESIS)
+		params, err := p.parseParameterList()
+		if err != nil {
+			return nil, err
+		}
+		rp := p.consume(dt.RPARENTHESIS)
+
+		if rp == nil {
+			return nil, p.createParseError(dt.RPARENTHESIS, "expected ) after function call")
+		}
+
+		subprogramCall.Children = append(subprogramCall.Children,
+			dt.ParseTree{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: lp,
+				Children:   nil,
+			},
+			*params,
+			dt.ParseTree{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: rp,
+				Children:   nil,
+			},
+		)
+	}
+
+	return &subprogramCall, nil
 }
 
 func (p *Parser) parseParameterList() (*dt.ParseTree, error) {
-	return &dt.ParseTree{}, nil
+	expression, err := p.parseExpression()
+	if err != nil {
+		return nil, err
+	}
+
+	parameterListTree := dt.ParseTree{
+		RootType:   dt.PARAMETER_LIST_NODE,
+		TokenValue: nil,
+		Children: []dt.ParseTree{
+			*expression,
+		},
+	}
+
+	for {
+		expectedComma := p.consume(dt.COMMA)
+		if expectedComma == nil {
+			break
+		}
+		nextExpression, err := p.parseExpression()
+		if err != nil {
+			return nil, err
+		}
+		parameterListTree.Children = append(parameterListTree.Children,
+			dt.ParseTree{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: expectedComma,
+				Children:   make([]dt.ParseTree, 0),
+			},
+			*nextExpression,
+		)
+	}
+
+	return &parameterListTree, nil
 }
 
 func (p *Parser) parseExpression() (*dt.ParseTree, error) {
@@ -919,14 +995,26 @@ func (p *Parser) parseFactor() (*dt.ParseTree, error) {
 		Children:   make([]dt.ParseTree, 0),
 	}
 	if p.match(dt.IDENTIFIER) {
-		factor := p.consume(dt.IDENTIFIER)
-		factorTree.Children = append(factorTree.Children,
-			dt.ParseTree{
-				RootType:   dt.TOKEN_NODE,
-				TokenValue: factor,
-				Children:   nil,
-			},
-		)
+		identifier := p.consume(dt.IDENTIFIER)
+
+		if p.match(dt.LPARENTHESIS) {
+			p.pos--
+			factor, err := p.parseSubprogramCall()
+			if err != nil {
+				return nil, p.createParseErrorMany([]dt.TokenType{dt.IDENTIFIER, dt.NUMBER, dt.CHAR_LITERAL, dt.STRING_LITERAL, dt.LPARENTHESIS}, "cannot parse factor")
+			}
+			factorTree.Children = append(factorTree.Children,
+				*factor,
+			)
+		} else {
+			factorTree.Children = append(factorTree.Children,
+				dt.ParseTree{
+					RootType:   dt.TOKEN_NODE,
+					TokenValue: identifier,
+					Children:   nil,
+				},
+			)
+		}
 	} else if p.match(dt.NUMBER) {
 		factor := p.consume(dt.NUMBER)
 		factorTree.Children = append(factorTree.Children,
@@ -987,13 +1075,7 @@ func (p *Parser) parseFactor() (*dt.ParseTree, error) {
 			},
 		)
 	} else {
-		factor, err := p.parseSubprogramCall()
-		if err != nil {
-			return nil, err
-		}
-		factorTree.Children = append(factorTree.Children,
-			*factor,
-		)
+		return nil, p.createParseErrorMany([]dt.TokenType{dt.IDENTIFIER, dt.NUMBER, dt.CHAR_LITERAL, dt.STRING_LITERAL, dt.LPARENTHESIS}, "cannot parse factor")
 	}
 
 	return &factorTree, nil
