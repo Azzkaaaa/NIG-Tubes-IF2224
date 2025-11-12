@@ -174,52 +174,41 @@ func (p *Parser) parseProgram() (*dt.ParseTree, error) {
 		return nil, err
 	}
 
+	compoundTree, err := p.parseCompoundStatement()
+	if err != nil {
+		return nil, err
+	}
+
+	dotToken := p.consume(dt.DOT)
+	if dotToken == nil {
+		return nil, p.createParseError(dt.DOT, "program must end with a dot (.)")
+	}
+
+	if p.pos < len(p.buffer) {
+		curr := p.peek()
+		return nil, &ParseError{
+			buffer: p.buffer,
+			Line:   curr.Line,
+			Col:    curr.Col,
+			Tips:   "unexpected token after program end (.)",
+			Got:    curr,
+		}
+	}
+
 	programTree := dt.ParseTree{
 		RootType:   dt.PROGRAM_NODE,
 		TokenValue: nil,
 		Children: []dt.ParseTree{
 			*headerTree,
 			*declarationTree,
+			*compoundTree,
 			{
 				RootType:   dt.TOKEN_NODE,
-				TokenValue: p.peek(),
+				TokenValue: dotToken,
 				Children:   make([]dt.ParseTree, 0),
 			},
 		},
 	}
-
-	// statementTree, remainder, err := parseCompoundStatement(remainder)
-
-	// if err != nil {
-	// 	return nil, nil, err
-	// }
-
-	// if len(remainder) == 0 {
-	// 	return nil, nil, errors.New("missing dot at eof")
-	// }
-
-	// if remainder[0].Type != dt.DOT {
-	// 	return nil, nil, errors.New("program does not end at dot")
-	// }
-
-	// if len(remainder) > 1 {
-	// 	return nil, nil, errors.New("program should end after dot")
-	// }
-
-	// programTree := dt.ParseTree{
-	// 	RootType:   dt.PROGRAM_NODE,
-	// 	TokenValue: nil,
-	// 	Children: []dt.ParseTree{
-	// 		*headerTree,
-	// 		*declarationTree,
-	// 		*statementTree,
-	// 		{
-	// 			RootType:   dt.TOKEN_NODE,
-	// 			TokenValue: &remainder[1],
-	// 			Children:   make([]dt.ParseTree, 0),
-	// 		},
-	// 	},
-	// }
 
 	return &programTree, nil
 }
@@ -301,14 +290,18 @@ func (p *Parser) parseDeclarationPart() (*dt.ParseTree, error) {
 		}
 	}
 
-	// for err == nil {
-	// 	subprogramDeclaration, newRemainder, newErr := parseSubprogramDeclaration(remainder)
-	// 	err = newErr
-	// 	if err == nil {
-	// 		remainder = newRemainder
-	// 		declarationTree.Children = append(declarationTree.Children, *subprogramDeclaration)
-	// 	}
-	// }
+	for err == nil {
+		subprogramDeclaration, newErr := p.parseSubprogramDeclaration()
+
+		if subprogramDeclaration == nil && newErr == nil {
+			break
+		}
+
+		err = newErr
+		if err == nil {
+			declarationTree.Children = append(declarationTree.Children, *subprogramDeclaration)
+		}
+	}
 
 	return &declarationTree, err
 }
@@ -748,44 +741,486 @@ func (p *Parser) parseRange() (*dt.ParseTree, error) {
 	return &rangeTree, nil
 }
 
+func (p *Parser) parseStatement() (*dt.ParseTree, error) {
+	if p.matchExact(dt.KEYWORD, "mulai") {
+		return p.parseCompoundStatement()
+	}
+	if p.matchExact(dt.KEYWORD, "jika") {
+		return p.parseIfStatement()
+	}
+	if p.matchExact(dt.KEYWORD, "selama") {
+		return p.parseWhileStatement()
+	}
+	if p.matchExact(dt.KEYWORD, "untuk") {
+		return p.parseForStatement()
+	}
+	if p.match(dt.IDENTIFIER) {
+		if p.pos+1 < len(p.buffer) && p.buffer[p.pos+1].Type == dt.ASSIGN_OPERATOR {
+			return p.parseAssignmentStatement()
+		} else {
+			return p.parseSubprogramCall()
+		}
+	}
+	return nil, p.createParseErrorMany(
+		[]dt.TokenType{dt.KEYWORD, dt.IDENTIFIER},
+		"expected a statement (jika, selama, untuk, mulai, or identifier)",
+	)
+}
+
 func (p *Parser) parseSubprogramDeclaration() (*dt.ParseTree, error) {
-	return &dt.ParseTree{}, nil
+	procTree, err := p.parseProcedureDeclaration()
+	if err != nil {
+		return nil, err
+	}
+	if procTree != nil {
+		return &dt.ParseTree{
+			RootType: dt.SUBPROGRAM_DECLARATION_NODE,
+			Children: []dt.ParseTree{*procTree},
+		}, nil
+	}
+
+	funcTree, err := p.parseFunctionDeclaration()
+	if err != nil {
+		return nil, err
+	}
+	if funcTree != nil {
+		return &dt.ParseTree{
+			RootType: dt.SUBPROGRAM_DECLARATION_NODE,
+			Children: []dt.ParseTree{*funcTree},
+		}, nil
+	}
+
+	return nil, nil
 }
 
 func (p *Parser) parseProcedureDeclaration() (*dt.ParseTree, error) {
-	return &dt.ParseTree{}, nil
+	prosedurToken := p.consumeExact(dt.KEYWORD, "prosedur")
+	if prosedurToken == nil {
+		return nil, nil
+	}
+
+	identifier := p.consume(dt.IDENTIFIER)
+	if identifier == nil {
+		return nil, p.createParseError(dt.IDENTIFIER, "expected procedure name")
+	}
+
+	procTree := dt.ParseTree{
+		RootType: dt.PROCEDURE_DECLARATION_NODE,
+		Children: []dt.ParseTree{
+			{RootType: dt.TOKEN_NODE, TokenValue: prosedurToken},
+			{RootType: dt.TOKEN_NODE, TokenValue: identifier},
+		},
+	}
+
+	if p.match(dt.LPARENTHESIS) {
+		paramList, err := p.parseFormalParameterList()
+		if err != nil {
+			return nil, err
+		}
+		procTree.Children = append(procTree.Children, *paramList)
+	}
+
+	semicolon1 := p.consume(dt.SEMICOLON)
+	if semicolon1 == nil {
+		return nil, p.createParseError(dt.SEMICOLON, "expected ';' after procedure header")
+	}
+	procTree.Children = append(procTree.Children, dt.ParseTree{RootType: dt.TOKEN_NODE, TokenValue: semicolon1})
+
+	declarations, err := p.parseDeclarationPart()
+	if err != nil {
+		return nil, err
+	}
+	procTree.Children = append(procTree.Children, *declarations)
+
+	compoundStmt, err := p.parseCompoundStatement()
+	if err != nil {
+		return nil, err
+	}
+	procTree.Children = append(procTree.Children, *compoundStmt)
+
+	semicolon2 := p.consume(dt.SEMICOLON)
+	if semicolon2 == nil {
+		return nil, p.createParseError(dt.SEMICOLON, "expected ';' after procedure block")
+	}
+	procTree.Children = append(procTree.Children, dt.ParseTree{RootType: dt.TOKEN_NODE, TokenValue: semicolon2})
+
+	return &procTree, nil
 }
 
 func (p *Parser) parseFunctionDeclaration() (*dt.ParseTree, error) {
-	return &dt.ParseTree{}, nil
+	fungsiToken := p.consumeExact(dt.KEYWORD, "fungsi")
+	if fungsiToken == nil {
+		return nil, nil
+	}
+
+	identifier := p.consume(dt.IDENTIFIER)
+	if identifier == nil {
+		return nil, p.createParseError(dt.IDENTIFIER, "expected function name")
+	}
+
+	funcTree := dt.ParseTree{
+		RootType: dt.FUNCTION_DECLARATION_NODE,
+		Children: []dt.ParseTree{
+			{RootType: dt.TOKEN_NODE, TokenValue: fungsiToken},
+			{RootType: dt.TOKEN_NODE, TokenValue: identifier},
+		},
+	}
+
+	if p.match(dt.LPARENTHESIS) {
+		paramList, err := p.parseFormalParameterList()
+		if err != nil {
+			return nil, err
+		}
+		funcTree.Children = append(funcTree.Children, *paramList)
+	}
+
+	colonToken := p.consume(dt.COLON)
+	if colonToken == nil {
+		return nil, p.createParseError(dt.COLON, "expected ':' for function return type")
+	}
+
+	returnType, err := p.parseType()
+	if err != nil {
+		return nil, err
+	}
+
+	semicolon1 := p.consume(dt.SEMICOLON)
+	if semicolon1 == nil {
+		return nil, p.createParseError(dt.SEMICOLON, "expected ';' after function header")
+	}
+
+	funcTree.Children = append(funcTree.Children,
+		dt.ParseTree{RootType: dt.TOKEN_NODE, TokenValue: colonToken},
+		*returnType,
+		dt.ParseTree{RootType: dt.TOKEN_NODE, TokenValue: semicolon1},
+	)
+
+	declarations, err := p.parseDeclarationPart()
+	if err != nil {
+		return nil, err
+	}
+	funcTree.Children = append(funcTree.Children, *declarations)
+
+	compoundStmt, err := p.parseCompoundStatement()
+	if err != nil {
+		return nil, err
+	}
+	funcTree.Children = append(funcTree.Children, *compoundStmt)
+
+	semicolon2 := p.consume(dt.SEMICOLON)
+	if semicolon2 == nil {
+		return nil, p.createParseError(dt.SEMICOLON, "expected ';' after function block")
+	}
+	funcTree.Children = append(funcTree.Children, dt.ParseTree{RootType: dt.TOKEN_NODE, TokenValue: semicolon2})
+
+	return &funcTree, nil
 }
 
 func (p *Parser) parseFormalParameterList() (*dt.ParseTree, error) {
-	return &dt.ParseTree{}, nil
+	lpToken := p.consume(dt.LPARENTHESIS)
+	if lpToken == nil {
+		return nil, p.createParseError(dt.LPARENTHESIS, "expected '(' to start parameter list")
+	}
+
+	paramListTree := dt.ParseTree{
+		RootType: dt.FORMAL_PARAMETER_LIST_NODE,
+		Children: []dt.ParseTree{
+			{RootType: dt.TOKEN_NODE, TokenValue: lpToken},
+		},
+	}
+	if !p.match(dt.RPARENTHESIS) {
+		idList, err := p.parseIdentifierList()
+		if err != nil {
+			return nil, err
+		}
+
+		colonToken := p.consume(dt.COLON)
+		if colonToken == nil {
+			return nil, p.createParseError(dt.COLON, "expected ':' after identifier list in parameters")
+		}
+
+		typeNode, err := p.parseType()
+		if err != nil {
+			return nil, err
+		}
+
+		paramListTree.Children = append(paramListTree.Children,
+			*idList,
+			dt.ParseTree{RootType: dt.TOKEN_NODE, TokenValue: colonToken},
+			*typeNode,
+		)
+		for p.match(dt.SEMICOLON) {
+			semicolonToken := p.consume(dt.SEMICOLON)
+			nextIdList, err := p.parseIdentifierList()
+			if err != nil {
+				return nil, p.createParseError(dt.IDENTIFIER, "expected identifier list after ';'")
+			}
+
+			nextColonToken := p.consume(dt.COLON)
+			if nextColonToken == nil {
+				return nil, p.createParseError(dt.COLON, "expected ':' after identifier list in parameters")
+			}
+
+			nextTypeNode, err := p.parseType()
+			if err != nil {
+				return nil, err
+			}
+
+			paramListTree.Children = append(paramListTree.Children,
+				dt.ParseTree{RootType: dt.TOKEN_NODE, TokenValue: semicolonToken},
+				*nextIdList,
+				dt.ParseTree{RootType: dt.TOKEN_NODE, TokenValue: nextColonToken},
+				*nextTypeNode,
+			)
+		}
+	}
+
+	rpToken := p.consume(dt.RPARENTHESIS)
+	if rpToken == nil {
+		return nil, p.createParseError(dt.RPARENTHESIS, "expected ')' to end parameter list")
+	}
+	paramListTree.Children = append(paramListTree.Children,
+		dt.ParseTree{RootType: dt.TOKEN_NODE, TokenValue: rpToken},
+	)
+
+	return &paramListTree, nil
 }
 
 func (p *Parser) parseCompoundStatement() (*dt.ParseTree, error) {
-	return &dt.ParseTree{}, nil
+	mulaiToken := p.consumeExact(dt.KEYWORD, "mulai")
+	if mulaiToken == nil {
+		return nil, p.createParseError(dt.KEYWORD, "expected 'mulai' keyword")
+	}
+
+	stmtList, err := p.parseStatementList()
+	if err != nil {
+		return nil, err
+	}
+
+	selesaiToken := p.consumeExact(dt.KEYWORD, "selesai")
+	if selesaiToken == nil {
+		return nil, p.createParseError(dt.KEYWORD, "expected 'selesai' keyword to end compound statement")
+	}
+
+	compoundTree := dt.ParseTree{
+		RootType: dt.COMPOUND_STATEMENT_NODE,
+		Children: []dt.ParseTree{
+			{RootType: dt.TOKEN_NODE, TokenValue: mulaiToken},
+			*stmtList,
+			{RootType: dt.TOKEN_NODE, TokenValue: selesaiToken},
+		},
+	}
+	return &compoundTree, nil
 }
 
 func (p *Parser) parseStatementList() (*dt.ParseTree, error) {
-	return &dt.ParseTree{}, nil
+	stmt, err := p.parseStatement()
+	if err != nil {
+		return nil, err
+	}
+
+	stmtListTree := dt.ParseTree{
+		RootType: dt.STATEMENT_LIST_NODE,
+		Children: []dt.ParseTree{*stmt},
+	}
+
+	for p.match(dt.SEMICOLON) {
+		semicolon := p.consume(dt.SEMICOLON)
+
+		if p.matchExact(dt.KEYWORD, "selesai") {
+			stmtListTree.Children = append(stmtListTree.Children, dt.ParseTree{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: semicolon,
+			})
+			break
+		}
+
+		nextStmt, err := p.parseStatement()
+		if err != nil {
+			return nil, p.createParseErrorMany([]dt.TokenType{dt.KEYWORD, dt.IDENTIFIER}, "expected statement after ';'")
+		}
+
+		stmtListTree.Children = append(stmtListTree.Children,
+			dt.ParseTree{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: semicolon,
+			},
+			*nextStmt,
+		)
+	}
+	return &stmtListTree, nil
 }
 
 func (p *Parser) parseAssignmentStatement() (*dt.ParseTree, error) {
-	return &dt.ParseTree{}, nil
+	identifier := p.consume(dt.IDENTIFIER)
+	if identifier == nil {
+		return nil, p.createParseError(dt.IDENTIFIER, "expected identifier for assignment")
+	}
+
+	assignOp := p.consume(dt.ASSIGN_OPERATOR)
+	if assignOp == nil {
+		return nil, p.createParseError(dt.ASSIGN_OPERATOR, "expected ':=' after identifier")
+	}
+
+	expr, err := p.parseExpression()
+	if err != nil {
+		return nil, err
+	}
+
+	assignTree := dt.ParseTree{
+		RootType: dt.ASSIGNMENT_STATEMENT_NODE,
+		Children: []dt.ParseTree{
+			{RootType: dt.TOKEN_NODE, TokenValue: identifier},
+			{RootType: dt.TOKEN_NODE, TokenValue: assignOp},
+			*expr,
+		},
+	}
+	return &assignTree, nil
 }
 
 func (p *Parser) parseIfStatement() (*dt.ParseTree, error) {
-	return &dt.ParseTree{}, nil
+	jikaToken := p.consumeExact(dt.KEYWORD, "jika")
+	if jikaToken == nil {
+		return nil, p.createParseError(dt.KEYWORD, "expected 'jika'")
+	}
+
+	expr, err := p.parseExpression()
+	if err != nil {
+		return nil, err
+	}
+
+	makaToken := p.consumeExact(dt.KEYWORD, "maka")
+	if makaToken == nil {
+		return nil, p.createParseError(dt.KEYWORD, "expected 'maka' after if-expression")
+	}
+
+	thenStmt, err := p.parseStatement()
+	if err != nil {
+		return nil, err
+	}
+
+	ifTree := dt.ParseTree{
+		RootType: dt.IF_STATEMENT_NODE,
+		Children: []dt.ParseTree{
+			{RootType: dt.TOKEN_NODE, TokenValue: jikaToken},
+			*expr,
+			{RootType: dt.TOKEN_NODE, TokenValue: makaToken},
+			*thenStmt,
+		},
+	}
+
+	if p.matchExact(dt.KEYWORD, "selain_itu") {
+		selainItuToken := p.consumeExact(dt.KEYWORD, "selain_itu")
+
+		elseStmt, err := p.parseStatement()
+		if err != nil {
+			return nil, err
+		}
+
+		ifTree.Children = append(ifTree.Children,
+			dt.ParseTree{RootType: dt.TOKEN_NODE, TokenValue: selainItuToken},
+			*elseStmt,
+		)
+	}
+
+	return &ifTree, nil
 }
 
 func (p *Parser) parseWhileStatement() (*dt.ParseTree, error) {
-	return &dt.ParseTree{}, nil
+	selamaToken := p.consumeExact(dt.KEYWORD, "selama")
+	if selamaToken == nil {
+		return nil, p.createParseError(dt.KEYWORD, "expected 'selama'")
+	}
+
+	expr, err := p.parseExpression()
+	if err != nil {
+		return nil, err
+	}
+
+	lakukanToken := p.consumeExact(dt.KEYWORD, "lakukan")
+	if lakukanToken == nil {
+		return nil, p.createParseError(dt.KEYWORD, "expected 'lakukan' after while-expression")
+	}
+
+	stmt, err := p.parseStatement()
+	if err != nil {
+		return nil, err
+	}
+
+	whileTree := dt.ParseTree{
+		RootType: dt.WHILE_STATEMENT_NODE,
+		Children: []dt.ParseTree{
+			{RootType: dt.TOKEN_NODE, TokenValue: selamaToken},
+			*expr,
+			{RootType: dt.TOKEN_NODE, TokenValue: lakukanToken},
+			*stmt,
+		},
+	}
+	return &whileTree, nil
 }
 
 func (p *Parser) parseForStatement() (*dt.ParseTree, error) {
-	return &dt.ParseTree{}, nil
+	untukToken := p.consumeExact(dt.KEYWORD, "untuk")
+	if untukToken == nil {
+		return nil, p.createParseError(dt.KEYWORD, "expected 'untuk'")
+	}
+
+	identifier := p.consume(dt.IDENTIFIER)
+	if identifier == nil {
+		return nil, p.createParseError(dt.IDENTIFIER, "expected counter identifier after 'untuk'")
+	}
+
+	assignOp := p.consume(dt.ASSIGN_OPERATOR)
+	if assignOp == nil {
+		return nil, p.createParseError(dt.ASSIGN_OPERATOR, "expected ':=' after for-identifier")
+	}
+
+	startExpr, err := p.parseExpression()
+	if err != nil {
+		return nil, err
+	}
+
+	// (KEYWORD(ke)|KEYWORD(turun-ke))
+	var directionToken *dt.Token
+	if p.matchExact(dt.KEYWORD, "ke") {
+		directionToken = p.consumeExact(dt.KEYWORD, "ke")
+	} else if p.matchExact(dt.KEYWORD, "turun-ke") {
+		directionToken = p.consumeExact(dt.KEYWORD, "turun-ke")
+	}
+
+	if directionToken == nil {
+		return nil, p.createParseError(dt.KEYWORD, "expected 'ke' or 'turun-ke' in for loop")
+	}
+
+	endExpr, err := p.parseExpression()
+	if err != nil {
+		return nil, err
+	}
+
+	lakukanToken := p.consumeExact(dt.KEYWORD, "lakukan")
+	if lakukanToken == nil {
+		return nil, p.createParseError(dt.KEYWORD, "expected 'lakukan' in for loop")
+	}
+
+	stmt, err := p.parseStatement()
+	if err != nil {
+		return nil, err
+	}
+
+	forTree := dt.ParseTree{
+		RootType: dt.FOR_STATEMENT_NODE,
+		Children: []dt.ParseTree{
+			{RootType: dt.TOKEN_NODE, TokenValue: untukToken},
+			{RootType: dt.TOKEN_NODE, TokenValue: identifier},
+			{RootType: dt.TOKEN_NODE, TokenValue: assignOp},
+			*startExpr,
+			{RootType: dt.TOKEN_NODE, TokenValue: directionToken},
+			*endExpr,
+			{RootType: dt.TOKEN_NODE, TokenValue: lakukanToken},
+			*stmt,
+		},
+	}
+	return &forTree, nil
 }
 
 func (p *Parser) parseSubprogramCall() (*dt.ParseTree, error) {
@@ -1066,13 +1501,18 @@ func (p *Parser) parseFactor() (*dt.ParseTree, error) {
 			},
 		)
 	} else if p.matchExact(dt.LOGICAL_OPERATOR, "tidak") {
-		factor := p.consumeExact(dt.LOGICAL_OPERATOR, "tidak")
+		expectedNot := p.consumeExact(dt.LOGICAL_OPERATOR, "tidak")
+		factor, err := p.parseFactor()
+		if err != nil {
+			return nil, err
+		}
 		factorTree.Children = append(factorTree.Children,
 			dt.ParseTree{
 				RootType:   dt.TOKEN_NODE,
-				TokenValue: factor,
+				TokenValue: expectedNot,
 				Children:   nil,
 			},
+			*factor,
 		)
 	} else {
 		return nil, p.createParseErrorMany([]dt.TokenType{dt.IDENTIFIER, dt.NUMBER, dt.CHAR_LITERAL, dt.STRING_LITERAL, dt.LPARENTHESIS}, "cannot parse factor")

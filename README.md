@@ -88,11 +88,11 @@ This method ensures you get the latest version of Go.
 2. Lalu ketik:
 
     ```bash
-    ./bin/pslex.exe --rules src/rules/tokenizer.json --input test/milestone-1/(nama file pascal.pas)
+    ./bin/pslex.exe --rules src/rules/tokenizer.json --input test/milestone-2/(nama file pascal.pas)
     ```
 
 contoh:
-./bin/pslex.exe --rules src/rules/tokenizer.json --input test/milestone-1/test1.pas
+./bin/pslex.exe --rules src/rules/tokenizer.json --input test/milestone-2/test1.pas
 
 ## Pembagian Tugas
 
@@ -145,7 +145,7 @@ contoh:
             <sub><b>Filbert Engyo</b></sub>
         </a>
         </td>
-        <td align="center">Testing dan Laporan</td>
+        <td align="center">Engine dan Testing</td>
     </tr>
     </table>
 </div>
