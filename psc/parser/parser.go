@@ -606,40 +606,47 @@ func (p *Parser) parseIdentifierList() (*dt.ParseTree, error) {
 }
 
 func (p *Parser) parseType() (*dt.ParseTree, error) {
-
-	if !p.match(dt.KEYWORD) {
-		return nil, p.createParseError(dt.KEYWORD, "keyword not found")
-	}
-
 	typeTree := dt.ParseTree{
 		RootType:   dt.TYPE_NODE,
 		TokenValue: nil,
 		Children:   make([]dt.ParseTree, 1),
 	}
 
-	switch p.peek().Lexeme {
-	case "integer":
-		fallthrough
-	case "real":
-		fallthrough
-	case "boolean":
-		fallthrough
-	case "char":
+	if p.match(dt.IDENTIFIER) {
 		typeTree.Children[0] = dt.ParseTree{
 			RootType:   dt.TOKEN_NODE,
-			TokenValue: p.consume(dt.KEYWORD),
+			TokenValue: p.consume(dt.IDENTIFIER),
 			Children:   make([]dt.ParseTree, 0),
 		}
-	case "larik":
-		fallthrough
-	case "array":
-		arrayTypeTree, err := p.parseArrayType()
-
-		if err != nil {
-			return nil, err
+	} else {
+		if !p.match(dt.KEYWORD) {
+			return nil, p.createParseError(dt.KEYWORD, "expected type")
 		}
 
-		typeTree.Children[0] = *arrayTypeTree
+		switch p.peek().Lexeme {
+		case "integer":
+			fallthrough
+		case "real":
+			fallthrough
+		case "boolean":
+			fallthrough
+		case "char":
+			typeTree.Children[0] = dt.ParseTree{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: p.consume(dt.KEYWORD),
+				Children:   make([]dt.ParseTree, 0),
+			}
+		case "larik":
+			fallthrough
+		case "array":
+			arrayTypeTree, err := p.parseArrayType()
+
+			if err != nil {
+				return nil, err
+			}
+
+			typeTree.Children[0] = *arrayTypeTree
+		}
 	}
 
 	return &typeTree, nil
