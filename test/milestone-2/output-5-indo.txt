@@ -1,3 +1,7 @@
-unrecognized '$' at 4:9
-unrecognized '$' at 8:9
-unrecognized '$' at 11:17
+
+Line 9, Col 1
+
+9: variabel
+   ^
+SyntaxError: Unexpected token 'variabel' (expected: KEYWORD, IDENTIFIER)
+expected a statement (jika, selama, untuk, mulai, or identifier)
