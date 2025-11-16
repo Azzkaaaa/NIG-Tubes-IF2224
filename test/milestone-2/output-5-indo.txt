@@ -1,0 +1,7 @@
+
+Line 9, Col 1
+
+9: variabel
+   ^
+SyntaxError: Unexpected token 'variabel' (expected: KEYWORD, IDENTIFIER)
+expected a statement (jika, selama, untuk, mulai, or identifier)

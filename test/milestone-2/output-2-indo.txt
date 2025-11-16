@@ -1,0 +1,134 @@
+<program>
+  ├-<program-header>
+  │ ├-KEYWORD (program)
+  │ ├-IDENTIFIER (logicaltest)
+  │ └-SEMICOLON (;)
+  ├-<declaration-part>
+  │ └-<var-declaration-part>
+  │   ├-KEYWORD (variabel)
+  │   ├-<var-declaration>
+  │   │ ├-<identifier-list>
+  │   │ │ ├-IDENTIFIER (x)
+  │   │ │ ├-COMMA (,)
+  │   │ │ └-IDENTIFIER (y)
+  │   │ ├-COLON (:)
+  │   │ ├-<type>
+  │   │ │ └-KEYWORD (integer)
+  │   │ └-SEMICOLON (;)
+  │   └-<var-declaration>
+  │     ├-<identifier-list>
+  │     │ └-IDENTIFIER (flag)
+  │     ├-COLON (:)
+  │     ├-<type>
+  │     │ └-KEYWORD (boolean)
+  │     └-SEMICOLON (;)
+  ├-<compound-statement>
+  │ ├-KEYWORD (mulai)
+  │ ├-<statement-list>
+  │ │ ├-<assignment-statement>
+  │ │ │ ├-IDENTIFIER (x)
+  │ │ │ ├-ASSIGN_OPERATOR (:=)
+  │ │ │ └-<expression>
+  │ │ │   └-<simple-expression>
+  │ │ │     └-<term>
+  │ │ │       └-<factor>
+  │ │ │         └-NUMBER (3)
+  │ │ ├-SEMICOLON (;)
+  │ │ ├-<assignment-statement>
+  │ │ │ ├-IDENTIFIER (y)
+  │ │ │ ├-ASSIGN_OPERATOR (:=)
+  │ │ │ └-<expression>
+  │ │ │   └-<simple-expression>
+  │ │ │     └-<term>
+  │ │ │       └-<factor>
+  │ │ │         └-NUMBER (7)
+  │ │ ├-SEMICOLON (;)
+  │ │ ├-<assignment-statement>
+  │ │ │ ├-IDENTIFIER (flag)
+  │ │ │ ├-ASSIGN_OPERATOR (:=)
+  │ │ │ └-<expression>
+  │ │ │   └-<simple-expression>
+  │ │ │     ├-<term>
+  │ │ │     │ ├-<factor>
+  │ │ │     │ │ ├-LPARENTHESIS (()
+  │ │ │     │ │ ├-<expression>
+  │ │ │     │ │ │ ├-<simple-expression>
+  │ │ │     │ │ │ │ └-<term>
+  │ │ │     │ │ │ │   └-<factor>
+  │ │ │     │ │ │ │     └-IDENTIFIER (x)
+  │ │ │     │ │ │ ├-<relational-operator>
+  │ │ │     │ │ │ │ └-RELATIONAL_OPERATOR (<)
+  │ │ │     │ │ │ └-<simple-expression>
+  │ │ │     │ │ │   └-<term>
+  │ │ │     │ │ │     └-<factor>
+  │ │ │     │ │ │       └-IDENTIFIER (y)
+  │ │ │     │ │ └-RPARENTHESIS ())
+  │ │ │     │ ├-<multiplicative-operator>
+  │ │ │     │ │ └-LOGICAL_OPERATOR (dan)
+  │ │ │     │ └-<factor>
+  │ │ │     │   ├-LOGICAL_OPERATOR (tidak)
+  │ │ │     │   └-<factor>
+  │ │ │     │     ├-LPARENTHESIS (()
+  │ │ │     │     ├-<expression>
+  │ │ │     │     │ ├-<simple-expression>
+  │ │ │     │     │ │ └-<term>
+  │ │ │     │     │ │   └-<factor>
+  │ │ │     │     │ │     └-IDENTIFIER (x)
+  │ │ │     │     │ ├-<relational-operator>
+  │ │ │     │     │ │ └-RELATIONAL_OPERATOR (=)
+  │ │ │     │     │ └-<simple-expression>
+  │ │ │     │     │   └-<term>
+  │ │ │     │     │     └-<factor>
+  │ │ │     │     │       └-NUMBER (0)
+  │ │ │     │     └-RPARENTHESIS ())
+  │ │ │     ├-<additive-operator>
+  │ │ │     │ └-LOGICAL_OPERATOR (atau)
+  │ │ │     └-<term>
+  │ │ │       └-<factor>
+  │ │ │         ├-LPARENTHESIS (()
+  │ │ │         ├-<expression>
+  │ │ │         │ ├-<simple-expression>
+  │ │ │         │ │ └-<term>
+  │ │ │         │ │   └-<factor>
+  │ │ │         │ │     └-IDENTIFIER (y)
+  │ │ │         │ ├-<relational-operator>
+  │ │ │         │ │ └-RELATIONAL_OPERATOR (>=)
+  │ │ │         │ └-<simple-expression>
+  │ │ │         │   └-<term>
+  │ │ │         │     └-<factor>
+  │ │ │         │       └-NUMBER (10)
+  │ │ │         └-RPARENTHESIS ())
+  │ │ ├-SEMICOLON (;)
+  │ │ ├-<if-statement>
+  │ │ │ ├-KEYWORD (jika)
+  │ │ │ ├-<expression>
+  │ │ │ │ └-<simple-expression>
+  │ │ │ │   └-<term>
+  │ │ │ │     └-<factor>
+  │ │ │ │       └-IDENTIFIER (flag)
+  │ │ │ ├-KEYWORD (maka)
+  │ │ │ ├-<procedure/function-call>
+  │ │ │ │ ├-IDENTIFIER (write)
+  │ │ │ │ ├-LPARENTHESIS (()
+  │ │ │ │ ├-<parameter-list>
+  │ │ │ │ │ └-<expression>
+  │ │ │ │ │   └-<simple-expression>
+  │ │ │ │ │     └-<term>
+  │ │ │ │ │       └-<factor>
+  │ │ │ │ │         └-STRING_LITERAL ('Condition true')
+  │ │ │ │ └-RPARENTHESIS ())
+  │ │ │ ├-KEYWORD (selain_itu)
+  │ │ │ └-<procedure/function-call>
+  │ │ │   ├-IDENTIFIER (write)
+  │ │ │   ├-LPARENTHESIS (()
+  │ │ │   ├-<parameter-list>
+  │ │ │   │ └-<expression>
+  │ │ │   │   └-<simple-expression>
+  │ │ │   │     └-<term>
+  │ │ │   │       └-<factor>
+  │ │ │   │         └-STRING_LITERAL ('Condition false')
+  │ │ │   └-RPARENTHESIS ())
+  │ │ └-SEMICOLON (;)
+  │ └-KEYWORD (selesai)
+  └-DOT (.)
+

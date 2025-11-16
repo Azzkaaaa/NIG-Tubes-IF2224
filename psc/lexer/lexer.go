@@ -4,17 +4,16 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Azzkaaaa/NIG-Tubes-IF2224/src/datatype"
-	"github.com/Azzkaaaa/NIG-Tubes-IF2224/src/dfa"
-	iox "github.com/Azzkaaaa/NIG-Tubes-IF2224/src/io"
+	iox "github.com/Azzkaaaa/NIG-Tubes-IF2224/psc/common"
+	"github.com/Azzkaaaa/NIG-Tubes-IF2224/psc/datatype"
 )
 
 type Lexer struct {
-	d *dfa.DFA
+	d *DFA
 	r *iox.RuneReader
 }
 
-func New(d *dfa.DFA, r *iox.RuneReader) *Lexer {
+func New(d *DFA, r *iox.RuneReader) *Lexer {
 	return &Lexer{d: d, r: r}
 }
 
@@ -27,6 +26,13 @@ func (lx *Lexer) ScanAll() ([]datatype.Token, []error) {
 	var errs []error
 
 	for !lx.r.EOF() {
+		for {
+			ch := lx.r.Peek()
+			if lx.r.EOF() || !isWS(ch) {
+				break
+			}
+			lx.r.Read()
+		}
 		startOff := lx.r.Offset()
 		startLine, startCol := lx.r.Pos()
 		startSnap := lx.r.Snapshot()

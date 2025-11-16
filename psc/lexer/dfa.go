@@ -1,4 +1,4 @@
-package dfa
+package lexer
 
 type State int
 type DFA struct {

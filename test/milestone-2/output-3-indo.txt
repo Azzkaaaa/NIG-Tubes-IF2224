@@ -1,0 +1,159 @@
+<program>
+  ├-<program-header>
+  │ ├-KEYWORD (program)
+  │ ├-IDENTIFIER (looprangetest)
+  │ └-SEMICOLON (;)
+  ├-<declaration-part>
+  │ └-<var-declaration-part>
+  │   ├-KEYWORD (variabel)
+  │   ├-<var-declaration>
+  │   │ ├-<identifier-list>
+  │   │ │ └-IDENTIFIER (i)
+  │   │ ├-COLON (:)
+  │   │ ├-<type>
+  │   │ │ └-KEYWORD (integer)
+  │   │ └-SEMICOLON (;)
+  │   └-<var-declaration>
+  │     ├-<identifier-list>
+  │     │ └-IDENTIFIER (arr)
+  │     ├-COLON (:)
+  │     ├-<type>
+  │     │ └-<array-type>
+  │     │   ├-KEYWORD (larik)
+  │     │   ├-LBRACKET ([)
+  │     │   ├-<range>
+  │     │   │ ├-<expression>
+  │     │   │ │ └-<simple-expression>
+  │     │   │ │   └-<term>
+  │     │   │ │     └-<factor>
+  │     │   │ │       └-NUMBER (1)
+  │     │   │ ├-RANGE_OPERATOR (..)
+  │     │   │ └-<expression>
+  │     │   │   └-<simple-expression>
+  │     │   │     └-<term>
+  │     │   │       └-<factor>
+  │     │   │         └-NUMBER (5)
+  │     │   ├-RBRACKET (])
+  │     │   ├-KEYWORD (dari)
+  │     │   └-<type>
+  │     │     └-KEYWORD (integer)
+  │     └-SEMICOLON (;)
+  ├-<compound-statement>
+  │ ├-KEYWORD (mulai)
+  │ ├-<statement-list>
+  │ │ ├-<for-statement>
+  │ │ │ ├-KEYWORD (untuk)
+  │ │ │ ├-IDENTIFIER (i)
+  │ │ │ ├-ASSIGN_OPERATOR (:=)
+  │ │ │ ├-<expression>
+  │ │ │ │ └-<simple-expression>
+  │ │ │ │   └-<term>
+  │ │ │ │     └-<factor>
+  │ │ │ │       └-NUMBER (1)
+  │ │ │ ├-KEYWORD (ke)
+  │ │ │ ├-<expression>
+  │ │ │ │ └-<simple-expression>
+  │ │ │ │   └-<term>
+  │ │ │ │     └-<factor>
+  │ │ │ │       └-NUMBER (5)
+  │ │ │ ├-KEYWORD (lakukan)
+  │ │ │ └-<assignment-statement>
+  │ │ │   ├-<array-access>
+  │ │ │   │ ├-IDENTIFIER (arr)
+  │ │ │   │ ├-LBRACKET ([)
+  │ │ │   │ ├-<expression>
+  │ │ │   │ │ └-<simple-expression>
+  │ │ │   │ │   └-<term>
+  │ │ │   │ │     └-<factor>
+  │ │ │   │ │       └-IDENTIFIER (i)
+  │ │ │   │ └-RBRACKET (])
+  │ │ │   ├-ASSIGN_OPERATOR (:=)
+  │ │ │   └-<expression>
+  │ │ │     └-<simple-expression>
+  │ │ │       └-<term>
+  │ │ │         ├-<factor>
+  │ │ │         │ └-IDENTIFIER (i)
+  │ │ │         ├-<multiplicative-operator>
+  │ │ │         │ └-ARITHMETIC_OPERATOR (*)
+  │ │ │         └-<factor>
+  │ │ │           └-NUMBER (2)
+  │ │ ├-SEMICOLON (;)
+  │ │ ├-<for-statement>
+  │ │ │ ├-KEYWORD (untuk)
+  │ │ │ ├-IDENTIFIER (i)
+  │ │ │ ├-ASSIGN_OPERATOR (:=)
+  │ │ │ ├-<expression>
+  │ │ │ │ └-<simple-expression>
+  │ │ │ │   └-<term>
+  │ │ │ │     └-<factor>
+  │ │ │ │       └-NUMBER (5)
+  │ │ │ ├-KEYWORD (turun_ke)
+  │ │ │ ├-<expression>
+  │ │ │ │ └-<simple-expression>
+  │ │ │ │   └-<term>
+  │ │ │ │     └-<factor>
+  │ │ │ │       └-NUMBER (1)
+  │ │ │ ├-KEYWORD (lakukan)
+  │ │ │ └-<procedure/function-call>
+  │ │ │   ├-IDENTIFIER (write)
+  │ │ │   ├-LPARENTHESIS (()
+  │ │ │   ├-<parameter-list>
+  │ │ │   │ └-<expression>
+  │ │ │   │   └-<simple-expression>
+  │ │ │   │     └-<term>
+  │ │ │   │       └-<factor>
+  │ │ │   │         └-<array-access>
+  │ │ │   │           ├-IDENTIFIER (arr)
+  │ │ │   │           ├-LBRACKET ([)
+  │ │ │   │           ├-<expression>
+  │ │ │   │           │ └-<simple-expression>
+  │ │ │   │           │   └-<term>
+  │ │ │   │           │     └-<factor>
+  │ │ │   │           │       └-IDENTIFIER (i)
+  │ │ │   │           └-RBRACKET (])
+  │ │ │   └-RPARENTHESIS ())
+  │ │ ├-SEMICOLON (;)
+  │ │ ├-<assignment-statement>
+  │ │ │ ├-IDENTIFIER (i)
+  │ │ │ ├-ASSIGN_OPERATOR (:=)
+  │ │ │ └-<expression>
+  │ │ │   └-<simple-expression>
+  │ │ │     └-<term>
+  │ │ │       └-<factor>
+  │ │ │         └-NUMBER (0)
+  │ │ ├-SEMICOLON (;)
+  │ │ ├-<while-statement>
+  │ │ │ ├-KEYWORD (selama)
+  │ │ │ ├-<expression>
+  │ │ │ │ ├-<simple-expression>
+  │ │ │ │ │ └-<term>
+  │ │ │ │ │   └-<factor>
+  │ │ │ │ │     └-IDENTIFIER (i)
+  │ │ │ │ ├-<relational-operator>
+  │ │ │ │ │ └-RELATIONAL_OPERATOR (<)
+  │ │ │ │ └-<simple-expression>
+  │ │ │ │   └-<term>
+  │ │ │ │     └-<factor>
+  │ │ │ │       └-NUMBER (5)
+  │ │ │ ├-KEYWORD (lakukan)
+  │ │ │ └-<compound-statement>
+  │ │ │   ├-KEYWORD (mulai)
+  │ │ │   ├-<statement-list>
+  │ │ │   │ └-<assignment-statement>
+  │ │ │   │   ├-IDENTIFIER (i)
+  │ │ │   │   ├-ASSIGN_OPERATOR (:=)
+  │ │ │   │   └-<expression>
+  │ │ │   │     └-<simple-expression>
+  │ │ │   │       ├-<term>
+  │ │ │   │       │ └-<factor>
+  │ │ │   │       │   └-IDENTIFIER (i)
+  │ │ │   │       ├-<additive-operator>
+  │ │ │   │       │ └-ARITHMETIC_OPERATOR (+)
+  │ │ │   │       └-<term>
+  │ │ │   │         └-<factor>
+  │ │ │   │           └-NUMBER (1)
+  │ │ │   └-KEYWORD (selesai)
+  │ │ └-SEMICOLON (;)
+  │ └-KEYWORD (selesai)
+  └-DOT (.)
+

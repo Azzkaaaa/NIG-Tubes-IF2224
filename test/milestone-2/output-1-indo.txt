@@ -1,0 +1,87 @@
+<program>
+  ├-<program-header>
+  │ ├-KEYWORD (program)
+  │ ├-IDENTIFIER (arithmetictest)
+  │ └-SEMICOLON (;)
+  ├-<declaration-part>
+  │ └-<var-declaration-part>
+  │   ├-KEYWORD (variabel)
+  │   └-<var-declaration>
+  │     ├-<identifier-list>
+  │     │ ├-IDENTIFIER (a)
+  │     │ ├-COMMA (,)
+  │     │ ├-IDENTIFIER (b)
+  │     │ ├-COMMA (,)
+  │     │ └-IDENTIFIER (sum)
+  │     ├-COLON (:)
+  │     ├-<type>
+  │     │ └-KEYWORD (integer)
+  │     └-SEMICOLON (;)
+  ├-<compound-statement>
+  │ ├-KEYWORD (mulai)
+  │ ├-<statement-list>
+  │ │ ├-<assignment-statement>
+  │ │ │ ├-IDENTIFIER (a)
+  │ │ │ ├-ASSIGN_OPERATOR (:=)
+  │ │ │ └-<expression>
+  │ │ │   └-<simple-expression>
+  │ │ │     └-<term>
+  │ │ │       └-<factor>
+  │ │ │         └-NUMBER (10)
+  │ │ ├-SEMICOLON (;)
+  │ │ ├-<assignment-statement>
+  │ │ │ ├-IDENTIFIER (b)
+  │ │ │ ├-ASSIGN_OPERATOR (:=)
+  │ │ │ └-<expression>
+  │ │ │   └-<simple-expression>
+  │ │ │     └-<term>
+  │ │ │       └-<factor>
+  │ │ │         └-NUMBER (5)
+  │ │ ├-SEMICOLON (;)
+  │ │ ├-<assignment-statement>
+  │ │ │ ├-IDENTIFIER (sum)
+  │ │ │ ├-ASSIGN_OPERATOR (:=)
+  │ │ │ └-<expression>
+  │ │ │   └-<simple-expression>
+  │ │ │     ├-<term>
+  │ │ │     │ └-<factor>
+  │ │ │     │   └-IDENTIFIER (a)
+  │ │ │     ├-<additive-operator>
+  │ │ │     │ └-ARITHMETIC_OPERATOR (+)
+  │ │ │     ├-<term>
+  │ │ │     │ ├-<factor>
+  │ │ │     │ │ └-IDENTIFIER (b)
+  │ │ │     │ ├-<multiplicative-operator>
+  │ │ │     │ │ └-ARITHMETIC_OPERATOR (*)
+  │ │ │     │ └-<factor>
+  │ │ │     │   └-NUMBER (2)
+  │ │ │     ├-<additive-operator>
+  │ │ │     │ └-ARITHMETIC_OPERATOR (-)
+  │ │ │     └-<term>
+  │ │ │       ├-<factor>
+  │ │ │       │ └-NUMBER (3)
+  │ │ │       ├-<multiplicative-operator>
+  │ │ │       │ └-ARITHMETIC_OPERATOR (bagi)
+  │ │ │       └-<factor>
+  │ │ │         └-NUMBER (2)
+  │ │ ├-SEMICOLON (;)
+  │ │ ├-<procedure/function-call>
+  │ │ │ ├-IDENTIFIER (tulis)
+  │ │ │ ├-LPARENTHESIS (()
+  │ │ │ ├-<parameter-list>
+  │ │ │ │ ├-<expression>
+  │ │ │ │ │ └-<simple-expression>
+  │ │ │ │ │   └-<term>
+  │ │ │ │ │     └-<factor>
+  │ │ │ │ │       └-STRING_LITERAL ('Hasil: ')
+  │ │ │ │ ├-COMMA (,)
+  │ │ │ │ └-<expression>
+  │ │ │ │   └-<simple-expression>
+  │ │ │ │     └-<term>
+  │ │ │ │       └-<factor>
+  │ │ │ │         └-IDENTIFIER (sum)
+  │ │ │ └-RPARENTHESIS ())
+  │ │ └-SEMICOLON (;)
+  │ └-KEYWORD (selesai)
+  └-DOT (.)
+
