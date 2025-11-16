@@ -73,7 +73,8 @@
   │ │ │       └-<term>
   │ │ │         ├-<factor>
   │ │ │         │ └-IDENTIFIER (i)
-  │ │ │         ├-<multiplicative-operator>ARITHMETIC_OPERATOR (*)
+  │ │ │         ├-<multiplicative-operator>
+  │ │ │         │ └-ARITHMETIC_OPERATOR (*)
   │ │ │         └-<factor>
   │ │ │           └-NUMBER (2)
   │ │ ├-SEMICOLON (;)
@@ -128,7 +129,8 @@
   │ │ │ │ │ └-<term>
   │ │ │ │ │   └-<factor>
   │ │ │ │ │     └-IDENTIFIER (i)
-  │ │ │ │ ├-<relational-operator>RELATIONAL_OPERATOR (<)
+  │ │ │ │ ├-<relational-operator>
+  │ │ │ │ │ └-RELATIONAL_OPERATOR (<)
   │ │ │ │ └-<simple-expression>
   │ │ │ │   └-<term>
   │ │ │ │     └-<factor>
@@ -145,7 +147,8 @@
   │ │ │   │       ├-<term>
   │ │ │   │       │ └-<factor>
   │ │ │   │       │   └-IDENTIFIER (i)
-  │ │ │   │       ├-<additive-operator>ARITHMETIC_OPERATOR (+)
+  │ │ │   │       ├-<additive-operator>
+  │ │ │   │       │ └-ARITHMETIC_OPERATOR (+)
   │ │ │   │       └-<term>
   │ │ │   │         └-<factor>
   │ │ │   │           └-NUMBER (1)

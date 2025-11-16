@@ -99,10 +99,12 @@
   │     │ │ │     └-<term>
   │     │ │ │       ├-<factor>
   │     │ │ │       │ └-IDENTIFIER (pi)
-  │     │ │ │       ├-<multiplicative-operator>ARITHMETIC_OPERATOR (*)
+  │     │ │ │       ├-<multiplicative-operator>
+  │     │ │ │       │ └-ARITHMETIC_OPERATOR (*)
   │     │ │ │       ├-<factor>
   │     │ │ │       │ └-IDENTIFIER (radius)
-  │     │ │ │       ├-<multiplicative-operator>ARITHMETIC_OPERATOR (*)
+  │     │ │ │       ├-<multiplicative-operator>
+  │     │ │ │       │ └-ARITHMETIC_OPERATOR (*)
   │     │ │ │       └-<factor>
   │     │ │ │         └-IDENTIFIER (radius)
   │     │ │ └-SEMICOLON (;)
