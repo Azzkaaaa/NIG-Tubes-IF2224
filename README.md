@@ -72,7 +72,7 @@ This method ensures you get the latest version of Go.
     go version
     ```
 
-## Cara run
+## Cara run Lexer
 1. pada root repository ketik:
 
     windows:
@@ -87,12 +87,43 @@ This method ensures you get the latest version of Go.
 
 2. Lalu ketik:
 
-    ```bash
-    ./bin/pslex.exe --rules src/rules/tokenizer.json --input test/milestone-2/(nama file pascal.pas)
-    ```
+   windows:
+   ```bash
+   ./bin/pspar.exe --rules config/tokenizer_indo.json --input test/milestone-2/(nama file pascal.pas)
+   ```
+
+   linux:
+   ```bash
+   ./bin/pspar --rules config/tokenizer_indo.json --input test/milestone-2/(nama file pascal.pas)
+   ```
 
 contoh:
 ./bin/pslex.exe --rules src/rules/tokenizer.json --input test/milestone-2/test1.pas
+
+## Cara run Parser
+1. pada root repository ketik:
+    
+    windows:
+    ```bash
+    go build -C psc/cmd/pspar -o ../../../bin/pspar.exe .
+    ```
+
+    linux:
+   ```bash
+   go build -C psc/cmd/pspar -o ../../../bin/pspar .
+   ```
+
+3. Lalu ketik:
+
+    windows:
+    ```bash
+    ./bin/pspar.exe --rules config/tokenizer_indo.json --input test/milestone-2/(nama file pascal.pas)
+    ```
+
+   linux:
+   ```bash
+   ./bin/pspar --rules config/tokenizer_indo.json --input test/milestone-2/(nama file pascal.pas)
+   ```
 
 ## Pembagian Tugas
 
@@ -109,7 +140,11 @@ contoh:
             <sub><b>Rhio Bimo Prakoso S</b></sub>
         </a>
         </td>
-        <td align="center">Fotografer, Konsumsi, Femboy Generator, Testing, dan Laporan</td>
+        <td align="center">
+          M1: Fotografer, Konsumsi, Femboy Generator, Testing, dan Laporan
+        <br>
+          M2: Tester, Laporan, Code
+        </td>
     </tr>
     <tr>
         <td align="center">
@@ -118,7 +153,11 @@ contoh:
             <sub><b>M Aulia Azka</b></sub>
         </a>
         </td>
-        <td align="center">Engine dan Testing</td>
+        <td align="center">
+          M1: Engine dan Testing
+        <br>
+          M2: Laporan, Tester
+        </td>
     </tr>
     <tr>
         <td align="center">
@@ -127,7 +166,11 @@ contoh:
             <sub><b>Arlow Emmanuel Hergara</b></sub>
         </a>
         </td>
-        <td align="center">Lexer (Graph and Code)</td>
+        <td align="center">
+          M1: Lexer (Graph and Code)
+        <br>
+          M2: Laporan, Code
+        </td>
     </tr>
         <tr>
         <td align="center">
@@ -136,7 +179,11 @@ contoh:
             <sub><b>Fahcriza Ahmad Setiyono</b></sub>
         </a>
         </td>
-        <td align="center">Engine dan Testing</td>
+        <td align="center">
+          M1: Engine dan Testing
+        <br>
+          M2: Laporan, Code
+        </td>
     </tr>
         <tr>
         <td align="center">
@@ -145,7 +192,11 @@ contoh:
             <sub><b>Filbert Engyo</b></sub>
         </a>
         </td>
-        <td align="center">Engine dan Testing</td>
+        <td align="center">
+          M1: Engine dan Testing
+        <br>
+          M2: Tester, Laporan, Code
+        </td>
     </tr>
     </table>
 </div>
