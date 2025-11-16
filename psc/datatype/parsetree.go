@@ -40,6 +40,7 @@ const (
 	RELATIONAL_OPERATOR_NODE
 	ADDITIVE_OPERATOR_NODE
 	MULTIPLICATIVE_OPERATOR_NODE
+	ARRAY_ACCESS_NODE
 	TOKEN_NODE
 )
 
@@ -83,6 +84,7 @@ func (t NodeType) String() string {
 		"<relational-operator>",
 		"<additive-operator>",
 		"<multiplicative-operator>",
+		"<array-access>",
 	}
 
 	if int(t) < 0 || int(t) >= len(names) {

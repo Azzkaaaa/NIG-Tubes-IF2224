@@ -5,8 +5,8 @@ variabel
 mulai
   untuk i := 1 ke 5 lakukan
         arr[i] := i * 2;
-  untuk i := 5 turun-ke 1 lakukan
-        write(arr[i])
+  untuk i := 5 turun_ke 1 lakukan
+        write(arr[i]);
   i := 0;
   selama i < 5 lakukan
   mulai
