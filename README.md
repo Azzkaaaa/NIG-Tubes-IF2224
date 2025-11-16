@@ -143,7 +143,7 @@ contoh:
         <td align="center">
           M1: Fotografer, Konsumsi, Femboy Generator, Testing, dan Laporan
         <br>
-          M2: Tester, Laporan, Code
+          M2: Tester, Laporan, Kode
         </td>
     </tr>
     <tr>
@@ -156,7 +156,7 @@ contoh:
         <td align="center">
           M1: Engine dan Testing
         <br>
-          M2: Laporan, Tester
+          M2: Laporan, Konsumsi
         </td>
     </tr>
     <tr>
@@ -169,7 +169,7 @@ contoh:
         <td align="center">
           M1: Lexer (Graph and Code)
         <br>
-          M2: Laporan, Code
+          M2: Laporan, Debugging
         </td>
     </tr>
         <tr>
@@ -182,7 +182,7 @@ contoh:
         <td align="center">
           M1: Engine dan Testing
         <br>
-          M2: Laporan, Code
+          M2: Kode Visualisasi, Kode Grammar
         </td>
     </tr>
         <tr>
@@ -195,7 +195,7 @@ contoh:
         <td align="center">
           M1: Engine dan Testing
         <br>
-          M2: Tester, Laporan, Code
+          M2: Laporan, Kode Grammar
         </td>
     </tr>
     </table>
