@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"slices"
 
 	iox "github.com/Azzkaaaa/NIG-Tubes-IF2224/psc/common"
+	dt "github.com/Azzkaaaa/NIG-Tubes-IF2224/psc/datatype"
 	"github.com/Azzkaaaa/NIG-Tubes-IF2224/psc/lexer"
 	"github.com/Azzkaaaa/NIG-Tubes-IF2224/psc/parser"
 )
@@ -14,7 +16,6 @@ import (
 func main() {
 	rules := flag.String("rules", "config/tokenizer.json", "path ke DFA JSON")
 	in := flag.String("input", "", "path file sumber")
-	out := flag.String("out", "", "opsional: file output parser")
 	flag.Parse()
 
 	if *in == "" {
@@ -38,15 +39,19 @@ func main() {
 		fmt.Fprintln(os.Stderr, e)
 	}
 
-	if *out != "" {
-		// if err := WriteTokensAndErrorsToFile(*out, tokens, errs); err != nil {
-		// 	log.Fatal(err)
-		// }
-	}
-
 	if len(errs) > 0 {
 		os.Exit(1)
 	}
+
+	tokens = slices.Collect(func(yield func(dt.Token) bool) {
+		for _, token := range tokens {
+			if token.Type != dt.COMMENT {
+				if !yield(token) {
+					return
+				}
+			}
+		}
+	})
 
 	parseTree, err := parser.New(tokens).Parse()
 
