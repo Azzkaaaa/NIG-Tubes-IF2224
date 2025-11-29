@@ -944,6 +944,13 @@ func (p *Parser) parseFormalParameterList() (*dt.ParseTree, error) {
 		},
 	}
 	if !p.match(dt.RPARENTHESIS) {
+		if p.matchExact(dt.KEYWORD, "variabel") {
+			paramListTree.Children = append(paramListTree.Children, dt.ParseTree{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: p.consumeExact(dt.KEYWORD, "variabel"),
+			})
+		}
+
 		idList, err := p.parseIdentifierList()
 		if err != nil {
 			return nil, err
@@ -966,6 +973,19 @@ func (p *Parser) parseFormalParameterList() (*dt.ParseTree, error) {
 		)
 		for p.match(dt.SEMICOLON) {
 			semicolonToken := p.consume(dt.SEMICOLON)
+
+			paramListTree.Children = append(paramListTree.Children, dt.ParseTree{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: semicolonToken,
+			})
+
+			if p.matchExact(dt.KEYWORD, "variabel") {
+				paramListTree.Children = append(paramListTree.Children, dt.ParseTree{
+					RootType:   dt.TOKEN_NODE,
+					TokenValue: p.consumeExact(dt.KEYWORD, "variabel"),
+				})
+			}
+
 			nextIdList, err := p.parseIdentifierList()
 			if err != nil {
 				return nil, p.createParseError(dt.IDENTIFIER, "expected identifier list after ';'")
@@ -982,7 +1002,6 @@ func (p *Parser) parseFormalParameterList() (*dt.ParseTree, error) {
 			}
 
 			paramListTree.Children = append(paramListTree.Children,
-				dt.ParseTree{RootType: dt.TOKEN_NODE, TokenValue: semicolonToken},
 				*nextIdList,
 				dt.ParseTree{RootType: dt.TOKEN_NODE, TokenValue: nextColonToken},
 				*nextTypeNode,
