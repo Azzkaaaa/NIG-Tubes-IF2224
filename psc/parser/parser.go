@@ -1459,35 +1459,13 @@ func (p *Parser) parseFactor() (*dt.ParseTree, error) {
 		Children:   make([]dt.ParseTree, 0),
 	}
 	if p.match(dt.IDENTIFIER) {
-		identifier := p.consume(dt.IDENTIFIER)
+		identifier, err := p.parseAccess()
 
-		if p.match(dt.LPARENTHESIS) {
-			p.pos--
-			factor, err := p.parseSubprogramCall()
-			if err != nil {
-				return nil, p.createParseErrorMany([]dt.TokenType{dt.IDENTIFIER, dt.NUMBER, dt.CHAR_LITERAL, dt.STRING_LITERAL, dt.LPARENTHESIS}, "cannot parse factor")
-			}
-			factorTree.Children = append(factorTree.Children,
-				*factor,
-			)
-		} else if p.match(dt.LBRACKET) {
-			p.pos--
-			element, err := p.parseArrayAccess()
-			if err != nil {
-				return nil, err
-			}
-			factorTree.Children = append(factorTree.Children,
-				*element,
-			)
-		} else {
-			factorTree.Children = append(factorTree.Children,
-				dt.ParseTree{
-					RootType:   dt.TOKEN_NODE,
-					TokenValue: identifier,
-					Children:   nil,
-				},
-			)
+		if err != nil {
+			return nil, err
 		}
+
+		factorTree.Children = append(factorTree.Children, *identifier)
 	} else if p.match(dt.NUMBER) {
 		factor := p.consume(dt.NUMBER)
 		factorTree.Children = append(factorTree.Children,
@@ -1639,6 +1617,80 @@ func (p *Parser) parseMultiplicativeOperator() (*dt.ParseTree, error) {
 	return &multiplicativeOperator, nil
 }
 
+func (p *Parser) parseAccess() (*dt.ParseTree, error) {
+	access := dt.ParseTree{
+		RootType:   dt.ACCESS_NODE,
+		TokenValue: nil,
+		Children:   make([]dt.ParseTree, 0),
+	}
+
+	if !p.match(dt.IDENTIFIER) {
+		return nil, p.createParseError(dt.IDENTIFIER, "expected identifier")
+	}
+
+	var node *dt.ParseTree
+	var err error
+
+	if p.pos < len(p.buffer)-1 {
+		switch p.buffer[p.pos+1].Type {
+		case dt.LPARENTHESIS:
+			node, err = p.parseSubprogramCall()
+		case dt.LBRACKET:
+			node, err = p.parseArrayAccess()
+		default:
+			node = &dt.ParseTree{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: p.consume(dt.IDENTIFIER),
+			}
+		}
+	} else {
+		node = &dt.ParseTree{
+			RootType:   dt.TOKEN_NODE,
+			TokenValue: p.consume(dt.IDENTIFIER),
+		}
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	access.Children = append(access.Children, *node)
+
+	for p.match(dt.DOT) {
+		access.Children = append(access.Children, dt.ParseTree{
+			RootType:   dt.TOKEN_NODE,
+			TokenValue: p.consume(dt.DOT),
+		})
+
+		if p.pos < len(p.buffer)-1 {
+			switch p.buffer[p.pos+1].Type {
+			case dt.LPARENTHESIS:
+				node, err = p.parseSubprogramCall()
+			case dt.LBRACKET:
+				node, err = p.parseArrayAccess()
+			default:
+				node = &dt.ParseTree{
+					RootType:   dt.TOKEN_NODE,
+					TokenValue: p.consume(dt.IDENTIFIER),
+				}
+			}
+		} else {
+			node = &dt.ParseTree{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: p.consume(dt.IDENTIFIER),
+			}
+		}
+
+		if err != nil {
+			return nil, err
+		}
+
+		access.Children = append(access.Children, *node)
+	}
+
+	return &access, nil
+}
+
 func (p *Parser) parseArrayAccess() (*dt.ParseTree, error) {
 	arrayAccess := dt.ParseTree{
 		RootType:   dt.ARRAY_ACCESS_NODE,
@@ -1684,6 +1736,33 @@ func (p *Parser) parseArrayAccess() (*dt.ParseTree, error) {
 		TokenValue: p.consume(dt.RBRACKET),
 		Children:   make([]dt.ParseTree, 0),
 	})
+
+	for p.match(dt.LBRACKET) {
+		arrayAccess.Children = append(arrayAccess.Children, dt.ParseTree{
+			RootType:   dt.TOKEN_NODE,
+			TokenValue: p.consume(dt.LBRACKET),
+			Children:   make([]dt.ParseTree, 0),
+		})
+
+		expression, err := p.parseExpression()
+		if err != nil {
+			return nil, err
+		}
+
+		arrayAccess.Children = append(arrayAccess.Children,
+			*expression,
+		)
+
+		if !p.match(dt.RBRACKET) {
+			return nil, p.createParseError(dt.RBRACKET, "expected ]")
+		}
+
+		arrayAccess.Children = append(arrayAccess.Children, dt.ParseTree{
+			RootType:   dt.TOKEN_NODE,
+			TokenValue: p.consume(dt.RBRACKET),
+			Children:   make([]dt.ParseTree, 0),
+		})
+	}
 
 	return &arrayAccess, nil
 }
