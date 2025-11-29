@@ -444,7 +444,15 @@ func (p *Parser) parseTypeDeclaration() (*dt.ParseTree, error) {
 		return nil, p.createParseError(dt.RELATIONAL_OPERATOR, "expected = after type identifier")
 	}
 
-	parsedType, err := p.parseType()
+	var parsedType *dt.ParseTree
+	var err error
+
+	if p.matchExact(dt.KEYWORD, "rekaman") {
+		parsedType, err = p.parseRecordType()
+	} else {
+		parsedType, err = p.parseType()
+	}
+
 	if err != nil {
 		return nil, err
 	}
@@ -1765,4 +1773,41 @@ func (p *Parser) parseArrayAccess() (*dt.ParseTree, error) {
 	}
 
 	return &arrayAccess, nil
+}
+
+func (p *Parser) parseRecordType() (*dt.ParseTree, error) {
+	record := p.consumeExact(dt.KEYWORD, "rekaman")
+
+	if record == nil {
+		return nil, p.createParseError(dt.KEYWORD, "expected rekaman keyword")
+	}
+
+	recordType := dt.ParseTree{
+		RootType:   dt.VAR_DECLARATION_PART_NODE,
+		TokenValue: nil,
+		Children: []dt.ParseTree{
+			{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: record,
+				Children:   nil,
+			},
+		},
+	}
+
+	if !p.match(dt.IDENTIFIER) {
+		return nil, p.createParseError(dt.IDENTIFIER, "expected at least one field declaration")
+	}
+
+	for p.match(dt.IDENTIFIER) {
+		variableDeclaration, err := p.parseVarDeclaration()
+
+		if err != nil {
+			return nil, err
+		}
+
+		recordType.Children = append(recordType.Children,
+			*variableDeclaration,
+		)
+	}
+	return &recordType, nil
 }
