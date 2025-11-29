@@ -41,6 +41,7 @@ const (
 	ADDITIVE_OPERATOR_NODE
 	MULTIPLICATIVE_OPERATOR_NODE
 	ACCESS_NODE
+	STATIC_ACCESS_NODE
 	ARRAY_ACCESS_NODE
 	RECORD_TYPE_NODE
 	TOKEN_NODE
@@ -88,6 +89,7 @@ func (t NodeType) String() string {
 		"<multiplicative-operator>",
 		"<access>",
 		"<array-access>",
+		"<static-access>",
 		"<record-type>",
 		"<token>",
 	}

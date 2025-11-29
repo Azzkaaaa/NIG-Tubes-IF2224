@@ -1086,31 +1086,10 @@ func (p *Parser) parseStatementList() (*dt.ParseTree, error) {
 }
 
 func (p *Parser) parseAssignmentStatement() (*dt.ParseTree, error) {
-	var lvalue dt.ParseTree
+	lvalue, err := p.parseStaticAccess()
 
-	p.pos++
-	if p.match(dt.LBRACKET) {
-		p.pos--
-
-		plvalue, err := p.parseArrayAccess()
-
-		if err != nil {
-			return nil, err
-		}
-
-		lvalue = *plvalue
-	} else {
-		p.pos--
-
-		identifier := p.consume(dt.IDENTIFIER)
-		if identifier == nil {
-			return nil, p.createParseError(dt.IDENTIFIER, "expected identifier for assignment")
-		}
-
-		lvalue = dt.ParseTree{
-			RootType:   dt.TOKEN_NODE,
-			TokenValue: identifier,
-		}
+	if err != nil {
+		return nil, err
 	}
 
 	assignOp := p.consume(dt.ASSIGN_OPERATOR)
@@ -1126,7 +1105,7 @@ func (p *Parser) parseAssignmentStatement() (*dt.ParseTree, error) {
 	assignTree := dt.ParseTree{
 		RootType: dt.ASSIGNMENT_STATEMENT_NODE,
 		Children: []dt.ParseTree{
-			lvalue,
+			*lvalue,
 			{RootType: dt.TOKEN_NODE, TokenValue: assignOp},
 			*expr,
 		},
@@ -1655,13 +1634,52 @@ func (p *Parser) parseAccess() (*dt.ParseTree, error) {
 		return nil, p.createParseError(dt.IDENTIFIER, "expected identifier")
 	}
 
+	if p.pos < len(p.buffer)-1 {
+		if p.buffer[p.pos+1].Type == dt.LPARENTHESIS {
+			call, err := p.parseSubprogramCall()
+
+			if err != nil {
+				return nil, err
+			}
+
+			dot := p.consume(dt.DOT)
+
+			if dot == nil {
+				return &dt.ParseTree{
+					RootType: dt.ACCESS_NODE,
+					Children: []dt.ParseTree{*call},
+				}, nil
+			}
+		}
+	}
+
+	node, err := p.parseStaticAccess()
+
+	if err != nil {
+		return nil, err
+	}
+
+	access.Children = append(access.Children, *node)
+
+	return &access, nil
+}
+
+func (p *Parser) parseStaticAccess() (*dt.ParseTree, error) {
+	access := dt.ParseTree{
+		RootType:   dt.ACCESS_NODE,
+		TokenValue: nil,
+		Children:   make([]dt.ParseTree, 0),
+	}
+
+	if !p.match(dt.IDENTIFIER) {
+		return nil, p.createParseError(dt.IDENTIFIER, "expected identifier")
+	}
+
 	var node *dt.ParseTree
 	var err error
 
 	if p.pos < len(p.buffer)-1 {
 		switch p.buffer[p.pos+1].Type {
-		case dt.LPARENTHESIS:
-			node, err = p.parseSubprogramCall()
 		case dt.LBRACKET:
 			node, err = p.parseArrayAccess()
 		default:
@@ -1691,8 +1709,6 @@ func (p *Parser) parseAccess() (*dt.ParseTree, error) {
 
 		if p.pos < len(p.buffer)-1 {
 			switch p.buffer[p.pos+1].Type {
-			case dt.LPARENTHESIS:
-				node, err = p.parseSubprogramCall()
 			case dt.LBRACKET:
 				node, err = p.parseArrayAccess()
 			default:
