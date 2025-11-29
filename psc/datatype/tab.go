@@ -1,7 +1,6 @@
 package datatype
 
 import (
-	"errors"
 	"fmt"
 )
 
@@ -14,6 +13,9 @@ const (
 	TAB_ENTRY_TYPE
 	TAB_ENTRY_PROC
 	TAB_ENTRY_FUNC
+	TAB_ENTRY_PARAM
+	TAB_ENTRY_FIELD
+	TAB_ENTRY_RETURN
 )
 
 func (o TabEntryObject) String() string {
@@ -24,6 +26,9 @@ func (o TabEntryObject) String() string {
 		"type",
 		"procedure",
 		"function",
+		"parameter",
+		"field",
+		"return",
 	}
 
 	if int(o) < 0 || int(o) > len(names) {
@@ -36,22 +41,26 @@ func (o TabEntryObject) String() string {
 type TabEntryType int
 
 const (
-	TAB_ENTRY_INTEGER TabEntryType = iota
+	TAB_ENTRY_NONE TabEntryType = iota
+	TAB_ENTRY_INTEGER
 	TAB_ENTRY_REAL
 	TAB_ENTRY_BOOLEAN
 	TAB_ENTRY_CHAR
 	TAB_ENTRY_ARRAY
 	TAB_ENTRY_RECORD
+	TAB_ENTRY_ALIAS
 )
 
 func (o TabEntryType) String() string {
 	names := []string{
+		"none",
 		"integer",
 		"real",
 		"boolean",
 		"char",
 		"array",
 		"record",
+		"alias",
 	}
 
 	if int(o) < 0 || int(o) > len(names) {
@@ -62,7 +71,6 @@ func (o TabEntryType) String() string {
 }
 
 type TabEntry struct {
-	Index      int
 	Identifier string
 	Link       int
 	Object     TabEntryObject
@@ -75,14 +83,20 @@ type TabEntry struct {
 
 type Tab []TabEntry
 
-func (t Tab) GetByIdentifier(identifier string) (TabEntry, error) {
-	for i := 0; i < len(t); i++ {
-		if t[i].Identifier == identifier {
-			return t[i], nil
+func (t Tab) FindIdentifier(identifier string, baseIndex int) (int, *TabEntry) {
+	for {
+		if t[baseIndex].Identifier == identifier {
+			return baseIndex, &t[baseIndex]
+		}
+
+		baseIndex = t[baseIndex].Link
+
+		if baseIndex == 0 {
+			break
 		}
 	}
 
-	return TabEntry{}, errors.New("index out of range")
+	return -1, nil
 }
 
 func (t Tab) String() string {
@@ -94,7 +108,7 @@ func (t Tab) String() string {
 	out := "Idx  Identifier       Link  Object        Type          Ref   Norm  Level  Data\n"
 	out += "---- ---------------- ----- ------------- ------------- ----- ----- ------ -----\n"
 
-	for _, e := range t {
+	for i, e := range t {
 		identifier := e.Identifier
 
 		if len(identifier) > 16 {
@@ -103,7 +117,7 @@ func (t Tab) String() string {
 
 		out += fmt.Sprintf(
 			"%-4d %-16s %-5d %-13s %-13s %-5d %-5t %-6d %-5d\n",
-			e.Index,
+			i,
 			identifier,
 			e.Link,
 			e.Object.String(),

@@ -1,13 +1,16 @@
 package datatype
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type BtabEntry struct {
-	Index        int
 	Start        int
-	End          int
 	ParamEnd     int
+	ReturnEnd    int
+	End          int
 	ParamSize    int
+	ReturnSize   int
 	VariableSize int
 }
 
@@ -21,10 +24,10 @@ func (t Btab) String() string {
 	out := "Idx  Start  End    ParamEnd  ParamSize  VarSize\n"
 	out += "---- ------ ------ --------- ---------- --------\n"
 
-	for _, e := range t {
+	for i, e := range t {
 		out += fmt.Sprintf(
 			"%-4d %-6d %-6d %-9d %-10d %-8d\n",
-			e.Index,
+			i,
 			e.Start,
 			e.End,
 			e.ParamEnd,

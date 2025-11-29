@@ -1569,13 +1569,13 @@ func (p *Parser) parseRelationalOperator() (*dt.ParseTree, error) {
 	relationalOperator := dt.ParseTree{
 		RootType:   dt.RELATIONAL_OPERATOR_NODE,
 		TokenValue: nil,
-		Children:	[]dt.ParseTree{
-            {
-                RootType:   dt.TOKEN_NODE,
-                TokenValue: expectedRelationalOperator,
-                Children:   make([]dt.ParseTree, 0),
-            },
-        },
+		Children: []dt.ParseTree{
+			{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: expectedRelationalOperator,
+				Children:   make([]dt.ParseTree, 0),
+			},
+		},
 	}
 
 	return &relationalOperator, nil
@@ -1596,13 +1596,13 @@ func (p *Parser) parseAdditiveOperator() (*dt.ParseTree, error) {
 	additiveOperator := dt.ParseTree{
 		RootType:   dt.ADDITIVE_OPERATOR_NODE,
 		TokenValue: nil,
-		Children:   []dt.ParseTree{
-            {
-                RootType:   dt.TOKEN_NODE,
-                TokenValue: expectedAdditionOperator,
-                Children:   make([]dt.ParseTree, 0),
-            },
-        },
+		Children: []dt.ParseTree{
+			{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: expectedAdditionOperator,
+				Children:   make([]dt.ParseTree, 0),
+			},
+		},
 	}
 
 	return &additiveOperator, nil
@@ -1627,13 +1627,13 @@ func (p *Parser) parseMultiplicativeOperator() (*dt.ParseTree, error) {
 	multiplicativeOperator := dt.ParseTree{
 		RootType:   dt.MULTIPLICATIVE_OPERATOR_NODE,
 		TokenValue: nil,
-		Children:   []dt.ParseTree{
-            {
-                RootType:   dt.TOKEN_NODE,
-                TokenValue: expectedMultiplicativeOperator,
-                Children:   make([]dt.ParseTree, 0),
-            },
-        },
+		Children: []dt.ParseTree{
+			{
+				RootType:   dt.TOKEN_NODE,
+				TokenValue: expectedMultiplicativeOperator,
+				Children:   make([]dt.ParseTree, 0),
+			},
+		},
 	}
 
 	return &multiplicativeOperator, nil

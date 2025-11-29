@@ -4,38 +4,9 @@ import (
 	"fmt"
 )
 
-type AtabEntryType int
-
-const (
-	ATAB_ENTRY_INTEGER AtabEntryType = iota
-	ATAB_ENTRY_REAL
-	ATAB_ENTRY_BOOLEAN
-	ATAB_ENTRY_CHAR
-	ATAB_ENTRY_ARRAY
-	ATAB_ENTRY_RECORD
-)
-
-func (o AtabEntryType) String() string {
-	names := []string{
-		"integer",
-		"real",
-		"boolean",
-		"char",
-		"array",
-		"record",
-	}
-
-	if int(o) < 0 || int(o) > len(names) {
-		return "unknown"
-	}
-
-	return names[o]
-}
-
 type AtabEntry struct {
-	Index            int
-	IndexType        AtabEntryType
-	ElementType      AtabEntryType
+	IndexType        TabEntryType
+	ElementType      TabEntryType
 	ElementReference int
 	LowBound         int
 	HighBound        int
@@ -45,6 +16,39 @@ type AtabEntry struct {
 
 type Atab []AtabEntry
 
+func (t Atab) FindArray(entry AtabEntry) (int, *AtabEntry) {
+	for i, v := range t {
+		if v.IndexType != entry.IndexType {
+			continue
+		}
+
+		if v.ElementType != entry.ElementType {
+			continue
+		}
+
+		if v.ElementReference != entry.ElementReference {
+			switch v.ElementType {
+			case TAB_ENTRY_ARRAY:
+				fallthrough
+			case TAB_ENTRY_RECORD:
+				continue
+			}
+		}
+
+		if v.LowBound != entry.LowBound {
+			continue
+		}
+
+		if v.HighBound != entry.HighBound {
+			continue
+		}
+
+		return i, &v
+	}
+
+	return -1, nil
+}
+
 func (t Atab) String() string {
 	if len(t) == 0 {
 		return "<empty array table>"
@@ -53,10 +57,10 @@ func (t Atab) String() string {
 	out := "Idx  IdxType      ElemType     ElemRef  Low   High  ElemSize  TotalSize\n"
 	out += "---- ------------ ------------ -------- ----- ----- --------- ----------\n"
 
-	for _, e := range t {
+	for i, e := range t {
 		out += fmt.Sprintf(
 			"%-4d %-12s %-12s %-8d %-5d %-5d %-9d %-10d\n",
-			e.Index,
+			i,
 			e.IndexType.String(),
 			e.ElementType.String(),
 			e.ElementReference,
