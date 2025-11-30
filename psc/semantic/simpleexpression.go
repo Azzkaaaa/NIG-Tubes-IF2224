@@ -82,7 +82,10 @@ func (a *SemanticAnalyzer) recurseSimpleExpression(nodes []dt.ParseTree) (*dt.De
 		return nil, rtype, err
 	}
 
-	if !a.checkTypeEquality(ltype, rtype) {
+	// Promote types if needed (e.g., integer + real)
+	promotedLval, promotedRval, resultType, compatible := a.promoteTypes(lval, ltype, rval, rtype)
+
+	if !compatible {
 		// Get operator token
 		token := nodes[len(nodes)-2].Children[0].TokenValue
 		return nil, ltype, a.newOperatorTypeError(
@@ -93,11 +96,11 @@ func (a *SemanticAnalyzer) recurseSimpleExpression(nodes []dt.ParseTree) (*dt.De
 		)
 	}
 
-	dst.Children[0] = *lval
+	dst.Children[0] = *promotedLval
 	dst.Children[0].Property = dt.DST_OPERAND
 
-	dst.Children[1] = *rval
+	dst.Children[1] = *promotedRval
 	dst.Children[1].Property = dt.DST_OPERAND
 
-	return dst, ltype, nil
+	return dst, resultType, nil
 }
