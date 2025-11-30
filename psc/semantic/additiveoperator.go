@@ -7,7 +7,7 @@ import (
 )
 
 func (a *SemanticAnalyzer) analyzeAdditiveOperator(parsetree *dt.ParseTree) (dt.DSTNodeType, error) {
-	if parsetree.RootType != dt.MULTIPLICATIVE_OPERATOR_NODE {
+	if parsetree.RootType != dt.ADDITIVE_OPERATOR_NODE {
 		return dt.DST_ADD_OPERATOR, errors.New("operator is not additive")
 	}
 
