@@ -81,7 +81,7 @@ func New(parseTree *dt.ParseTree) *SemanticAnalyzer {
 		},
 		btab: dt.Btab{
 			dt.BtabEntry{
-				Start:        1,
+				Start:        2,
 				ParamEnd:     3,
 				ReturnEnd:    3,
 				End:          3,

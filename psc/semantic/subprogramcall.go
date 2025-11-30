@@ -49,17 +49,17 @@ func (a *SemanticAnalyzer) analyzeSubprogramCall(parseTree *dt.ParseTree) (*dt.D
 		Children: make([]dt.DecoratedSyntaxTree, len(callParams)),
 	}
 
-	for i := paramStart; i < paramEnd; i++ {
+	for i := paramStart; i < paramEnd+1; i++ {
 		declaredType := semanticType{
 			StaticType: a.tab[i].Type,
 			Reference:  a.tab[i].Reference,
 		}
 
-		if declaredType != callTypes[i] {
+		if declaredType != callTypes[i-paramStart] {
 			return nil, semanticType{}, errors.New("parameter type mismatch")
 		}
 
-		dst.Children[i] = callParams[i]
+		dst.Children[i-paramStart] = callParams[i-paramStart]
 	}
 
 	return dst, semanticType{
