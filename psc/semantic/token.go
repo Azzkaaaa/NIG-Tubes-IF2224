@@ -127,11 +127,19 @@ func (a *SemanticAnalyzer) analyzeToken(parsetree *dt.ParseTree) (*dt.DecoratedS
 		index, tabEntry := a.tab.FindIdentifier(parsetree.TokenValue.Lexeme, a.root)
 
 		if tabEntry == nil {
-			return nil, semanticType{}, errors.New("undeclared variable")
+			return nil, semanticType{}, a.newUndeclaredIdentError(
+				parsetree.TokenValue.Lexeme,
+				parsetree.TokenValue,
+			)
 		}
 
 		if tabEntry.Object != dt.TAB_ENTRY_VAR {
-			return nil, semanticType{}, errors.New("identifier does not reference variable")
+			return nil, semanticType{}, a.newInvalidTypeError(
+				parsetree.TokenValue.Lexeme,
+				"variable",
+				tabEntry.Object.String(),
+				parsetree.TokenValue,
+			)
 		}
 
 		return &dt.DecoratedSyntaxTree{

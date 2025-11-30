@@ -30,7 +30,13 @@ func (a *SemanticAnalyzer) analyzeAssignmentStatement(parsetree *dt.ParseTree) (
 		if a.canCastImplicitly(valueType, targetType) {
 			value, valueType = a.insertImplicitCast(value, valueType, targetType)
 		} else {
-			return nil, errors.New("target type and value type are incompatible")
+			// Get token for error reporting (from assignment operator)
+			assignToken := parsetree.Children[1].TokenValue
+			return nil, a.newAssignmentError(
+				targetType.StaticType.String(),
+				valueType.StaticType.String(),
+				assignToken,
+			)
 		}
 	}
 

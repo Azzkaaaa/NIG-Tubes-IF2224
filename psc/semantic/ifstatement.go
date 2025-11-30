@@ -18,7 +18,9 @@ func (a *SemanticAnalyzer) analyzeIfStatement(parsetree *dt.ParseTree) (*dt.Deco
 	}
 
 	if typ.StaticType != dt.TAB_ENTRY_BOOLEAN {
-		return nil, errors.New("condition must be a boolean type")
+		// Get token from 'jika' keyword
+		token := parsetree.Children[0].TokenValue
+		return nil, a.newConditionTypeError(typ.StaticType.String(), token)
 	}
 
 	thenBlock, err := a.analyzeStatement(&parsetree.Children[3])

@@ -83,7 +83,14 @@ func (a *SemanticAnalyzer) recurseSimpleExpression(nodes []dt.ParseTree) (*dt.De
 	}
 
 	if !a.checkTypeEquality(ltype, rtype) {
-		return nil, ltype, errors.New("operand types do not match")
+		// Get operator token
+		token := nodes[len(nodes)-2].Children[0].TokenValue
+		return nil, ltype, a.newOperatorTypeError(
+			token.Lexeme,
+			ltype.StaticType.String(),
+			rtype.StaticType.String(),
+			token,
+		)
 	}
 
 	dst.Children[0] = *lval

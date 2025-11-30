@@ -16,7 +16,8 @@ func (a *SemanticAnalyzer) analyzeTypeDeclaration(parsetree *dt.ParseTree) (*dt.
 
 	if prev != nil {
 		if prev.Level == a.depth {
-			return nil, errors.New("identifier redefined in the same scope")
+			token := parsetree.Children[0].TokenValue
+			return nil, a.newRedeclarationError(identifier, token)
 		}
 	}
 

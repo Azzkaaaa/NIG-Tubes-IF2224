@@ -19,11 +19,18 @@ func (a *SemanticAnalyzer) analyzeType(parsetree *dt.ParseTree) (int, dt.TabEntr
 			index, tabEntry := a.tab.FindIdentifier(child.TokenValue.Lexeme, a.root)
 
 			if tabEntry == nil {
-				return -1, dt.TabEntry{}, errors.New("undefined type")
+				token := child.TokenValue
+				return -1, dt.TabEntry{}, a.newUndeclaredIdentError(child.TokenValue.Lexeme, token)
 			}
 
 			if tabEntry.Object != dt.TAB_ENTRY_TYPE {
-				return -1, dt.TabEntry{}, errors.New("identifier is not a type")
+				token := child.TokenValue
+				return -1, dt.TabEntry{}, a.newInvalidTypeError(
+					child.TokenValue.Lexeme,
+					"type",
+					tabEntry.Object.String(),
+					token,
+				)
 			}
 
 			return index, *tabEntry, nil

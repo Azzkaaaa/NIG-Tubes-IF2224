@@ -107,3 +107,83 @@ func (a *SemanticAnalyzer) newArrayBoundsError(token *dt.Token) error {
 		"array type declaration",
 	)
 }
+
+func (a *SemanticAnalyzer) newParameterCountError(expected int, got int, funcName string, token *dt.Token) error {
+	return NewSemanticError(
+		fmt.Sprintf("parameter count mismatch for '%s': expected %d, got %d", funcName, expected, got),
+		token,
+		"subprogram call",
+	)
+}
+
+func (a *SemanticAnalyzer) newParameterTypeError(paramIndex int, expected string, got string, funcName string, token *dt.Token) error {
+	return NewSemanticError(
+		fmt.Sprintf("parameter %d type mismatch for '%s': expected %s, got %s", paramIndex+1, funcName, expected, got),
+		token,
+		"subprogram call",
+	)
+}
+
+func (a *SemanticAnalyzer) newNotCallableError(identifier string, actualType string, token *dt.Token) error {
+	return NewSemanticError(
+		fmt.Sprintf("'%s' is not callable (it is a %s)", identifier, actualType),
+		token,
+		"subprogram call",
+	)
+}
+
+func (a *SemanticAnalyzer) newInvalidArrayAccessError(identifier string, actualType string, token *dt.Token) error {
+	return NewSemanticError(
+		fmt.Sprintf("cannot index '%s': not an array (type is %s)", identifier, actualType),
+		token,
+		"array access",
+	)
+}
+
+func (a *SemanticAnalyzer) newInvalidRecordAccessError(identifier string, actualType string, token *dt.Token) error {
+	return NewSemanticError(
+		fmt.Sprintf("cannot access field of '%s': not a record (type is %s)", identifier, actualType),
+		token,
+		"record field access",
+	)
+}
+
+func (a *SemanticAnalyzer) newUndeclaredFieldError(fieldName string, recordName string, token *dt.Token) error {
+	return NewSemanticError(
+		fmt.Sprintf("record '%s' has no field named '%s'", recordName, fieldName),
+		token,
+		"record field access",
+	)
+}
+
+func (a *SemanticAnalyzer) newOperatorTypeError(operator string, leftType string, rightType string, token *dt.Token) error {
+	return NewSemanticError(
+		fmt.Sprintf("operator '%s' cannot be applied to types %s and %s", operator, leftType, rightType),
+		token,
+		"operator type checking",
+	)
+}
+
+func (a *SemanticAnalyzer) newInvalidTypeError(identifier string, expectedKind string, actualKind string, token *dt.Token) error {
+	return NewSemanticError(
+		fmt.Sprintf("'%s' is not a %s (it is a %s)", identifier, expectedKind, actualKind),
+		token,
+		"type checking",
+	)
+}
+
+func (a *SemanticAnalyzer) newConditionTypeError(actualType string, token *dt.Token) error {
+	return NewSemanticError(
+		fmt.Sprintf("condition must be boolean, got %s", actualType),
+		token,
+		"control flow statement",
+	)
+}
+
+func (a *SemanticAnalyzer) newAssignmentError(targetType string, valueType string, token *dt.Token) error {
+	return NewSemanticError(
+		fmt.Sprintf("cannot assign %s to %s", valueType, targetType),
+		token,
+		"assignment statement",
+	)
+}

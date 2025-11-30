@@ -15,7 +15,8 @@ func (a *SemanticAnalyzer) analyzeSubprogramCall(parseTree *dt.ParseTree) (*dt.D
 	index, tabEntry := a.tab.FindIdentifier(subprogramIdentifier, a.root)
 
 	if tabEntry == nil {
-		return nil, semanticType{}, errors.New("identifier is not defined")
+		token := parseTree.Children[0].TokenValue
+		return nil, semanticType{}, a.newUndeclaredIdentError(subprogramIdentifier, token)
 	}
 
 	var callType dt.DSTNodeType
@@ -26,7 +27,12 @@ func (a *SemanticAnalyzer) analyzeSubprogramCall(parseTree *dt.ParseTree) (*dt.D
 	case dt.TAB_ENTRY_PROC:
 		callType = dt.DST_PROCEDURE_CALL
 	default:
-		return nil, semanticType{}, errors.New("identifier does not reference a function or procedure")
+		token := parseTree.Children[0].TokenValue
+		return nil, semanticType{}, a.newNotCallableError(
+			subprogramIdentifier,
+			tabEntry.Object.String(),
+			token,
+		)
 	}
 
 	btabEntry := a.btab[tabEntry.Data]
@@ -40,7 +46,13 @@ func (a *SemanticAnalyzer) analyzeSubprogramCall(parseTree *dt.ParseTree) (*dt.D
 	}
 
 	if len(callParams) != (paramEnd - paramStart + 1) {
-		return nil, semanticType{}, errors.New("parameter count mismatch")
+		token := parseTree.Children[0].TokenValue
+		return nil, semanticType{}, a.newParameterCountError(
+			paramEnd-paramStart+1,
+			len(callParams),
+			subprogramIdentifier,
+			token,
+		)
 	}
 
 	dst := &dt.DecoratedSyntaxTree{
@@ -55,8 +67,15 @@ func (a *SemanticAnalyzer) analyzeSubprogramCall(parseTree *dt.ParseTree) (*dt.D
 			Reference:  a.tab[i].Reference,
 		}
 
-		if declaredType != callTypes[i-paramStart] {
-			return nil, semanticType{}, errors.New("parameter type mismatch")
+		if !a.checkTypeEquality(declaredType, callTypes[i-paramStart]) {
+			token := parseTree.Children[0].TokenValue
+			return nil, semanticType{}, a.newParameterTypeError(
+				i-paramStart,
+				declaredType.StaticType.String(),
+				callTypes[i-paramStart].StaticType.String(),
+				subprogramIdentifier,
+				token,
+			)
 		}
 
 		dst.Children[i-paramStart] = callParams[i-paramStart]
