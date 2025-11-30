@@ -150,13 +150,13 @@ func (a *SemanticAnalyzer) checkTypeEquality(t1 semanticType, t2 semanticType) b
 func (a *SemanticAnalyzer) getTypeSize(t semanticType) int {
 	switch t.StaticType {
 	case dt.TAB_ENTRY_INTEGER:
-		return strconv.IntSize
+		return strconv.IntSize / 8 // Convert bits to bytes (32/8=4 or 64/8=8)
 	case dt.TAB_ENTRY_REAL:
-		return strconv.IntSize
+		return strconv.IntSize / 8 // Convert bits to bytes (32/8=4 or 64/8=8)
 	case dt.TAB_ENTRY_BOOLEAN:
-		return 1
+		return 1 // 1 byte
 	case dt.TAB_ENTRY_CHAR:
-		return 1
+		return 1 // 1 byte
 	case dt.TAB_ENTRY_RECORD:
 		return a.btab[t.Reference].VariableSize
 	case dt.TAB_ENTRY_ARRAY:
