@@ -89,12 +89,12 @@ This method ensures you get the latest version of Go.
 
    windows:
    ```bash
-   ./bin/pspar.exe --rules config/tokenizer_indo.json --input test/milestone-2/(nama file pascal.pas)
+   ./bin/pspar.exe --rules config/tokenizer_indo.json --input test/milestone-1/(nama file pascal.pas)
    ```
 
    linux:
    ```bash
-   ./bin/pspar --rules config/tokenizer_indo.json --input test/milestone-2/(nama file pascal.pas)
+   ./bin/pspar --rules config/tokenizer_indo.json --input test/milestone-1/(nama file pascal.pas)
    ```
 
 contoh:
@@ -113,7 +113,7 @@ contoh:
    go build -C psc/cmd/pspar -o ../../../bin/pspar .
    ```
 
-3. Lalu ketik:
+2. Lalu ketik:
 
     windows:
     ```bash
@@ -125,6 +125,31 @@ contoh:
    ./bin/pspar --rules config/tokenizer_indo.json --input test/milestone-2/(nama file pascal.pas)
    ```
 
+## Cara run Semantic Analysis
+1. pada root repository ketik:
+    
+    windows:
+    ```bash
+    go build -C psc/cmd/pschk -o ../../../bin/pschk.exe .
+    ```
+
+    linux:
+   ```bash
+   go build -C psc/cmd/pschk -o ../../../bin/pschk .
+   ```
+
+2. Lalu ketik:
+
+    windows:
+    ```bash
+    ./bin/pschk.exe --rules config/tokenizer_m3.json --input test/milestone-3/(nama file pascal.pas)
+    ```
+
+   linux:
+   ```bash
+   ./bin/pschk --rules config/tokenizer_m3.json --input test/milestone-3/(nama file pascal.pas)
+   ```
+  
 ## Pembagian Tugas
 
 <div>
@@ -144,6 +169,8 @@ contoh:
           M1: Fotografer, Konsumsi, Femboy Generator, Testing, dan Laporan
         <br>
           M2: Tester, Laporan, Kode
+        <br>
+          M3: Laporan, Kode, Fix
         </td>
     </tr>
     <tr>
@@ -157,6 +184,8 @@ contoh:
           M1: Engine dan Testing
         <br>
           M2: Laporan, Konsumsi
+        <br>
+          M3: Kode, Testing, Fix
         </td>
     </tr>
     <tr>
@@ -170,6 +199,8 @@ contoh:
           M1: Lexer (Graph and Code)
         <br>
           M2: Laporan, Debugging
+        <br>
+          M3: Kode, Debugging, Testing
         </td>
     </tr>
         <tr>
@@ -183,6 +214,8 @@ contoh:
           M1: Engine dan Testing
         <br>
           M2: Kode Visualisasi, Kode Grammar
+        <br>
+          M3: Kode, Debugging, Testing
         </td>
     </tr>
         <tr>
@@ -196,6 +229,8 @@ contoh:
           M1: Engine dan Testing
         <br>
           M2: Laporan, Kode Grammar
+        <br>
+          M3: Laporan, Kode, Debugging
         </td>
     </tr>
     </table>

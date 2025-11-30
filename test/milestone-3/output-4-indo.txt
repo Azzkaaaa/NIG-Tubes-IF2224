@@ -1,0 +1,69 @@
+program: arraytest (tab[4])
+  ├─const-decls
+  │ └─const: kons (tab[5])
+  ├─type-decls
+  │ ├─type: angka (tab[6])
+  │ └─type: mobil (tab[7])
+  ├─var-decls
+  │ ├─declare: variable: arr (tab[10])
+  │ ├─declare: variable: i (tab[11])
+  │ └─declare: variable: mobil1 (tab[12])
+  └─block
+    ├─assign-op (7)
+    │ ├─target: record-field: tahun (tab[8])
+    │ │ └─from: variable: mobil1 (tab[12])
+    │ └─value: int-literal: 2004
+    ├─assign-op (7)
+    │ ├─target: record-field: merek (tab[9])
+    │ │ └─from: variable: mobil1 (tab[12])
+    │ └─value: str-literal: "'honda'"
+    └─for-block
+      ├─target: variable: i (tab[11])
+      ├─value: int-literal: 1
+      ├─upto: int-literal: 5
+      └─execute: assign-op (1)
+        ├─target: array-element: write (tab[1])
+        │ ├─from: variable: arr (tab[10])
+        │ └─index: variable: i (tab[11])
+        └─value: mul-op
+          ├─operand: variable: i (tab[11])
+          └─operand: int-literal: 2
+
+
+=== Symbol Table (TAB) ===
+Idx  Identifier       Link  Object        Type          Ref   Norm  Level  Data
+---- ---------------- ----- ------------- ------------- ----- ----- ------ -----
+0    string           -1    type          array         0     false 0      0    
+1    write            0     procedure     none          0     false 0      0    
+2    writeparam1      1     parameter     alias         0     false 1      0    
+3    writeparam2      2     parameter     alias         0     false 1      0    
+4    arraytest        3     program       none          0     false 0      0    
+5    kons             4     constant      integer       0     false 0      67   
+6    angka            5     type          integer       0     false 0      0    
+7    mobil            6     type          record        1     false 0      0    
+8    tahun            7     field         alias         6     false 1      0    
+9    merek            8     field         alias         0     false 1      8    
+10   arr              7     variable      array         1     false 0      0    
+11   i                10    variable      integer       0     false 0      320  
+12   mobil1           11    variable      alias         7     false 0      328  
+
+
+=== Array Table (ATAB) ===
+Idx  IdxType      ElemType     ElemRef  Low   High  ElemSize  TotalSize
+---- ------------ ------------ -------- ----- ----- --------- ----------
+0    integer      char         0        0     255   1         256       
+1    integer      integer      0        1     5     64        320       
+
+
+=== Block Table (BTAB) ===
+Idx  Start  End    ParamEnd  ReturnEnd  ParamSize  ReturnSize  VarSize
+---- ------ ------ --------- ---------- ---------- ----------- --------
+0    2      3      3         3          512        0           0       
+1    8      9      0         0          0          0           8       
+
+
+=== String Table (STRTAB) ===
+Idx  Len   String
+---- ----- --------------------------------
+0    7     'honda'                       
+

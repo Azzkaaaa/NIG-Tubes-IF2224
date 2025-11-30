@@ -1,0 +1,75 @@
+program: nestedfunctionexample (tab[4])
+  ├─function: outerfunction (tab[5])
+  │ ├─var-decls
+  │ │ └─parameter: variable: x (tab[6])
+  │ ├─function: innerfunction (tab[8])
+  │ │ ├─var-decls
+  │ │ │ └─parameter: variable: y (tab[9])
+  │ │ └─block
+  │ │   └─assign-op (1)
+  │ │     ├─target: variable: innerfunction (tab[10])
+  │ │     └─value: mul-op
+  │ │       ├─operand: variable: y (tab[9])
+  │ │       └─operand: int-literal: 2
+  │ ├─function: blackfunction (tab[11])
+  │ │ ├─var-decls
+  │ │ │ └─parameter: variable: y (tab[12])
+  │ │ └─block
+  │ │   └─assign-op (1)
+  │ │     ├─target: variable: blackfunction (tab[13])
+  │ │     └─value: mul-op
+  │ │       ├─operand: variable: y (tab[12])
+  │ │       └─operand: int-literal: 2
+  │ └─block
+  │   └─assign-op (1)
+  │     ├─target: variable: outerfunction (tab[7])
+  │     └─value: add-op
+  │       ├─operand: function-call: innerfunction (tab[8])
+  │       │ └─variable: x (tab[6])
+  │       └─operand: int-literal: 5
+  └─block
+    └─procedure-call: write (tab[1])
+      ├─str-literal: "'Result: '"
+      └─str-literal: "'aa'"
+
+
+=== Symbol Table (TAB) ===
+Idx  Identifier       Link  Object        Type          Ref   Norm  Level  Data
+---- ---------------- ----- ------------- ------------- ----- ----- ------ -----
+0    string           -1    type          array         0     false 0      0    
+1    write            0     procedure     none          0     false 0      0    
+2    writeparam1      1     parameter     alias         0     false 1      0    
+3    writeparam2      2     parameter     alias         0     false 1      0    
+4    nestedfunctio... 3     program       none          0     false 0      0    
+5    outerfunction    4     function      integer       0     false 0      3    
+6    x                5     parameter     integer       0     true  1      0    
+7    outerfunction    6     return        integer       0     false 1      0    
+8    innerfunction    7     function      integer       0     false 1      1    
+9    y                8     parameter     integer       0     true  2      0    
+10   innerfunction    9     return        integer       0     false 2      0    
+11   blackfunction    8     function      integer       0     false 1      2    
+12   y                11    parameter     integer       0     false 2      0    
+13   blackfunction    12    return        integer       0     false 2      0    
+
+
+=== Array Table (ATAB) ===
+Idx  IdxType      ElemType     ElemRef  Low   High  ElemSize  TotalSize
+---- ------------ ------------ -------- ----- ----- --------- ----------
+0    integer      char         0        0     255   1         256       
+
+
+=== Block Table (BTAB) ===
+Idx  Start  End    ParamEnd  ReturnEnd  ParamSize  ReturnSize  VarSize
+---- ------ ------ --------- ---------- ---------- ----------- --------
+0    2      3      3         3          512        0           0       
+1    9      0      9         10         8          8           0       
+2    12     0      12        13         64         8           0       
+3    6      0      6         7          8          8           0       
+
+
+=== String Table (STRTAB) ===
+Idx  Len   String
+---- ----- --------------------------------
+0    10    'Result: '                    
+1    4     'aa'                          
+

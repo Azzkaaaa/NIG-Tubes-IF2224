@@ -1,0 +1,51 @@
+program: implicitcasttest (tab[4])
+  ├─var-decls
+  │ ├─declare: variable: x (tab[5])
+  │ ├─declare: variable: y (tab[6])
+  │ └─declare: variable: z (tab[7])
+  └─block
+    ├─assign-op (1)
+    │ ├─target: variable: x (tab[5])
+    │ └─value: int-literal: 5
+    ├─assign-op (2)
+    │ ├─target: variable: y (tab[6])
+    │ └─value: real-literal (4614253070214989087)
+    ├─assign-op (2)
+    │ ├─target: variable: z (tab[7])
+    │ └─value: cast-op: to real
+    │   └─add-op
+    │     ├─operand: variable: x (tab[5])
+    │     └─operand: variable: y (tab[6])
+    └─assign-op (2)
+      ├─target: variable: y (tab[6])
+      └─value: cast-op: to real
+        └─variable: x (tab[5])
+
+
+=== Symbol Table (TAB) ===
+Idx  Identifier       Link  Object        Type          Ref   Norm  Level  Data
+---- ---------------- ----- ------------- ------------- ----- ----- ------ -----
+0    string           -1    type          array         0     false 0      0    
+1    write            0     procedure     none          0     false 0      0    
+2    writeparam1      1     parameter     alias         0     false 1      0    
+3    writeparam2      2     parameter     alias         0     false 1      0    
+4    implicitcasttest 3     program       none          0     false 0      0    
+5    x                4     variable      integer       0     false 0      0    
+6    y                5     variable      real          0     false 0      8    
+7    z                6     variable      real          0     false 0      16   
+
+
+=== Array Table (ATAB) ===
+Idx  IdxType      ElemType     ElemRef  Low   High  ElemSize  TotalSize
+---- ------------ ------------ -------- ----- ----- --------- ----------
+0    integer      char         0        0     255   1         256       
+
+
+=== Block Table (BTAB) ===
+Idx  Start  End    ParamEnd  ReturnEnd  ParamSize  ReturnSize  VarSize
+---- ------ ------ --------- ---------- ---------- ----------- --------
+0    2      3      3         3          512        0           0       
+
+
+=== String Table (STRTAB) ===
+<empty string table>

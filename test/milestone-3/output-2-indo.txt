@@ -1,0 +1,69 @@
+program: logicaltest (tab[4])
+  ├─var-decls
+  │ ├─declare: variable: x (tab[5])
+  │ ├─declare: variable: y (tab[6])
+  │ └─declare: variable: flag (tab[7])
+  └─block
+    ├─assign-op (1)
+    │ ├─target: variable: x (tab[5])
+    │ └─value: int-literal: 3
+    ├─assign-op (1)
+    │ ├─target: variable: y (tab[6])
+    │ └─value: int-literal: 7
+    ├─assign-op (3)
+    │ ├─target: variable: flag (tab[7])
+    │ └─value: or-op
+    │   ├─operand: and-op
+    │   │ ├─operand: lt-op
+    │   │ │ ├─variable: x (tab[5])
+    │   │ │ └─variable: y (tab[6])
+    │   │ └─operand: not-op
+    │   │   └─operand: eq-op
+    │   │     ├─variable: x (tab[5])
+    │   │     └─int-literal: 0
+    │   └─operand: ge-op
+    │     ├─variable: y (tab[6])
+    │     └─int-literal: 10
+    └─if-block
+      ├─condition: variable: flag (tab[7])
+      ├─then: procedure-call: write (tab[1])
+      │ ├─str-literal: "'Condition true'"
+      │ └─str-literal: "'ad'"
+      └─else: procedure-call: write (tab[1])
+        ├─str-literal: "'Condition false'"
+        └─str-literal: "'ad'"
+
+
+=== Symbol Table (TAB) ===
+Idx  Identifier       Link  Object        Type          Ref   Norm  Level  Data
+---- ---------------- ----- ------------- ------------- ----- ----- ------ -----
+0    string           -1    type          array         0     false 0      0    
+1    write            0     procedure     none          0     false 0      0    
+2    writeparam1      1     parameter     alias         0     false 1      0    
+3    writeparam2      2     parameter     alias         0     false 1      0    
+4    logicaltest      3     program       none          0     false 0      0    
+5    x                4     variable      integer       0     false 0      0    
+6    y                5     variable      integer       0     false 0      8    
+7    flag             6     variable      boolean       0     false 0      16   
+
+
+=== Array Table (ATAB) ===
+Idx  IdxType      ElemType     ElemRef  Low   High  ElemSize  TotalSize
+---- ------------ ------------ -------- ----- ----- --------- ----------
+0    integer      char         0        0     255   1         256       
+
+
+=== Block Table (BTAB) ===
+Idx  Start  End    ParamEnd  ReturnEnd  ParamSize  ReturnSize  VarSize
+---- ------ ------ --------- ---------- ---------- ----------- --------
+0    2      3      3         3          512        0           0       
+
+
+=== String Table (STRTAB) ===
+Idx  Len   String
+---- ----- --------------------------------
+0    16    'Condition true'              
+1    4     'ad'                          
+2    17    'Condition false'             
+3    4     'ad'                          
+
