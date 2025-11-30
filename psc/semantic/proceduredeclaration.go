@@ -28,7 +28,7 @@ func (a *SemanticAnalyzer) analyzeProcedureDeclaration(parsetree *dt.ParseTree) 
 		Level:      a.depth,
 	})
 
-	a.root++
+	a.root = tabIndex
 
 	root := a.root
 	stackSize := a.stackSize
