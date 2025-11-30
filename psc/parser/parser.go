@@ -770,7 +770,7 @@ func (p *Parser) parseStatement() (*dt.ParseTree, error) {
 		return p.parseForStatement()
 	}
 	if p.match(dt.IDENTIFIER) {
-		if p.pos+1 < len(p.buffer) && (p.buffer[p.pos+1].Type == dt.ASSIGN_OPERATOR || p.buffer[p.pos+1].Type == dt.LBRACKET) {
+		if p.pos+1 < len(p.buffer) && (p.buffer[p.pos+1].Type == dt.ASSIGN_OPERATOR || p.buffer[p.pos+1].Type == dt.LBRACKET || p.buffer[p.pos+1].Type == dt.DOT) {
 			return p.parseAssignmentStatement()
 		} else {
 			return p.parseSubprogramCall()

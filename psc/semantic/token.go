@@ -24,33 +24,13 @@ func (a *SemanticAnalyzer) analyzeToken(parsetree *dt.ParseTree) (*dt.DecoratedS
 	case dt.STRING_LITERAL:
 		value := parsetree.TokenValue.Lexeme[1 : len(parsetree.TokenValue.Lexeme)-1]
 
-		atabIndex, _ := a.atab.FindArray(dt.AtabEntry{
-			IndexType:   dt.TAB_ENTRY_INTEGER,
-			ElementType: dt.TAB_ENTRY_CHAR,
-			LowBound:    0,
-			HighBound:   len(value),
-		})
-
-		if atabIndex == -1 {
-			atabIndex = len(a.atab)
-			a.atab = append(a.atab, dt.AtabEntry{
-				IndexType:   dt.TAB_ENTRY_INTEGER,
-				ElementType: dt.TAB_ENTRY_CHAR,
-				LowBound:    0,
-				HighBound:   len(value),
-				ElementSize: 1,
-				TotalSize:   len(value),
-			})
-		}
-
 		stridx, _ := a.strtab.FindString(value)
 
 		if stridx == -1 {
 			stridx = len(a.strtab)
 			a.strtab = append(a.strtab, dt.StrTabEntry{
-				Length:    len(parsetree.TokenValue.Lexeme),
-				String:    parsetree.TokenValue.Lexeme,
-				Reference: atabIndex,
+				Length: len(parsetree.TokenValue.Lexeme),
+				String: parsetree.TokenValue.Lexeme,
 			})
 		}
 
@@ -58,8 +38,8 @@ func (a *SemanticAnalyzer) analyzeToken(parsetree *dt.ParseTree) (*dt.DecoratedS
 				SelfType: dt.DST_STR_LITERAL,
 				Data:     stridx,
 			}, semanticType{
-				StaticType: dt.TAB_ENTRY_ARRAY,
-				Reference:  atabIndex,
+				StaticType: dt.TAB_ENTRY_ALIAS,
+				Reference:  0,
 			}, nil
 
 	case dt.NUMBER:

@@ -7,7 +7,7 @@ import (
 	dt "github.com/Azzkaaaa/NIG-Tubes-IF2224/psc/datatype"
 )
 
-func (a *SemanticAnalyzer) analyzeRecordType(parsetree *dt.ParseTree) (int, dt.TabEntry, error) {
+func (a *SemanticAnalyzer) analyzeRecordType(parsetree *dt.ParseTree, identifier string) (int, dt.TabEntry, error) {
 	if parsetree.RootType != dt.RECORD_TYPE_NODE {
 		return -1, dt.TabEntry{}, errors.New("expected record type")
 	}
@@ -15,8 +15,21 @@ func (a *SemanticAnalyzer) analyzeRecordType(parsetree *dt.ParseTree) (int, dt.T
 	fmt.Println("\n[RECORD] Starting record type analysis")
 	a.printDebugState("BEFORE RECORD_TYPE")
 
-	// Create a new block table entry for this record
 	btabIndex := len(a.btab)
+
+	entry := dt.TabEntry{
+		Identifier: identifier,
+		Link:       a.root,
+		Object:     dt.TAB_ENTRY_TYPE,
+		Type:       dt.TAB_ENTRY_RECORD,
+		Reference:  btabIndex,
+		Normal:     false,
+		Level:      a.depth,
+	}
+	a.tab = append(a.tab, entry)
+	a.root = len(a.tab) - 1
+
+	// Create a new block table entry for this record
 	btabEntry := dt.BtabEntry{
 		Start:        len(a.tab),
 		ParamEnd:     0,
@@ -72,7 +85,7 @@ func (a *SemanticAnalyzer) analyzeRecordType(parsetree *dt.ParseTree) (int, dt.T
 	}
 
 	// Update btab entry with final values
-	btabEntry.End = len(a.tab)
+	btabEntry.End = len(a.tab) - 1
 
 	fmt.Printf("[RECORD] Record fields range: [%d, %d), VariableSize=%d\n", btabEntry.Start, btabEntry.End, btabEntry.VariableSize)
 
@@ -98,8 +111,5 @@ func (a *SemanticAnalyzer) analyzeRecordType(parsetree *dt.ParseTree) (int, dt.T
 	a.printDebugState("AFTER RECORD_TYPE")
 
 	// Return the record type entry
-	return btabIndex, dt.TabEntry{
-		Type:      dt.TAB_ENTRY_RECORD,
-		Reference: btabIndex,
-	}, nil
+	return a.root, entry, nil
 }

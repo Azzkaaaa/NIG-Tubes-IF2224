@@ -2,6 +2,7 @@ package semantic
 
 import (
 	"errors"
+	"fmt"
 
 	dt "github.com/Azzkaaaa/NIG-Tubes-IF2224/psc/datatype"
 )
@@ -60,10 +61,18 @@ func (a *SemanticAnalyzer) analyzeArrayAccess(parsetree *dt.ParseTree, prev *dt.
 		return nil, semanticType{}, errors.New("identifier does not hold an array value")
 	}
 
-	arrayAccess := &dt.DecoratedSyntaxTree{
+	var children []dt.DecoratedSyntaxTree
+	if prev == nil {
+		children = make([]dt.DecoratedSyntaxTree, 0)
+	} else {
+		children = []dt.DecoratedSyntaxTree{*prev}
+	}
+
+	prev = &dt.DecoratedSyntaxTree{
+		Property: dt.DST_FROM,
 		SelfType: dstType,
 		Data:     index,
-		Children: []dt.DecoratedSyntaxTree{*prev},
+		Children: children,
 	}
 
 	// Extract nodes with step 3 (every 3rd element starting from index 2)
@@ -72,7 +81,7 @@ func (a *SemanticAnalyzer) analyzeArrayAccess(parsetree *dt.ParseTree, prev *dt.
 		recursiveNodes = append(recursiveNodes, parsetree.Children[i])
 	}
 
-	return a.analyzeRecursiveArrayAccess(recursiveNodes, arrayAccess)
+	return a.analyzeRecursiveArrayAccess(recursiveNodes, prev)
 }
 
 func (a *SemanticAnalyzer) analyzeRecursiveArrayAccess(nodes []dt.ParseTree, prev *dt.DecoratedSyntaxTree) (*dt.DecoratedSyntaxTree, semanticType, error) {
@@ -94,8 +103,10 @@ func (a *SemanticAnalyzer) analyzeRecursiveArrayAccess(nodes []dt.ParseTree, pre
 			return nil, semanticType{}, errors.New("expected variable to point to an array")
 		}
 
+		fmt.Println(a.tab[tabIndex].Reference)
 		atabIndex = a.tab[tabIndex].Reference
 	case dt.DST_ARRAY_ELEMENT:
+		fmt.Println(prev.Data)
 		atabIndex = prev.Data
 	default:
 		return nil, semanticType{}, errors.New("object cannot be indexed")
