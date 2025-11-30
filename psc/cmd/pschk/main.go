@@ -17,7 +17,6 @@ import (
 func main() {
 	rules := flag.String("rules", "config/tokenizer_m3.json", "path ke DFA JSON")
 	in := flag.String("input", "", "path file sumber")
-	showSymbols := flag.Bool("show-symbols", false, "tampilkan tabel simbol")
 	flag.Parse()
 
 	if *in == "" {
@@ -81,35 +80,25 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Display results
-	fmt.Println("Semantic analysis completed successfully!")
-	fmt.Println()
-
-	// Always display DST after successful semantic analysis
-	fmt.Println("=== Decorated Syntax Tree ===")
+	// Display decorated syntax tree
 	if dst != nil {
-		// Use enhanced display with symbol table information
 		fmt.Println(dst.StringWithSymbols(tab, atab, btab, strtab))
-	} else {
-		fmt.Println("<empty>")
 	}
 	fmt.Println()
 
-	if *showSymbols {
-		fmt.Println("=== Symbol Table (TAB) ===")
-		fmt.Println(tab.String())
-		fmt.Println()
+	// Display symbol tables
+	fmt.Println("=== Symbol Table (TAB) ===")
+	fmt.Println(tab.String())
+	fmt.Println()
 
-		fmt.Println("=== Array Table (ATAB) ===")
-		fmt.Println(atab.String())
-		fmt.Println()
+	fmt.Println("=== Array Table (ATAB) ===")
+	fmt.Println(atab.String())
+	fmt.Println()
 
-		fmt.Println("=== Block Table (BTAB) ===")
-		fmt.Println(btab.String())
-		fmt.Println()
+	fmt.Println("=== Block Table (BTAB) ===")
+	fmt.Println(btab.String())
+	fmt.Println()
 
-		fmt.Println("=== String Table (STRTAB) ===")
-		fmt.Println(strtab.String())
-		fmt.Println()
-	}
+	fmt.Println("=== String Table (STRTAB) ===")
+	fmt.Println(strtab.String())
 }

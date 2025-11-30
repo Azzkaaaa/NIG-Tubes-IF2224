@@ -19,7 +19,6 @@ func (a *SemanticAnalyzer) analyzeFormalParameterList(parsetree *dt.ParseTree) (
 	i := 0
 	for i < len(parsetree.Children) {
 		child := &parsetree.Children[i]
-		fmt.Printf("Analyzing formal parameter list child %d: %+v\n", i, child)
 		// Check for 'variabel' keyword (Pascal 'var' for by-reference)
 		if child.RootType == dt.TOKEN_NODE && child.TokenValue.Type == dt.KEYWORD && child.TokenValue.Lexeme == "variabel" {
 			isRef = true
@@ -86,8 +85,6 @@ func (a *SemanticAnalyzer) analyzeFormalParameterList(parsetree *dt.ParseTree) (
 				entry.Level = a.depth
 				entry.Normal = !isRef // True for pass-by-value, false for pass-by-reference
 				entry.Data = a.stackSize
-
-				fmt.Printf("[PARAM] Adding parameter '%s' with Link=%d, isRef=%v, StackSize=%d\n", identifier, a.root, isRef, a.stackSize)
 
 				paramSize := 0
 				if isRef {

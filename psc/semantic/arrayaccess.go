@@ -2,7 +2,6 @@ package semantic
 
 import (
 	"errors"
-	"fmt"
 
 	dt "github.com/Azzkaaaa/NIG-Tubes-IF2224/psc/datatype"
 )
@@ -103,10 +102,8 @@ func (a *SemanticAnalyzer) analyzeRecursiveArrayAccess(nodes []dt.ParseTree, pre
 			return nil, semanticType{}, errors.New("expected variable to point to an array")
 		}
 
-		fmt.Println(a.tab[tabIndex].Reference)
 		atabIndex = a.tab[tabIndex].Reference
 	case dt.DST_ARRAY_ELEMENT:
-		fmt.Println(prev.Data)
 		atabIndex = prev.Data
 	default:
 		return nil, semanticType{}, errors.New("object cannot be indexed")

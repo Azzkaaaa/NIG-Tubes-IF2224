@@ -2,7 +2,6 @@ package semantic
 
 import (
 	"errors"
-	"fmt"
 
 	dt "github.com/Azzkaaaa/NIG-Tubes-IF2224/psc/datatype"
 )
@@ -11,9 +10,6 @@ func (a *SemanticAnalyzer) analyzeRecordType(parsetree *dt.ParseTree, identifier
 	if parsetree.RootType != dt.RECORD_TYPE_NODE {
 		return -1, dt.TabEntry{}, errors.New("expected record type")
 	}
-
-	fmt.Println("\n[RECORD] Starting record type analysis")
-	a.printDebugState("BEFORE RECORD_TYPE")
 
 	btabIndex := len(a.btab)
 
@@ -40,8 +36,6 @@ func (a *SemanticAnalyzer) analyzeRecordType(parsetree *dt.ParseTree, identifier
 		VariableSize: 0,
 	}
 
-	fmt.Printf("[RECORD] BtabIndex=%d, Start=%d\n", btabIndex, btabEntry.Start)
-
 	// Save current root and depth
 	oldRoot := a.root
 	oldDepth := a.depth
@@ -49,8 +43,6 @@ func (a *SemanticAnalyzer) analyzeRecordType(parsetree *dt.ParseTree, identifier
 	// Set new scope for record fields
 	// a.root = 0
 	a.depth++
-
-	fmt.Printf("[RECORD] New scope: root=%d, depth=%d\n", a.root, a.depth)
 
 	// Process field declarations
 	for _, child := range parsetree.Children {
@@ -62,8 +54,6 @@ func (a *SemanticAnalyzer) analyzeRecordType(parsetree *dt.ParseTree, identifier
 			}
 			return -1, dt.TabEntry{}, errors.New("expected a var declaration node for record field")
 		}
-
-		fmt.Printf("[RECORD] Processing field declaration\n")
 
 		// Change object type to FIELD for record fields
 		oldStackSize := a.stackSize
@@ -87,8 +77,6 @@ func (a *SemanticAnalyzer) analyzeRecordType(parsetree *dt.ParseTree, identifier
 	// Update btab entry with final values
 	btabEntry.End = len(a.tab) - 1
 
-	fmt.Printf("[RECORD] Record fields range: [%d, %d), VariableSize=%d\n", btabEntry.Start, btabEntry.End, btabEntry.VariableSize)
-
 	// Calculate total size of all fields
 	totalSize := 0
 	for i := btabEntry.Start; i < btabEntry.End; i++ {
@@ -106,9 +94,6 @@ func (a *SemanticAnalyzer) analyzeRecordType(parsetree *dt.ParseTree, identifier
 
 	// Add to btab
 	a.btab = append(a.btab, btabEntry)
-
-	fmt.Printf("[RECORD] Added to Btab at index %d\n", btabIndex)
-	a.printDebugState("AFTER RECORD_TYPE")
 
 	// Return the record type entry
 	return a.root, entry, nil
