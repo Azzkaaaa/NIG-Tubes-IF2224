@@ -39,7 +39,7 @@ func (a *SemanticAnalyzer) analyzeSubprogramCall(parseTree *dt.ParseTree) (*dt.D
 		return nil, semanticType{}, err
 	}
 
-	if len(callParams) != (paramEnd - paramStart) {
+	if len(callParams) != (paramEnd - paramStart + 1) {
 		return nil, semanticType{}, errors.New("parameter count mismatch")
 	}
 
