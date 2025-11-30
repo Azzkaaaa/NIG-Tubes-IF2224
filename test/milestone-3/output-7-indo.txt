@@ -1,0 +1,85 @@
+program: staticrangetest (tab[4])
+  ├─const-decls
+  │ ├─const: min_index (tab[5])
+  │ └─const: max_index (tab[6])
+  ├─var-decls
+  │ ├─declare: variable: numbers (tab[7])
+  │ ├─declare: variable: values (tab[8])
+  │ ├─declare: variable: flags (tab[9])
+  │ └─declare: variable: i (tab[10])
+  └─block
+    ├─for-block
+    │ ├─target: variable: i (tab[10])
+    │ ├─value: const: min_index (tab[5])
+    │ ├─upto: const: max_index (tab[6])
+    │ └─execute: assign-op (1)
+    │   ├─target: array-element: write (tab[1])
+    │   │ ├─from: variable: numbers (tab[7])
+    │   │ └─index: variable: i (tab[10])
+    │   └─value: mul-op
+    │     ├─operand: variable: i (tab[10])
+    │     └─operand: int-literal: 2
+    ├─for-block
+    │ ├─target: variable: i (tab[10])
+    │ ├─value: int-literal: 1
+    │ ├─upto: add-op
+    │ │ ├─operand: sub-op
+    │ │ │ ├─operand: const: max_index (tab[6])
+    │ │ │ └─operand: const: min_index (tab[5])
+    │ │ └─operand: int-literal: 1
+    │ └─execute: assign-op (2)
+    │   ├─target: array-element: writeparam1 (tab[2])
+    │   │ ├─from: variable: values (tab[8])
+    │   │ └─index: variable: i (tab[10])
+    │   └─value: cast-op: to real
+    │     └─mul-op
+    │       ├─operand: variable: i (tab[10])
+    │       └─operand: real-literal (4609434218613702656)
+    └─for-block
+      ├─target: variable: i (tab[10])
+      ├─value: int-literal: 0
+      ├─upto: int-literal: 4
+      └─execute: assign-op (3)
+        ├─target: array-element: writeparam2 (tab[3])
+        │ ├─from: variable: flags (tab[9])
+        │ └─index: variable: i (tab[10])
+        └─value: eq-op
+          ├─mod-op
+          │ ├─operand: variable: i (tab[10])
+          │ └─operand: int-literal: 2
+          └─int-literal: 0
+
+
+=== Symbol Table (TAB) ===
+Idx  Identifier       Link  Object        Type          Ref   Norm  Level  Data
+---- ---------------- ----- ------------- ------------- ----- ----- ------ -----
+0    string           -1    type          array         0     false 0      0    
+1    write            0     procedure     none          0     false 0      0    
+2    writeparam1      1     parameter     alias         0     false 1      0    
+3    writeparam2      2     parameter     alias         0     false 1      0    
+4    staticrangetest  3     program       none          0     false 0      0    
+5    min_index        4     constant      integer       0     false 0      1    
+6    max_index        5     constant      integer       0     false 0      10   
+7    numbers          6     variable      array         1     false 0      0    
+8    values           7     variable      array         2     false 0      640  
+9    flags            8     variable      array         3     false 0      1280 
+10   i                9     variable      integer       0     false 0      1285 
+
+
+=== Array Table (ATAB) ===
+Idx  IdxType      ElemType     ElemRef  Low   High  ElemSize  TotalSize
+---- ------------ ------------ -------- ----- ----- --------- ----------
+0    integer      char         0        0     255   1         256       
+1    integer      integer      0        1     10    64        640       
+2    integer      real         0        1     10    64        640       
+3    integer      boolean      0        0     4     1         5         
+
+
+=== Block Table (BTAB) ===
+Idx  Start  End    ParamEnd  ReturnEnd  ParamSize  ReturnSize  VarSize
+---- ------ ------ --------- ---------- ---------- ----------- --------
+0    2      3      3         3          512        0           0       
+
+
+=== String Table (STRTAB) ===
+<empty string table>

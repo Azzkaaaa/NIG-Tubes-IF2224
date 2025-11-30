@@ -1,0 +1,52 @@
+program: looptest (tab[4])
+  ├─var-decls
+  │ ├─declare: variable: i (tab[5])
+  │ └─declare: variable: total (tab[6])
+  └─block
+    ├─assign-op (1)
+    │ ├─target: variable: total (tab[6])
+    │ └─value: int-literal: 0
+    ├─for-block
+    │ ├─target: variable: i (tab[5])
+    │ ├─value: int-literal: 1
+    │ ├─upto: int-literal: 5
+    │ └─execute: assign-op (1)
+    │   ├─target: variable: total (tab[6])
+    │   └─value: add-op
+    │     ├─operand: variable: total (tab[6])
+    │     └─operand: variable: i (tab[5])
+    └─procedure-call: write (tab[1])
+      ├─str-literal: "'Total: '"
+      └─str-literal: "'total'"
+
+
+=== Symbol Table (TAB) ===
+Idx  Identifier       Link  Object        Type          Ref   Norm  Level  Data
+---- ---------------- ----- ------------- ------------- ----- ----- ------ -----
+0    string           -1    type          array         0     false 0      0    
+1    write            0     procedure     none          0     false 0      0    
+2    writeparam1      1     parameter     alias         0     false 1      0    
+3    writeparam2      2     parameter     alias         0     false 1      0    
+4    looptest         3     program       none          0     false 0      0    
+5    i                4     variable      integer       0     false 0      0    
+6    total            5     variable      integer       0     false 0      8    
+
+
+=== Array Table (ATAB) ===
+Idx  IdxType      ElemType     ElemRef  Low   High  ElemSize  TotalSize
+---- ------------ ------------ -------- ----- ----- --------- ----------
+0    integer      char         0        0     255   1         256       
+
+
+=== Block Table (BTAB) ===
+Idx  Start  End    ParamEnd  ReturnEnd  ParamSize  ReturnSize  VarSize
+---- ------ ------ --------- ---------- ---------- ----------- --------
+0    2      3      3         3          512        0           0       
+
+
+=== String Table (STRTAB) ===
+Idx  Len   String
+---- ----- --------------------------------
+0    9     'Total: '                     
+1    7     'total'                       
+
