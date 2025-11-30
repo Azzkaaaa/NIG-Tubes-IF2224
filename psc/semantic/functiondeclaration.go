@@ -7,7 +7,7 @@ import (
 )
 
 func (a *SemanticAnalyzer) analyzeFunctionDeclaration(parsetree *dt.ParseTree) (*dt.DecoratedSyntaxTree, error) {
-	if parsetree.RootType != dt.PROCEDURE_DECLARATION_NODE {
+	if parsetree.RootType != dt.FUNCTION_DECLARATION_NODE {
 		return nil, errors.New("expected procedure declaration")
 	}
 
@@ -28,7 +28,7 @@ func (a *SemanticAnalyzer) analyzeFunctionDeclaration(parsetree *dt.ParseTree) (
 		Level:      a.depth,
 	})
 
-	a.root++
+	a.root = tabIndex
 
 	root := a.root
 	stackSize := a.stackSize
@@ -70,8 +70,13 @@ func (a *SemanticAnalyzer) analyzeFunctionDeclaration(parsetree *dt.ParseTree) (
 				Identifier: identifier,
 				Link:       a.root,
 				Object:     dt.TAB_ENTRY_RETURN,
+				Type:       returnEntry.Type,
+				Reference:  returnEntry.Reference,
 				Level:      a.depth,
 			})
+
+			a.tab[tabIndex].Type = returnEntry.Type
+			a.tab[tabIndex].Reference = returnEntry.Reference
 
 			a.root++
 
@@ -134,7 +139,7 @@ func (a *SemanticAnalyzer) analyzeFunctionDeclaration(parsetree *dt.ParseTree) (
 	children = append(children, *block)
 
 	return &dt.DecoratedSyntaxTree{
-		SelfType: dt.DST_PROCEDURE,
+		SelfType: dt.DST_FUNCTION,
 		Data:     tabIndex,
 		Children: children,
 	}, nil

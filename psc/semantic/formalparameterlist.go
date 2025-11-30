@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
-	"strings"
 
 	dt "github.com/Azzkaaaa/NIG-Tubes-IF2224/psc/datatype"
 )
@@ -22,7 +21,7 @@ func (a *SemanticAnalyzer) analyzeFormalParameterList(parsetree *dt.ParseTree) (
 		child := &parsetree.Children[i]
 		fmt.Printf("Analyzing formal parameter list child %d: %+v\n", i, child)
 		// Check for 'variabel' keyword (Pascal 'var' for by-reference)
-		if child.RootType == dt.TOKEN_NODE && child.TokenValue.Type == dt.IDENTIFIER && strings.ToLower(child.TokenValue.Lexeme) == "var" {
+		if child.RootType == dt.TOKEN_NODE && child.TokenValue.Type == dt.KEYWORD && child.TokenValue.Lexeme == "variabel" {
 			isRef = true
 			i++
 			continue
@@ -82,21 +81,13 @@ func (a *SemanticAnalyzer) analyzeFormalParameterList(parsetree *dt.ParseTree) (
 				entry.Identifier = identifier
 
 				// Link should point to the same identifier in outer scope (if exists), or -1
-				linkIndex := -1
-				if a.root != -1 && a.root < len(a.tab) {
-					outerRoot := a.tab[a.root].Link
-					if outerRoot != -1 {
-						linkIndex, _ = a.tab.FindIdentifier(identifier, outerRoot)
-					}
-				}
-				entry.Link = linkIndex
-
+				entry.Link = a.root
 				entry.Object = dt.TAB_ENTRY_PARAM
 				entry.Level = a.depth
 				entry.Normal = !isRef // True for pass-by-value, false for pass-by-reference
 				entry.Data = a.stackSize
 
-				fmt.Printf("[PARAM] Adding parameter '%s' with Link=%d, isRef=%v, StackSize=%d\n", identifier, linkIndex, isRef, a.stackSize)
+				fmt.Printf("[PARAM] Adding parameter '%s' with Link=%d, isRef=%v, StackSize=%d\n", identifier, a.root, isRef, a.stackSize)
 
 				paramSize := 0
 				if isRef {

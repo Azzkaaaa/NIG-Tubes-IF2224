@@ -15,8 +15,10 @@ func (a *SemanticAnalyzer) analyzeSubprogramDeclaration(parsetree *dt.ParseTree)
 
 	switch child.RootType {
 	case dt.PROCEDURE_DECLARATION_NODE:
+		println("I am a procedure")
 		return a.analyzeProcedureDeclaration(&child)
 	case dt.FUNCTION_DECLARATION_NODE:
+		println("I am a function")
 		return a.analyzeFunctionDeclaration(&child)
 	default:
 		return nil, errors.New("expected procedure or function declaration")
