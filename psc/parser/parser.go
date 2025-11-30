@@ -1844,5 +1844,16 @@ func (p *Parser) parseRecordType() (*dt.ParseTree, error) {
 			*variableDeclaration,
 		)
 	}
+
+	selesaiToken := p.consumeExact(dt.KEYWORD, "selesai")
+	if selesaiToken == nil {
+		return nil, p.createParseError(dt.KEYWORD, "expected 'selesai' keyword to end record")
+	}
+
+	recordType.Children = append(recordType.Children, dt.ParseTree{
+		RootType:   dt.TOKEN_NODE,
+		TokenValue: selesaiToken,
+	})
+
 	return &recordType, nil
 }
