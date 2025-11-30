@@ -84,13 +84,11 @@ type TabEntry struct {
 type Tab []TabEntry
 
 func (t *Tab) FindIdentifier(id string, start int) (int, *TabEntry) {
-	fmt.Printf("[LOOKUP] Searching for '%s', starting from index %d\n", id, start)
 	current := start
 
 	// FIX: Tambahkan pengecekan ini untuk mencegah panic.
 	// Jika start index sudah -1 atau tabelnya kosong, langsung hentikan pencarian.
 	if current == -1 || len(*t) == 0 {
-		fmt.Printf("  => [LOOKUP] Not found (table empty or start is -1): '%s'\n", id)
 		return -1, nil
 	}
 
@@ -98,25 +96,16 @@ func (t *Tab) FindIdentifier(id string, start int) (int, *TabEntry) {
 	for i := 0; current != -1 && i < 100; i++ { // Batas 100 iterasi
 		// Pengecekan tambahan untuk keamanan jika ada link yang korup
 		if current >= len(*t) {
-			fmt.Printf("  => [LOOKUP] STOPPED: Corrupted link found. Index %d is out of bounds for table length %d.\n", current, len(*t))
 			return -1, nil
 		}
 
-		fmt.Printf("  -> [LOOKUP] Checking index %d ('%s'), next link is %d\n", current, (*t)[current].Identifier, (*t)[current].Link)
 		if (*t)[current].Identifier == id {
-			fmt.Printf("  => [LOOKUP] Found '%s' at index %d\n", id, current)
 			return current, &(*t)[current]
 		}
 		current = (*t)[current].Link
 	}
 
-	if current != -1 {
-		fmt.Printf("  => [LOOKUP] STOPPED: Exceeded iteration limit. Possible infinite loop!\n")
-	} else {
-		fmt.Printf("  => [LOOKUP] Not found: '%s'\n", id)
-	}
-
-	return -1, nil // Perbaikan typo dari --1
+	return -1, nil
 }
 
 func (t Tab) String() string {

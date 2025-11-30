@@ -1,7 +1,6 @@
 package semantic
 
 import (
-	"fmt"
 	"strconv"
 
 	dt "github.com/Azzkaaaa/NIG-Tubes-IF2224/psc/datatype"
@@ -102,65 +101,9 @@ func (a *SemanticAnalyzer) GetSymbols() (dt.Tab, dt.Atab, dt.Btab, dt.StrTab) {
 }
 
 func (a *SemanticAnalyzer) Analyze() (dt.Tab, dt.Atab, dt.Btab, dt.StrTab, *dt.DecoratedSyntaxTree, error) { // ilangin switchcase
-	fmt.Println("Starting semantic analysis...")
 	dst, err := a.analyzeProgram(a.parseTree)
 	tab, atab, btab, strtab := a.GetSymbols()
 	return tab, atab, btab, strtab, dst, err
-}
-
-func (a *SemanticAnalyzer) printDebugState(label string) {
-	fmt.Printf("\n=== DEBUG STATE: %s (Depth=%d, Root=%d, StackSize=%d) ===\n", label, a.depth, a.root, a.stackSize)
-
-	// Print Tab (Symbol Table)
-	fmt.Println("\n[TAB] Symbol Table:")
-	if len(a.tab) == 0 {
-		fmt.Println("  <empty>")
-	} else {
-		fmt.Println("  Idx | Identifier      | Link | Object   | Type     | Ref | Level | Data")
-		fmt.Println("  ----|-----------------|------|----------|----------|-----|-------|-----")
-		for i, entry := range a.tab {
-			fmt.Printf("  %3d | %-15s | %4d | %-8s | %-8s | %3d | %5d | %4d\n",
-				i, entry.Identifier, entry.Link, entry.Object, entry.Type, entry.Reference, entry.Level, entry.Data)
-		}
-	}
-
-	// Print Atab (Array Table)
-	fmt.Println("\n[ATAB] Array Table:")
-	if len(a.atab) == 0 {
-		fmt.Println("  <empty>")
-	} else {
-		fmt.Println("  Idx | IndexType | ElementType | LowBound | HighBound | ElementSize | TotalSize")
-		fmt.Println("  ----|-----------|-------------|----------|-----------|-------------|----------")
-		for i, entry := range a.atab {
-			fmt.Printf("  %3d | %9d | %11d | %8d | %9d | %11d | %9d\n",
-				i, entry.IndexType, entry.ElementType, entry.LowBound, entry.HighBound, entry.ElementSize, entry.TotalSize)
-		}
-	}
-
-	// Print Btab (Block Table)
-	fmt.Println("\n[BTAB] Block Table:")
-	if len(a.btab) == 0 {
-		fmt.Println("  <empty>")
-	} else {
-		fmt.Println("  Idx | Start | End  | VariableSize")
-		fmt.Println("  ----|-------|------|-------------")
-		for i, entry := range a.btab {
-			fmt.Printf("  %3d | %5d | %4d | %12d\n", i, entry.Start, entry.End, entry.VariableSize)
-		}
-	}
-
-	// Print StrTab (String Table)
-	fmt.Println("\n[STRTAB] String Table:")
-	if len(a.strtab) == 0 {
-		fmt.Println("  <empty>")
-	} else {
-		fmt.Println("  Idx | Value")
-		fmt.Println("  ----|-----")
-		for i, entry := range a.strtab {
-			fmt.Printf("  %3d | %s\n", i, entry)
-		}
-	}
-	fmt.Println("=== END DEBUG STATE ===\n")
 }
 
 // resolveAliasType resolves a type alias to its underlying base type
