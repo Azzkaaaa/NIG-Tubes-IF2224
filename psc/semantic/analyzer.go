@@ -163,9 +163,27 @@ func (a *SemanticAnalyzer) printDebugState(label string) {
 	fmt.Println("=== END DEBUG STATE ===\n")
 }
 
+// resolveAliasType resolves a type alias to its underlying base type
+// If the type is not an alias, it returns the type unchanged
+func (a *SemanticAnalyzer) resolveAliasType(t semanticType) semanticType {
+	// Keep resolving until we find a non-alias type
+	for t.StaticType == dt.TAB_ENTRY_ALIAS {
+		// Follow the reference chain
+		t = semanticType{
+			StaticType: a.tab[t.Reference].Type,
+			Reference:  a.tab[t.Reference].Reference,
+		}
+	}
+	return t
+}
+
 func (a *SemanticAnalyzer) checkTypeEquality(t1 semanticType, t2 semanticType) bool {
-	if t1.StaticType == t2.StaticType {
-		switch t1.StaticType {
+	// Resolve aliases to their base types before comparison
+	resolved1 := a.resolveAliasType(t1)
+	resolved2 := a.resolveAliasType(t2)
+
+	if resolved1.StaticType == resolved2.StaticType {
+		switch resolved1.StaticType {
 		case dt.TAB_ENTRY_NONE:
 			fallthrough
 		case dt.TAB_ENTRY_INTEGER:
@@ -179,9 +197,7 @@ func (a *SemanticAnalyzer) checkTypeEquality(t1 semanticType, t2 semanticType) b
 		case dt.TAB_ENTRY_RECORD:
 			fallthrough
 		case dt.TAB_ENTRY_ARRAY:
-			fallthrough
-		case dt.TAB_ENTRY_ALIAS:
-			return t1.Reference == t2.Reference
+			return resolved1.Reference == resolved2.Reference
 		}
 	}
 
