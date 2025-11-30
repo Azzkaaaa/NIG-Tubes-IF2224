@@ -17,7 +17,6 @@ import (
 func main() {
 	rules := flag.String("rules", "config/tokenizer_m3.json", "path ke DFA JSON")
 	in := flag.String("input", "", "path file sumber")
-	showDST := flag.Bool("show-dst", false, "tampilkan Decorated Syntax Tree")
 	showSymbols := flag.Bool("show-symbols", false, "tampilkan tabel simbol")
 	flag.Parse()
 
@@ -86,6 +85,16 @@ func main() {
 	fmt.Println("Semantic analysis completed successfully!")
 	fmt.Println()
 
+	// Always display DST after successful semantic analysis
+	fmt.Println("=== Decorated Syntax Tree ===")
+	if dst != nil {
+		// Use enhanced display with symbol table information
+		fmt.Println(dst.StringWithSymbols(tab, atab, btab, strtab))
+	} else {
+		fmt.Println("<empty>")
+	}
+	fmt.Println()
+
 	if *showSymbols {
 		fmt.Println("=== Symbol Table (TAB) ===")
 		fmt.Println(tab.String())
@@ -101,16 +110,6 @@ func main() {
 
 		fmt.Println("=== String Table (STRTAB) ===")
 		fmt.Println(strtab.String())
-		fmt.Println()
-	}
-
-	if *showDST {
-		fmt.Println("=== Decorated Syntax Tree ===")
-		if dst != nil {
-			fmt.Println(dst.String())
-		} else {
-			fmt.Println("<empty>")
-		}
 		fmt.Println()
 	}
 }

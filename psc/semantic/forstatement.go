@@ -63,8 +63,8 @@ func (a *SemanticAnalyzer) analyzeForStatement(parsetree *dt.ParseTree) (*dt.Dec
 	return &dt.DecoratedSyntaxTree{
 		SelfType: dt.DST_FOR_BLOCK,
 		Children: []dt.DecoratedSyntaxTree{
-			*initial,
 			*target,
+			*initial,
 			*final,
 			*block,
 		},
