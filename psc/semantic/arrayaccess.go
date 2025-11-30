@@ -66,7 +66,13 @@ func (a *SemanticAnalyzer) analyzeArrayAccess(parsetree *dt.ParseTree, prev *dt.
 		Children: []dt.DecoratedSyntaxTree{*prev},
 	}
 
-	return a.analyzeRecursiveArrayAccess(parsetree.Children[2:len(parsetree.Children):3], arrayAccess)
+	// Extract nodes with step 3 (every 3rd element starting from index 2)
+	recursiveNodes := make([]dt.ParseTree, 0)
+	for i := 2; i < len(parsetree.Children); i += 3 {
+		recursiveNodes = append(recursiveNodes, parsetree.Children[i])
+	}
+
+	return a.analyzeRecursiveArrayAccess(recursiveNodes, arrayAccess)
 }
 
 func (a *SemanticAnalyzer) analyzeRecursiveArrayAccess(nodes []dt.ParseTree, prev *dt.DecoratedSyntaxTree) (*dt.DecoratedSyntaxTree, semanticType, error) {

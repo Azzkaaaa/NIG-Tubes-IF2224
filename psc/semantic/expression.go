@@ -10,7 +10,7 @@ func (a *SemanticAnalyzer) analyzeExpression(parseTree *dt.ParseTree) (*dt.Decor
 	if len(parseTree.Children) == 1 {
 		return a.analyzeSimpleExpression(&parseTree.Children[0])
 	} else {
-		optype, err := a.analyzeRelationalOperator(&parseTree.Children[0])
+		optype, err := a.analyzeRelationalOperator(&parseTree.Children[1])
 
 		if err != nil {
 			return nil, semanticType{}, err
@@ -28,15 +28,17 @@ func (a *SemanticAnalyzer) analyzeExpression(parseTree *dt.ParseTree) (*dt.Decor
 			return nil, rtype, err
 		}
 
-		if !a.checkTypeEquality(ltype, rtype) {
-			return nil, ltype, errors.New("operand types do not match")
+		// Use type promotion instead of strict equality
+		promotedLhs, promotedRhs, _, compatible := a.promoteTypes(lhs, ltype, rhs, rtype)
+		if !compatible {
+			return nil, ltype, errors.New("operand types are incompatible")
 		}
 
 		return &dt.DecoratedSyntaxTree{
 			SelfType: optype,
 			Children: []dt.DecoratedSyntaxTree{
-				*lhs,
-				*rhs,
+				*promotedLhs,
+				*promotedRhs,
 			},
 		}, semanticType{StaticType: dt.TAB_ENTRY_BOOLEAN}, nil
 	}

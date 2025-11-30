@@ -11,7 +11,8 @@ func (a *SemanticAnalyzer) analyzeParameterList(parseTree *dt.ParseTree) ([]dt.D
 		return nil, nil, errors.New("parse tree node is not parameter list")
 	}
 
-	parameters := parseTree.Children[:len(parseTree.Children):1]
+	// Just use the children directly - no need for slice notation
+	parameters := parseTree.Children
 	decoratedParams := make([]dt.DecoratedSyntaxTree, len(parameters))
 	paramTypes := make([]semanticType, len(parameters))
 

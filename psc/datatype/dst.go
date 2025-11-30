@@ -19,6 +19,29 @@ const (
 	DST_FROM
 )
 
+func (p DSTProperty) String() string {
+	names := [...]string{
+		"root",
+		"index",
+		"operand",
+		"target",
+		"value",
+		"downto",
+		"upto",
+		"condition",
+		"parameter",
+		"declare",
+		"execute",
+		"then",
+		"else",
+		"from",
+	}
+	if int(p) < 0 || int(p) >= len(names) {
+		return "unknown"
+	}
+	return names[p]
+}
+
 type DSTNodeType int
 
 const (
@@ -63,6 +86,55 @@ const (
 	DST_SUBPROGRAM_DECLARATIONS
 	DST_PROGRAM
 )
+
+func (t DSTNodeType) String() string {
+	names := [...]string{
+		"char-literal",
+		"str-literal",
+		"int-literal",
+		"real-literal",
+		"bool-literal",
+		"add-op",
+		"sub-op",
+		"mul-op",
+		"mod-op",
+		"div-op",
+		"and-op",
+		"or-op",
+		"eq-op",
+		"ne-op",
+		"gt-op",
+		"lt-op",
+		"ge-op",
+		"le-op",
+		"not-op",
+		"neg-op",
+		"cast-op",
+		"assign-op",
+		"array-element",
+		"record-field",
+		"procedure-call",
+		"function-call",
+		"block",
+		"if-block",
+		"for-block",
+		"while-block",
+		"const",
+		"type",
+		"variable",
+		"function",
+		"procedure",
+		"const-decls",
+		"type-decls",
+		"var-decls",
+		"subprogram-decls",
+		"program",
+	}
+	if int(t) < 0 || int(t) >= len(names) {
+		return "unknown"
+	}
+	return names[t]
+}
 
 type DecoratedSyntaxTree struct {
 	Property DSTProperty

@@ -1666,7 +1666,7 @@ func (p *Parser) parseAccess() (*dt.ParseTree, error) {
 
 func (p *Parser) parseStaticAccess() (*dt.ParseTree, error) {
 	access := dt.ParseTree{
-		RootType:   dt.ACCESS_NODE,
+		RootType:   dt.STATIC_ACCESS_NODE,
 		TokenValue: nil,
 		Children:   make([]dt.ParseTree, 0),
 	}
@@ -1818,7 +1818,7 @@ func (p *Parser) parseRecordType() (*dt.ParseTree, error) {
 	}
 
 	recordType := dt.ParseTree{
-		RootType:   dt.VAR_DECLARATION_PART_NODE,
+		RootType:   dt.RECORD_TYPE_NODE,
 		TokenValue: nil,
 		Children: []dt.ParseTree{
 			{

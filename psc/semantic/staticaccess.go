@@ -11,7 +11,12 @@ func (a *SemanticAnalyzer) analyzeStaticAccess(parsetree *dt.ParseTree, prev *dt
 		return nil, semanticType{}, errors.New("expected static access")
 	}
 
-	nodes := parsetree.Children[:len(parsetree.Children):2]
+	// Extract nodes with step 2 (every other element)
+	nodes := make([]dt.ParseTree, 0)
+	for i := 0; i < len(parsetree.Children); i += 2 {
+		nodes = append(nodes, parsetree.Children[i])
+	}
+
 	root := a.root
 
 	var typ semanticType

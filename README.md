@@ -113,7 +113,7 @@ contoh:
    go build -C psc/cmd/pspar -o ../../../bin/pspar .
    ```
 
-3. Lalu ketik:
+2. Lalu ketik:
 
     windows:
     ```bash
@@ -125,6 +125,31 @@ contoh:
    ./bin/pspar --rules config/tokenizer_indo.json --input test/milestone-2/(nama file pascal.pas)
    ```
 
+## Cara run Semantic Analysis
+1. pada root repository ketik:
+    
+    windows:
+    ```bash
+    go build -C psc/cmd/pschk -o ../../../bin/pschk.exe .
+    ```
+
+    linux:
+   ```bash
+   go build -C psc/cmd/pschk -o ../../../bin/pschk .
+   ```
+
+2. Lalu ketik:
+
+    windows:
+    ```bash
+    ./bin/pschk.exe --rules config/tokenizer_m3.json --input test/milestone-3/(nama file pascal.pas)
+    ```
+
+   linux:
+   ```bash
+   ./bin/pschk --rules config/tokenizer_m3.json --input test/milestone-3/(nama file pascal.pas)
+   ```
+  
 ## Pembagian Tugas
 
 <div>
