@@ -5,5 +5,5 @@ mulai
   total := 0;
   untuk i := 1 ke 5 lakukan
     total := total + i;
-  tulis('Total: ', total);
+  write('Total: ', 'total');
 selesai.

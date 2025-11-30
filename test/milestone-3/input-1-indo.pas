@@ -5,5 +5,5 @@ mulai
   a := 10;
   b := 5;
   sum := a + b * 2 - 3 bagi 2;
-  tulis('Hasil: ', sum);
+  write('Hasil: ', 'as');
 selesai.
