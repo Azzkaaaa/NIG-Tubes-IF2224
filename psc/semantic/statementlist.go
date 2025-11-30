@@ -14,7 +14,6 @@ func (a *SemanticAnalyzer) analyzeStatementList(parsetree *dt.ParseTree) ([]dt.D
 	decoratedStatements := make([]dt.DecoratedSyntaxTree, 0)
 
 	for _, statement := range parsetree.Children {
-		// Skip token nodes (like semicolons)
 		if statement.RootType == dt.TOKEN_NODE {
 			continue
 		}

@@ -5,21 +5,18 @@ import (
 	"strings"
 )
 
-// String returns a string representation of the DST
 func (t DecoratedSyntaxTree) String() string {
 	var sb strings.Builder
 	t.writeString(&sb, "", true, true, nil, nil, nil, nil)
 	return sb.String()
 }
 
-// StringWithSymbols returns a string representation of the DST with symbol table information
 func (t DecoratedSyntaxTree) StringWithSymbols(tab Tab, atab Atab, btab Btab, strtab StrTab) string {
 	var sb strings.Builder
 	t.writeString(&sb, "", true, true, &tab, &atab, &btab, &strtab)
 	return sb.String()
 }
 
-// formatDataWithSymbols formats the Data field with symbol table information
 func formatDataWithSymbols(nodeType DSTNodeType, data int, tab *Tab, atab *Atab, btab *Btab, strtab *StrTab) string {
 	if tab == nil {
 		return fmt.Sprintf(" (%d)", data)
@@ -82,7 +79,6 @@ func formatDataWithSymbols(nodeType DSTNodeType, data int, tab *Tab, atab *Atab,
 		return fmt.Sprintf(" (tab[%d])", data)
 
 	default:
-		// For other node types, just show the data value
 		if data != 0 {
 			return fmt.Sprintf(" (%d)", data)
 		}
@@ -90,7 +86,6 @@ func formatDataWithSymbols(nodeType DSTNodeType, data int, tab *Tab, atab *Atab,
 	}
 }
 
-// writeString recursively writes the tree structure to a string builder
 func (t DecoratedSyntaxTree) writeString(sb *strings.Builder, prefix string, isLast bool, isRoot bool, tab *Tab, atab *Atab, btab *Btab, strtab *StrTab) {
 	if prefix != "" {
 		if isLast {
@@ -100,20 +95,17 @@ func (t DecoratedSyntaxTree) writeString(sb *strings.Builder, prefix string, isL
 		}
 	}
 
-	// Write in format "property: type"
 	if t.Property != DST_ROOT {
 		sb.WriteString(t.Property.String())
 		sb.WriteString(": ")
 	}
 	sb.WriteString(t.SelfType.String())
 
-	// Write data with symbol information if available
 	dataStr := formatDataWithSymbols(t.SelfType, t.Data, tab, atab, btab, strtab)
 	sb.WriteString(dataStr)
 
 	sb.WriteString("\n")
 
-	// Write children
 	childPrefix := prefix
 	if isRoot || prefix != "" {
 		if isLast {

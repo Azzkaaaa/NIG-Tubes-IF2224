@@ -106,12 +106,8 @@ func (a *SemanticAnalyzer) Analyze() (dt.Tab, dt.Atab, dt.Btab, dt.StrTab, *dt.D
 	return tab, atab, btab, strtab, dst, err
 }
 
-// resolveAliasType resolves a type alias to its underlying base type
-// If the type is not an alias, it returns the type unchanged
 func (a *SemanticAnalyzer) resolveAliasType(t semanticType) semanticType {
-	// Keep resolving until we find a non-alias type
 	for t.StaticType == dt.TAB_ENTRY_ALIAS {
-		// Follow the reference chain
 		t = semanticType{
 			StaticType: a.tab[t.Reference].Type,
 			Reference:  a.tab[t.Reference].Reference,
@@ -121,7 +117,6 @@ func (a *SemanticAnalyzer) resolveAliasType(t semanticType) semanticType {
 }
 
 func (a *SemanticAnalyzer) checkTypeEquality(t1 semanticType, t2 semanticType) bool {
-	// Resolve aliases to their base types before comparison
 	resolved1 := a.resolveAliasType(t1)
 	resolved2 := a.resolveAliasType(t2)
 
@@ -150,13 +145,13 @@ func (a *SemanticAnalyzer) checkTypeEquality(t1 semanticType, t2 semanticType) b
 func (a *SemanticAnalyzer) getTypeSize(t semanticType) int {
 	switch t.StaticType {
 	case dt.TAB_ENTRY_INTEGER:
-		return strconv.IntSize / 8 // Convert bits to bytes (32/8=4 or 64/8=8)
+		return strconv.IntSize / 8
 	case dt.TAB_ENTRY_REAL:
-		return strconv.IntSize / 8 // Convert bits to bytes (32/8=4 or 64/8=8)
+		return strconv.IntSize / 8
 	case dt.TAB_ENTRY_BOOLEAN:
-		return 1 // 1 byte
+		return 1
 	case dt.TAB_ENTRY_CHAR:
-		return 1 // 1 byte
+		return 1
 	case dt.TAB_ENTRY_RECORD:
 		return a.btab[t.Reference].VariableSize
 	case dt.TAB_ENTRY_ARRAY:

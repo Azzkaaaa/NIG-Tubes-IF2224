@@ -6,8 +6,6 @@ import (
 	dt "github.com/Azzkaaaa/NIG-Tubes-IF2224/psc/datatype"
 )
 
-// Currently allows expressions from literals and previously defined constants
-
 func (a *SemanticAnalyzer) staticEvaluate(dst *dt.DecoratedSyntaxTree, typ semanticType) (int, error) {
 	switch typ.StaticType {
 	case dt.TAB_ENTRY_INTEGER:
@@ -28,7 +26,6 @@ func (a *SemanticAnalyzer) staticEvaluateInt(dst *dt.DecoratedSyntaxTree) (int, 
 	case dt.DST_INT_LITERAL:
 		return dst.Data, nil
 	case dt.DST_CONST:
-		// Reference to a constant - look it up in the symbol table
 		constEntry := a.tab[dst.Data]
 		if constEntry.Type != dt.TAB_ENTRY_INTEGER {
 			return 0, errors.New("constant is not an integer")
@@ -106,7 +103,6 @@ func (a *SemanticAnalyzer) staticEvaluateReal(dst *dt.DecoratedSyntaxTree) (int,
 	case dt.DST_REAL_LITERAL:
 		return dst.Data, nil
 	case dt.DST_CONST:
-		// Reference to a constant - look it up in the symbol table
 		constEntry := a.tab[dst.Data]
 		if constEntry.Type != dt.TAB_ENTRY_REAL {
 			return 0, errors.New("constant is not a real")
@@ -122,7 +118,6 @@ func (a *SemanticAnalyzer) staticEvaluateChar(dst *dt.DecoratedSyntaxTree) (int,
 	case dt.DST_CHAR_LITERAL:
 		return dst.Data, nil
 	case dt.DST_CONST:
-		// Reference to a constant - look it up in the symbol table
 		constEntry := a.tab[dst.Data]
 		if constEntry.Type != dt.TAB_ENTRY_CHAR {
 			return 0, errors.New("constant is not a char")
@@ -138,7 +133,6 @@ func (a *SemanticAnalyzer) staticEvaluateBool(dst *dt.DecoratedSyntaxTree) (int,
 	case dt.DST_BOOL_LITERAL:
 		return dst.Data, nil
 	case dt.DST_CONST:
-		// Reference to a constant - look it up in the symbol table
 		constEntry := a.tab[dst.Data]
 		if constEntry.Type != dt.TAB_ENTRY_BOOLEAN {
 			return 0, errors.New("constant is not a boolean")

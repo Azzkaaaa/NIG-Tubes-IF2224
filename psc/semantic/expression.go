@@ -28,7 +28,6 @@ func (a *SemanticAnalyzer) analyzeExpression(parseTree *dt.ParseTree) (*dt.Decor
 			return nil, rtype, err
 		}
 
-		// Use type promotion instead of strict equality
 		promotedLhs, promotedRhs, _, compatible := a.promoteTypes(lhs, ltype, rhs, rtype)
 		if !compatible {
 			return nil, ltype, errors.New("operand types are incompatible")

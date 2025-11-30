@@ -86,15 +86,11 @@ type Tab []TabEntry
 func (t *Tab) FindIdentifier(id string, start int) (int, *TabEntry) {
 	current := start
 
-	// FIX: Tambahkan pengecekan ini untuk mencegah panic.
-	// Jika start index sudah -1 atau tabelnya kosong, langsung hentikan pencarian.
 	if current == -1 || len(*t) == 0 {
 		return -1, nil
 	}
 
-	// Tambahkan batas iterasi untuk mencegah loop tak terbatas selama debugging
-	for i := 0; current != -1 && i < 100; i++ { // Batas 100 iterasi
-		// Pengecekan tambahan untuk keamanan jika ada link yang korup
+	for i := 0; current != -1 && i < 100; i++ {
 		if current >= len(*t) {
 			return -1, nil
 		}
@@ -113,7 +109,6 @@ func (t Tab) String() string {
 		return "<empty symbol table>"
 	}
 
-	// Table header
 	out := "Idx  Identifier       Link  Object        Type          Ref   Norm  Level  Data\n"
 	out += "---- ---------------- ----- ------------- ------------- ----- ----- ------ -----\n"
 

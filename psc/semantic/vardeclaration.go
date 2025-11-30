@@ -29,9 +29,7 @@ func (a *SemanticAnalyzer) analyzeVarDeclaration(parsetree *dt.ParseTree) ([]dt.
 		_, check := a.tab.FindIdentifier(identifier, a.root)
 		if check != nil {
 			if check.Level == a.depth {
-				// Get token from identifier list
-				token := parsetree.Children[0].Children[i*2].TokenValue
-				return nil, a.newRedeclarationError(identifier, token)
+				return nil, errors.New("cannot redeclare identifier in the same scope")
 			}
 		}
 

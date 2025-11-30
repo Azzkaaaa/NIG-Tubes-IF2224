@@ -92,9 +92,6 @@ func (a *SemanticAnalyzer) analyzeFunctionDeclaration(parsetree *dt.ParseTree) (
 		}
 	}
 
-	// Calculate variable size
-	// stackSize includes parameters + local variables
-	// returnSize is tracked separately and not part of stackSize
 	varSize := a.stackSize - paramSize
 
 	start := 0

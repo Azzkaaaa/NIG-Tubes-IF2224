@@ -11,9 +11,6 @@ func (a *SemanticAnalyzer) analyzeIdentifierList(parsetree *dt.ParseTree) ([]str
 		return nil, errors.New("expected identifier list")
 	}
 
-	// Extract identifiers from parse tree
-	// Structure: ID [, ID]*
-	// Children: ID_TOKEN [COMMA_TOKEN ID_TOKEN]*
 	identifiers := make([]string, 0)
 
 	for i := 0; i < len(parsetree.Children); i += 2 {

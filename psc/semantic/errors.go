@@ -6,7 +6,6 @@ import (
 	dt "github.com/Azzkaaaa/NIG-Tubes-IF2224/psc/datatype"
 )
 
-// SemanticError represents a semantic analysis error with location information
 type SemanticError struct {
 	Message string
 	Line    int
@@ -15,7 +14,6 @@ type SemanticError struct {
 	Token   *dt.Token
 }
 
-// Error implements the error interface
 func (e *SemanticError) Error() string {
 	if e.Token != nil {
 		return fmt.Sprintf("Semantic error at line %d, column %d: %s\nContext: %s\nNear: '%s'",
@@ -25,7 +23,6 @@ func (e *SemanticError) Error() string {
 		e.Line, e.Column, e.Message, e.Context)
 }
 
-// NewSemanticError creates a new semantic error with location information
 func NewSemanticError(message string, token *dt.Token, context string) *SemanticError {
 	line := 0
 	column := 0
@@ -42,7 +39,6 @@ func NewSemanticError(message string, token *dt.Token, context string) *Semantic
 	}
 }
 
-// Error type constants for common semantic errors
 const (
 	ErrRedeclaration      = "identifier already declared in this scope"
 	ErrUndeclaredIdent    = "undeclared identifier"
@@ -57,8 +53,6 @@ const (
 	ErrWrongArgCount      = "wrong number of arguments"
 	ErrCannotAssign       = "cannot assign to this expression"
 )
-
-// Helper functions to create specific error types
 
 func (a *SemanticAnalyzer) newRedeclarationError(identifier string, token *dt.Token) error {
 	return NewSemanticError(

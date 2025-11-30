@@ -74,7 +74,6 @@ func (a *SemanticAnalyzer) analyzeArrayAccess(parsetree *dt.ParseTree, prev *dt.
 		Children: children,
 	}
 
-	// Extract nodes with step 3 (every 3rd element starting from index 2)
 	recursiveNodes := make([]dt.ParseTree, 0)
 	for i := 2; i < len(parsetree.Children); i += 3 {
 		recursiveNodes = append(recursiveNodes, parsetree.Children[i])

@@ -82,11 +82,9 @@ func (a *SemanticAnalyzer) recurseSimpleExpression(nodes []dt.ParseTree) (*dt.De
 		return nil, rtype, err
 	}
 
-	// Promote types if needed (e.g., integer + real)
 	promotedLval, promotedRval, resultType, compatible := a.promoteTypes(lval, ltype, rval, rtype)
 
 	if !compatible {
-		// Get operator token
 		token := nodes[len(nodes)-2].Children[0].TokenValue
 		return nil, ltype, a.newOperatorTypeError(
 			token.Lexeme,
