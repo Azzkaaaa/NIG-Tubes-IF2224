@@ -34,7 +34,7 @@ func (a *SemanticAnalyzer) analyzeRecordType(parsetree *dt.ParseTree) (int, dt.T
 	oldDepth := a.depth
 
 	// Set new scope for record fields
-	a.root = 0
+	// a.root = 0
 	a.depth++
 
 	fmt.Printf("[RECORD] New scope: root=%d, depth=%d\n", a.root, a.depth)
