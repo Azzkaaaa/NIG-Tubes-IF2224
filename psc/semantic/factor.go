@@ -7,8 +7,7 @@ import (
 )
 
 func (a *SemanticAnalyzer) analyzeFactor(parseTree *dt.ParseTree) (*dt.DecoratedSyntaxTree, semanticType, error) {
-	switch parseTree.Children[0].RootType {
-	case dt.TOKEN_NODE:
+	if parseTree.Children[0].RootType == dt.TOKEN_NODE {
 		if parseTree.Children[0].TokenValue.Type == dt.LPARENTHESIS {
 			return a.analyzeExpression(&parseTree.Children[1])
 		} else if parseTree.Children[0].TokenValue.Lexeme == "tidak" {
@@ -28,14 +27,8 @@ func (a *SemanticAnalyzer) analyzeFactor(parseTree *dt.ParseTree) (*dt.Decorated
 				SelfType: dt.DST_NOT_OPERATOR,
 				Children: []dt.DecoratedSyntaxTree{*dst},
 			}, typ, nil
-		} else {
-			return a.analyzeToken(&parseTree.Children[0])
 		}
-	case dt.ARRAY_ACCESS_NODE:
-		return a.analyzeArrayAccess(&parseTree.Children[0])
-	case dt.SUBPROGRAM_CALL_NODE:
-		return a.analyzeSubprogramCall(&parseTree.Children[0])
 	}
 
-	return nil, semanticType{}, errors.New("idk what happened")
+	return a.analyzeAccess(&parseTree.Children[0])
 }
