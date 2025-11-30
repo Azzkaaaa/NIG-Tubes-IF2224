@@ -17,6 +17,9 @@ func (a *SemanticAnalyzer) analyzeParameterList(parseTree *dt.ParseTree) ([]dt.D
 	paramTypes := make([]semanticType, len(parameters))
 
 	for i, p := range parameters {
+		if i%2 == 1 {
+			continue
+		}
 		param, typ, err := a.analyzeExpression(&p)
 
 		if err != nil {
