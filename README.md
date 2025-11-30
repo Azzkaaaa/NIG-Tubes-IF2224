@@ -170,7 +170,7 @@ contoh:
         <br>
           M2: Tester, Laporan, Kode
         <br>
-          M3: Tester, Laporan, Kode
+          M3: Laporan, Kode, Fix
         </td>
     </tr>
     <tr>
@@ -185,7 +185,7 @@ contoh:
         <br>
           M2: Laporan, Konsumsi
         <br>
-          M3: Tester, Laporan, Kode
+          M3: Kode, Testing, Fix
         </td>
     </tr>
     <tr>
@@ -200,7 +200,7 @@ contoh:
         <br>
           M2: Laporan, Debugging
         <br>
-          M3: Tester, Laporan, Kode
+          M3: Kode, Debugging, Testing
         </td>
     </tr>
         <tr>
@@ -215,7 +215,7 @@ contoh:
         <br>
           M2: Kode Visualisasi, Kode Grammar
         <br>
-          M3: Tester, Laporan, Kode
+          M3: Kode, Debugging, Testing
         </td>
     </tr>
         <tr>
@@ -230,7 +230,7 @@ contoh:
         <br>
           M2: Laporan, Kode Grammar
         <br>
-          M3: Tester, Laporan, Kode
+          M3: Laporan, Kode, Debugging
         </td>
     </tr>
     </table>
