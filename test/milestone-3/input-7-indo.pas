@@ -1,31 +1,23 @@
-program ReferenceParameterTest;
-{ Test reference parameters using variabel keyword }
-
-prosedur swap(variabel a: integer; variabel b: integer);
-variabel
-  temp: integer;
-mulai
-  temp := a;
-  a := b;
-  b := temp
-selesai;
-
-prosedur increment(variabel x: integer);
-mulai
-  x := x + 1
-selesai;
+program StaticRangeTest;
+{ Test static evaluation for array range operator }
+konstanta
+  MIN_INDEX = 1;
+  MAX_INDEX = 10;
 
 variabel
-  num1, num2: integer;
+  numbers: larik[MIN_INDEX..MAX_INDEX] dari integer;
+  values: larik[1..(MAX_INDEX - MIN_INDEX + 1)] dari real;
+  flags: larik[0..4] dari boolean;
+  i: integer;
 
 mulai
-  num1 := 10;
-  num2 := 20;
+  { Initialize arrays using constant range }
+  untuk i := MIN_INDEX ke MAX_INDEX lakukan
+    numbers[i] := i * 2;
   
-  tulis('Sebelum swap: num1=', num1, ' num2=', num2);
-  swap(num1, num2);
-  tulis('Setelah swap: num1=', num1, ' num2=', num2);
+  untuk i := 1 ke (MAX_INDEX - MIN_INDEX + 1) lakukan
+    values[i] := i * 1.5;
   
-  increment(num1);
-  tulis('Setelah increment: num1=', num1)
+  untuk i := 0 ke 4 lakukan
+    flags[i] := (i mod 2 = 0);
 selesai.

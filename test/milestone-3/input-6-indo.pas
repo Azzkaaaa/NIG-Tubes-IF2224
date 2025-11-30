@@ -1,18 +1,18 @@
-program ImplicitCastTest;
-{ Test implicit casting from integer to real }
-variabel
-  x: integer;
-  y, z: real;
+program NestedFunctionExample;
+
+fungsi OuterFunction(x: integer): integer;
+  fungsi InnerFunction(y: integer): integer;
+  mulai
+    InnerFunction := y * 2;
+  selesai;
+  fungsi BlackFunction(variabel y: integer): integer;
+  mulai
+    BlackFunction := y * 2;
+  selesai;
 mulai
-  x := 5;
-  y := 3.14;
-  
-  { Implicit cast: x (integer) will be cast to real }
-  z := x + y;
-  
-  { Assignment with implicit cast }
-  y := x;
-  
-  tulis('z = ', z);
-  tulis('y = ', y)
+  OuterFunction := InnerFunction(x) + 5;
+selesai;
+
+mulai
+  write('Result: ', 'aa');
 selesai.

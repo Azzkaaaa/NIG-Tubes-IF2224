@@ -1,21 +1,19 @@
-program FunctionTest;
-
-fungsi tambah(a: integer; b: integer): integer;
-mulai
-  tambah := a + b
-selesai;
-
-prosedur cetak(nilai: integer);
-mulai
-  tulis('Nilai: ', nilai)
-selesai;
-
+program ArrayTest;
+konstanta
+  kons = 67;
+tipe
+  angka = integer;
+  mobil = rekaman
+    tahun : angka;
+    merek : string;
+  selesai;
 variabel
-  x, y, hasil: integer;
-
+  arr: larik[1..5] dari integer;
+  i: integer;
+  mobil1: mobil;
 mulai
-  x := 10;
-  y := 20;
-  hasil := tambah(x, y);
-  cetak(hasil)
+  mobil1.tahun := 2004;
+  mobil1.merek := 'honda';
+  untuk i := 1 ke 5 lakukan
+    arr[i] := i * 2;
 selesai.

@@ -1,19 +1,15 @@
-program ArrayTest;
-konstanta
-  kons = 67;
-tipe
-  angka = integer;
-  mobil = rekaman
-    tahun : angka;
-    merek : string;
-  selesai;
+program ImplicitCastTest;
+{ Test implicit casting from integer to real }
 variabel
-  arr: larik[1..5] dari integer;
-  i: integer;
-  mobil1: mobil;
+  x: integer;
+  y, z: real;
 mulai
-  mobil1.tahun := 2004;
-  mobil1.merek := 'honda';
-  untuk i := 1 ke 5 lakukan
-    arr[i] := i * 2;
+  x := 5;
+  y := 3.14;
+  
+  { Implicit cast: x (integer) will be cast to real }
+  z := x + y;
+  
+  { Assignment with implicit cast }
+  y := x;
 selesai.
