@@ -28,6 +28,8 @@ func (a *SemanticAnalyzer) analyzeFactor(parseTree *dt.ParseTree) (*dt.Decorated
 				Children: []dt.DecoratedSyntaxTree{*dst},
 			}, typ, nil
 		}
+
+		return a.analyzeToken(&parseTree.Children[0])
 	}
 
 	return a.analyzeAccess(&parseTree.Children[0])

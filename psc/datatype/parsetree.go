@@ -88,8 +88,8 @@ func (t NodeType) String() string {
 		"<additive-operator>",
 		"<multiplicative-operator>",
 		"<access>",
-		"<array-access>",
 		"<static-access>",
+		"<array-access>",
 		"<record-type>",
 		"<token>",
 	}
