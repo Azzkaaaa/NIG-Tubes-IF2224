@@ -15,7 +15,7 @@ import (
 )
 
 func main() {
-	rules := flag.String("rules", "config/tokenizer.json", "path ke DFA JSON")
+	rules := flag.String("rules", "config/tokenizer_m3.json", "path ke DFA JSON")
 	in := flag.String("input", "", "path file sumber")
 	showDST := flag.Bool("show-dst", false, "tampilkan Decorated Syntax Tree")
 	showSymbols := flag.Bool("show-symbols", false, "tampilkan tabel simbol")

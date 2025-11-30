@@ -14,7 +14,7 @@ import (
 )
 
 func main() {
-	rules := flag.String("rules", "config/tokenizer.json", "path ke DFA JSON")
+	rules := flag.String("rules", "config/tokenizer_m3.json", "path ke DFA JSON")
 	in := flag.String("input", "", "path file sumber")
 	flag.Parse()
 
