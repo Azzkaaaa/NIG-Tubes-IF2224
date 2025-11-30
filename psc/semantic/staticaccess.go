@@ -38,10 +38,16 @@ func (a *SemanticAnalyzer) analyzeStaticAccess(parsetree *dt.ParseTree, prev *dt
 
 	switch nodes[0].RootType {
 	case dt.TOKEN_NODE:
-		tabIndex, _ := a.tab.FindIdentifier(nodes[0].TokenValue.Lexeme, root)
+		tabIndex, tabEntry := a.tab.FindIdentifier(nodes[0].TokenValue.Lexeme, root)
 		if tabIndex == -1 {
 			return nil, semanticType{}, errors.New("undeclared identifier")
 		}
+
+		typ = semanticType{
+			StaticType: tabEntry.Type,
+			Reference:  tabEntry.Reference,
+		}
+
 		if prev != nil {
 			prev.Property = dt.DST_FROM
 			prev = &dt.DecoratedSyntaxTree{
@@ -94,10 +100,16 @@ func (a *SemanticAnalyzer) analyzeStaticAccess(parsetree *dt.ParseTree, prev *dt
 
 		switch node.RootType {
 		case dt.TOKEN_NODE:
-			tabIndex, _ := a.tab.FindIdentifier(node.TokenValue.Lexeme, root)
+			tabIndex, tabEntry := a.tab.FindIdentifier(node.TokenValue.Lexeme, root)
 			if tabIndex == -1 {
 				return nil, semanticType{}, errors.New("undeclared identifier")
 			}
+
+			typ = semanticType{
+				StaticType: tabEntry.Type,
+				Reference:  tabEntry.Reference,
+			}
+
 			prev.Property = dt.DST_FROM
 			prev = &dt.DecoratedSyntaxTree{
 				SelfType: dt.DST_RECORD_FIELD,

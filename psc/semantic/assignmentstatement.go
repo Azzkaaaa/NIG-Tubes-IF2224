@@ -12,6 +12,8 @@ func (a *SemanticAnalyzer) analyzeAssignmentStatement(parsetree *dt.ParseTree) (
 		return nil, errors.New("expected an assignment statement node")
 	}
 
+	print(a.tab.String())
+
 	fmt.Printf("[ASSIGNMENT] Children count: %d\n", len(parsetree.Children))
 	for i, child := range parsetree.Children {
 		fmt.Printf("[ASSIGNMENT]   Child %d: type=%s\n", i, child.RootType)
