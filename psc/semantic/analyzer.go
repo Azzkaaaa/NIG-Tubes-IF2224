@@ -30,7 +30,7 @@ func New(parseTree *dt.ParseTree) *SemanticAnalyzer {
 		atab:      make(dt.Atab, 0),
 		btab:      make(dt.Btab, 0),
 		strtab:    make(dt.StrTab, 0),
-		root:      0,
+		root:      -1,
 		depth:     0,
 		stackSize: 0,
 	}

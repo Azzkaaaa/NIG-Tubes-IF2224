@@ -22,18 +22,9 @@ func (a *SemanticAnalyzer) analyzeProgramHeader(parsetree *dt.ParseTree) (int, d
 
 	tabIndex := len(a.tab)
 
-	// Search for outer scope occurrence of same identifier
-	linkIndex := -1
-	if a.root != -1 && a.root < len(a.tab) {
-		outerRoot := a.tab[a.root].Link
-		if outerRoot != -1 {
-			linkIndex, _ = a.tab.FindIdentifier(identifier, outerRoot)
-		}
-	}
-
 	tabEntry := dt.TabEntry{
 		Identifier: identifier,
-		Link:       linkIndex,
+		Link:       a.root,
 		Object:     dt.TAB_ENTRY_PROGRAM,
 		Type:       dt.TAB_ENTRY_NONE,
 		Level:      a.depth,
