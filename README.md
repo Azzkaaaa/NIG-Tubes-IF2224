@@ -89,12 +89,12 @@ This method ensures you get the latest version of Go.
 
    windows:
    ```bash
-   ./bin/pspar.exe --rules config/tokenizer_indo.json --input test/milestone-2/(nama file pascal.pas)
+   ./bin/pspar.exe --rules config/tokenizer_indo.json --input test/milestone-1/(nama file pascal.pas)
    ```
 
    linux:
    ```bash
-   ./bin/pspar --rules config/tokenizer_indo.json --input test/milestone-2/(nama file pascal.pas)
+   ./bin/pspar --rules config/tokenizer_indo.json --input test/milestone-1/(nama file pascal.pas)
    ```
 
 contoh:
@@ -169,6 +169,8 @@ contoh:
           M1: Fotografer, Konsumsi, Femboy Generator, Testing, dan Laporan
         <br>
           M2: Tester, Laporan, Kode
+        <br>
+          M3: Tester, Laporan, Kode
         </td>
     </tr>
     <tr>
@@ -182,6 +184,8 @@ contoh:
           M1: Engine dan Testing
         <br>
           M2: Laporan, Konsumsi
+        <br>
+          M3: Tester, Laporan, Kode
         </td>
     </tr>
     <tr>
@@ -195,6 +199,8 @@ contoh:
           M1: Lexer (Graph and Code)
         <br>
           M2: Laporan, Debugging
+        <br>
+          M3: Tester, Laporan, Kode
         </td>
     </tr>
         <tr>
@@ -208,6 +214,8 @@ contoh:
           M1: Engine dan Testing
         <br>
           M2: Kode Visualisasi, Kode Grammar
+        <br>
+          M3: Tester, Laporan, Kode
         </td>
     </tr>
         <tr>
@@ -221,6 +229,8 @@ contoh:
           M1: Engine dan Testing
         <br>
           M2: Laporan, Kode Grammar
+        <br>
+          M3: Tester, Laporan, Kode
         </td>
     </tr>
     </table>
