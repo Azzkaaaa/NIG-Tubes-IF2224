@@ -19,136 +19,15 @@
 
 Sebuah Interpreter bahasa Pascal.
 
-## Requirements
+## Cara Install
 
-- Punya Go-lang
+- Pastikan mempunyai python https://www.python.org/downloads/
+- Jalankan `pip install -r requirements.txt`
 
-## Cara Install Go-lang
+## Cara run
 
-### Windows
+Jalankan file python notebook `src\Notebook\Tubes2.ipynb`.
 
-1.  **Download the Installer:**
-    * Go to the official Go downloads page: https://go.dev/dl/
-    * Download the latest stable version's **MSI installer** for Windows (x64).
-
-2.  **Run the Installer:**
-    * Double-click the downloaded **.msi** file.
-    * Follow the installation wizard prompts. The installer automatically places Go in a standard location (like C:\Program Files\Go or C:\Go) and updates your **PATH** environment variable.
-
-3.  **Verify the Installation:**
-    * Open a **new** Command Prompt or PowerShell window.
-    * Run the command:
-        go version
-    * You should see the installed Go version (e.g., go version go1.x.x windows/amd64).
-
----
-
-### Linux (with Package Manager)
-
-This method ensures you get the latest version of Go.
-
-* **For APT (Debian/Ubuntu):**
-    ```terminal
-    sudo apt update
-    sudo apt install golang-go
-    ```
-
-* **For dnf (Fedora/CentOS/RHEL):**
-    ```terminal
-    sudo dnf install golang
-    ```
-
-* **For Pacman (Arch based):**
-    ```terminal
-    sudo pacman -Syu
-    sudo pacman -S go
-    go version
-    ```
-
-* **For apk (Alpine):**
-    ```terminal
-    apk update
-    apk add go
-    go version
-    ```
-
-## Cara run Lexer
-1. pada root repository ketik:
-
-    windows:
-    ```bash
-    go build -o bin/pslex.exe ./cmd/pslex
-    ``` 
-
-    linux:
-    ```bash
-    go build -o bin/pslex ./cmd/pslex
-    ``` 
-
-2. Lalu ketik:
-
-   windows:
-   ```bash
-   ./bin/pspar.exe --rules config/tokenizer_indo.json --input test/milestone-1/(nama file pascal.pas)
-   ```
-
-   linux:
-   ```bash
-   ./bin/pspar --rules config/tokenizer_indo.json --input test/milestone-1/(nama file pascal.pas)
-   ```
-
-contoh:
-./bin/pslex.exe --rules src/rules/tokenizer.json --input test/milestone-2/test1.pas
-
-## Cara run Parser
-1. pada root repository ketik:
-    
-    windows:
-    ```bash
-    go build -C psc/cmd/pspar -o ../../../bin/pspar.exe .
-    ```
-
-    linux:
-   ```bash
-   go build -C psc/cmd/pspar -o ../../../bin/pspar .
-   ```
-
-2. Lalu ketik:
-
-    windows:
-    ```bash
-    ./bin/pspar.exe --rules config/tokenizer_indo.json --input test/milestone-2/(nama file pascal.pas)
-    ```
-
-   linux:
-   ```bash
-   ./bin/pspar --rules config/tokenizer_indo.json --input test/milestone-2/(nama file pascal.pas)
-   ```
-
-## Cara run Semantic Analysis
-1. pada root repository ketik:
-    
-    windows:
-    ```bash
-    go build -C psc/cmd/pschk -o ../../../bin/pschk.exe .
-    ```
-
-    linux:
-   ```bash
-   go build -C psc/cmd/pschk -o ../../../bin/pschk .
-   ```
-
-2. Lalu ketik:
-
-    windows:
-    ```bash
-    ./bin/pschk.exe --rules config/tokenizer_m3.json --input test/milestone-3/(nama file pascal.pas)
-    ```
-
-   linux:
-   ```bash
-   ./bin/pschk --rules config/tokenizer_m3.json --input test/milestone-3/(nama file pascal.pas)
-   ```
   
 ## Pembagian Tugas
 
@@ -166,11 +45,7 @@ contoh:
         </a>
         </td>
         <td align="center">
-          M1: Fotografer, Konsumsi, Femboy Generator, Testing, dan Laporan
-        <br>
-          M2: Tester, Laporan, Kode
-        <br>
-          M3: Laporan, Kode, Fix
+          EDA, Data Cleaning & Preprocessing, Pipelining
         </td>
     </tr>
     <tr>
@@ -181,11 +56,7 @@ contoh:
         </a>
         </td>
         <td align="center">
-          M1: Engine dan Testing
-        <br>
-          M2: Laporan, Konsumsi
-        <br>
-          M3: Kode, Testing, Fix
+          EDA, Data Cleaning & Preprocessing, Pipelining
         </td>
     </tr>
     <tr>
@@ -196,11 +67,7 @@ contoh:
         </a>
         </td>
         <td align="center">
-          M1: Lexer (Graph and Code)
-        <br>
-          M2: Laporan, Debugging
-        <br>
-          M3: Kode, Debugging, Testing
+          Logistic Regression
         </td>
     </tr>
         <tr>
@@ -211,11 +78,7 @@ contoh:
         </a>
         </td>
         <td align="center">
-          M1: Engine dan Testing
-        <br>
-          M2: Kode Visualisasi, Kode Grammar
-        <br>
-          M3: Kode, Debugging, Testing
+          Decision Tree Learning
         </td>
     </tr>
         <tr>
@@ -226,11 +89,7 @@ contoh:
         </a>
         </td>
         <td align="center">
-          M1: Engine dan Testing
-        <br>
-          M2: Laporan, Kode Grammar
-        <br>
-          M3: Laporan, Kode, Debugging
+          SVM
         </td>
     </tr>
     </table>
